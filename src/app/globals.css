@@ -1,27 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'reset.css';
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --logo_blue: #0000ff;
+  --logo_red: #ff0000;
+  --logo_orange: #ffc000;
+
+  --light_blue: #d9ebf2;
+  --light_gray: #ededed;
+  --gray: #c9c9c9;
+  --dark_gray: #757575;
+
+  --w-1200: 1200px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.shadow-bottom {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.05);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.search-container {
+  /* 원형의 크기를 정의. */
+  width: 50px;
+  height: 50px;
+
+  display: flex; /* flexbox 사용 */
+  align-items: center; /* 가로축 가운데 정렬 */
+  justify-content: center; /* 세로축 가운데 정렬 */
+}
+
+.search-input {
+  /* 원형으로 만들기 위해 높이와 폭을 동일하게 하고, border-radius를 50%로 설정. */
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  /* 초기에 텍스트가 보이지 않게 설정. */
+  text-indent: -9999px;
+
+  /* transition을 통해 모양이 부드럽게 바뀌도록 설정. */
+  transition: all 0.3s ease;
+}
+
+.search-input:hover {
+  /* 마우스를 올렸을 때 길쭉하게 만들고, 텍스트를 보이게 설정. */
+  border-radius: 15px;
+  width: 200px;
+  text-indent: 0;
 }
