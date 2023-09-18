@@ -7,16 +7,23 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --logo_blue: #0000ff;
-  --logo_red: #ff0000;
-  --logo_orange: #ffc000;
+  --logo-blue: #0000ff;
+  --logo-red: #ff0000;
+  --logo-orange: #ffc000;
 
-  --light_blue: #d9ebf2;
-  --light_gray: #ededed;
+  --light-blue: #d9ebf2;
+  --light-gray: #ededed;
   --gray: #c9c9c9;
-  --dark_gray: #757575;
+  --dark-gray: #757575;
 
   --w-1200: 1200px;
+
+  padding-top: 80px;
+  padding-bottom: 300px;
+}
+
+body {
+  width: 1200px;
 }
 
 .shadow-bottom {

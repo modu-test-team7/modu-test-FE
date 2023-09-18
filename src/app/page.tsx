@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import Header from './components/Layout/Header';
+import UserButton from './components/UserButton';
 
 export default function Home() {
   return (
     <div>
-      <Header />
+      <UserButton fullWidth type="button">로그인</UserButton>
     </div>
   );
 }

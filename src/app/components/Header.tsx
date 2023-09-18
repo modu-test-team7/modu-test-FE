@@ -6,7 +6,7 @@ type HeaderProps = {};
 
 const Header: React.FC<HeaderProps> = () => {
   return (
-    <div className="w-full fixed top-0 z-50 h-[80px] shadow-bottom flex flex-row items-center justify-around">
+    <div className="w-full fixed  top-0 z-50 h-[80px] shadow-bottom flex flex-row items-center justify-around">
       <div className="w-[--w-1200] flex flex-row items-center justify-between">
         <div className="relative h-[50px] w-[150px] flex-shrink-0 my-auto">
           <Image
