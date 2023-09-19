@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'reset.css';
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --logo_blue: #0000ff;
+  --logo_red: #ff0000;
+  --logo_orange: #ffc000;
+
+  --light_blue: #d9ebf2;
+  --light_gray: #ededed;
+  --gray: #c9c9c9;
+  --dark_gray: #757575;
+
+  --w-1200: 1200px;
+}
+
+body{
+  margin-top: 80px;
+}
+
+.shadow-bottom {
+  box-shadow: 0px 2px 10px -1px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-top {
+  box-shadow: 0px -2px 10px -1px rgba(0, 0, 0, 0.1);
+}
+
+.focus-keep-size:focus-within {
+  width: 100% !important;
+  border-radius: 25px !important;
+}
+
+.focus-keep-input:focus-within {
+  width: 130px !important;
+  margin-left:20px;
+}
