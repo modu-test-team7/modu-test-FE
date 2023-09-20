@@ -1,0 +1,52 @@
+{
+  "testCards": [
+    {
+      "id": 1,
+      "writer": "김철수",
+      "title": "웹 개발자 되는 법",
+      "details": "HTML, CSS, 자바스크립트 기초 지식을 테스트해보세요.",
+      "viewCount": "752",
+      "commentCount": "45"
+    },
+    {
+      "id": 2,
+      "writer": "이영희",
+      "title": "파이썬 대망의 퀴즈",
+      "details": "파이썬 3.9에 대한 이 테스트를 통과할 수 있을까요?",
+      "viewCount": "1234",
+      "commentCount": "112"
+    },
+    {
+      "id": 3,
+      "writer": "박지민",
+      "title": "30분만에 React 배우기",
+      "details": "React.js 초보자 가이드입니다.",
+      "viewCount": "890",
+      "commentCount": "23"
+    },
+    {
+      "id": 4,
+      "writer": "김서영",
+      "title": "데이터 사이언스 입문",
+      "details": "데이터 사이언스와 머신 러닝에 대한 빠른 퀴즈입니다.",
+      "viewCount": "921",
+      "commentCount": "67"
+    },
+    {
+      "id": 5,
+      "writer": "최은주",
+      "title": "사이버보안 기초",
+      "details": "이 사이버보안 테스트로 온라인에서 자신을 보호하세요.",
+      "viewCount": "1023",
+      "commentCount": "91"
+    },
+    {
+      "id": 6,
+      "writer": "이태호",
+      "title": "디지털 마케팅 기초",
+      "details": "SEO, 이메일 마케팅 등에 대한 지식을 테스트해보세요.",
+      "viewCount": "634",
+      "commentCount": "28"
+    }
+  ]
+}

@@ -18,8 +18,8 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <div className="w-full fixed top-0 z-50 h-[60px] shadow-bottom flex flex-row items-center justify-around">
-      <div className="w-[--w-1200] flex flex-row items-center justify-between">
+    <div className="w-full relative top-0 z-50 h-[60px] shadow-bottom flex flex-row items-center justify-around bg-white">
+      <div className="w-[1200px] flex flex-row items-center justify-between">
         <Link
           href="/"
         >

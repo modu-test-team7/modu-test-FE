@@ -15,13 +15,18 @@
   --light_gray: #ededed;
   --gray: #c9c9c9;
   --dark_gray: #757575;
-
-  --w-1200: 1200px;
-  height: 100%;
 }
 
-body{
-  margin-top: 80px;
+::-webkit-scrollbar {
+  display: none;
+}
+
+html, body {
+  height: 100vh;
+}
+
+.wrap {
+  min-height: 100%;
 }
 
 .shadow-bottom {
@@ -40,4 +45,14 @@ body{
 .focus-keep-input:focus-within {
   width: 130px !important;
   margin-left:20px;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}
+
+.col{
+  display: flex;
+  flex-direction: column;
 }
