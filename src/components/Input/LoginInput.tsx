@@ -1,44 +1,19 @@
 import React from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
+import Input from '@mui/joy/Input';
 
 interface LoginInputProps {
   color: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
   placeholder?: string;
-  type?: 'text' | 'password';
-  onIconClick?: () => void; // 함수 타입 추가
-  showIcon?: boolean;
+  variant?: string;
 }
 
-const LoginInput: React.FC<LoginInputProps> = ({
-  color,
-  placeholder = '',
-  type = 'text',
-  onIconClick, // 여기에 추가
-  showIcon,
-}) => {
+const LoginInput: React.FC<LoginInputProps> = ({ color, placeholder = '' }) => {
   return (
-    <TextField
+    <Input
       placeholder={placeholder}
       variant="outlined"
-      color={color as any}
-      type={type}
-      fullWidth
-      InputProps={{
-        endAdornment: showIcon ? (
-          <InputAdornment position="end">
-            <IconButton edge="end" onClick={onIconClick}>
-              {type === 'password' ? (
-                <AiOutlineEyeInvisible />
-              ) : (
-                <AiOutlineEye />
-              )}
-            </IconButton>
-          </InputAdornment>
-        ) : undefined,
-      }}
+      color={color}
+      sx={{ marginBottom: '10px', padding: '8px' }}
     />
   );
 };
