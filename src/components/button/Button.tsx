@@ -5,7 +5,7 @@ import clsx from 'clsx';
 type TestButtonProps = {
   variant?: any;
   children?: React.ReactNode;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   secondary?: boolean;
   primary?: boolean;
@@ -19,7 +19,7 @@ type TestButtonProps = {
 
 const TestButton: React.FC<TestButtonProps> = ({
   children,
-  type,
+  type = "button",
   onClick,
   secondary,
   primary,

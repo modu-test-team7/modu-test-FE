@@ -1,7 +1,6 @@
 'use client';
 import '../globals.css';
-import Header from '../components/Layout/Header';
-import Footer from '../components/Layout/Footer';
+import { Header, Footer } from '../components/layout';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 
@@ -24,14 +23,11 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        {/* {isLoading ? null : <Header />} */}
         <Header />
-
         <div className="wrap">
-          {children}
           <Toaster position="top-center" richColors />
+          {children}
         </div>
-        {/* {isLoading ? null : <Footer />} */}
         <Footer />
       </body>
     </html>
