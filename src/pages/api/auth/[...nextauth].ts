@@ -10,8 +10,7 @@ const authOptions: NextAuthOptions = {
       clientSecret: 'd92c1b933e89f89fab558cd5c4bac08b177111e1',
     }),
     // KakaoProvider({
-    //   clientId: 'ed7cac4b32aadeae559e',
-    //   clientSecret: 'd92c1b933e89f89fab558cd5c4bac08b177111e1',
+    //
     // }),
   ],
   secret: 'qwerty1234',
