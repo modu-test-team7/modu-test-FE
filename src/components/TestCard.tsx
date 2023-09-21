@@ -1,14 +1,16 @@
 import React from 'react';
 import { AiFillEye } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
+import { Card } from "@/type/Card";
 
 type TestProps = {
-  card?: any;
+  card: Card;
 };
 
 const Test: React.FC<TestProps> = ({ card }) => {
+  console.log(card.id)
   return (
-    <div className="w-[350px] my-[50px] shadow-md">
+    <div className="my-[50px] shadow-md">
       <div className="text-md row items-start justify-between">
         <div className="font-bold text-gray-950">{card.title}</div>
       </div>
