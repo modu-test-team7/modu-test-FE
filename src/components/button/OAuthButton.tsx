@@ -34,7 +34,7 @@ const OAuthButton: React.FC<OAuthButtonProps> = ({
       `}
     >
       {children}
-      <Icon size={20} className="ml-[20px]" />
+      <Icon size={20} className="ml-[5px]" />
     </button>
   );
 };
