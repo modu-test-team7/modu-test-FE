@@ -1,7 +1,7 @@
 'use client';
 
 import '../globals.css';
-import type { Metadata } from 'next';
+import React, { useState, useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
@@ -11,7 +11,6 @@ const inter = Inter({ subsets: ['latin'] });
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
   children: React.ReactNode;
 }) {
   const [isLoading, setIsLoading] = useState(true);
