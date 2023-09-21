@@ -22,7 +22,7 @@ const SignUp = () => {
           />
           <LoginInput
             color="primary"
-            placeholder="한 번더 비밀번호를 입력해주세요"
+            placeholder="한 번 더 비밀번호를 입력해주세요"
             // type={showPassword ? 'text' : 'password'}
             // onIconClick={togglePassword}
             // showIcon={true}
