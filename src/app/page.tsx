@@ -3,9 +3,9 @@
 import Test from '../components/Test';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import api from '../axios/api';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import Button from '@/components/button/Button';
 
 import Fab from '@mui/material/Fab';
 import { GrAdd } from 'react-icons/gr';
@@ -43,34 +43,45 @@ export default function Home() {
     fetchTestCards();
   }, []);
 
-  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  // if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
 
   return (
     <div className=" mx-auto w-[1200px]">
-      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">
-        slider
-      </div>
-      <div className="w-full bg-gray-600 h-[60px] row items-center justify-center">
-        <button className="rounded-lg bg-gray-900 h-[35px] text-white px-[5px] text-sm mx-[10px]">
-          태그하나
-        </button>
-      </div>
-      <div className="row my-[20px] flex-wrap justify-between">
-        {testCards.map((card, i) => {
-          return (
-            <div key={card}>
-              <Test card={card} />
-            </div>
-          );
-        })}
-        <div className="w-[350px] h-[300px] bg-white" />
-        <div className="w-[350px] h-[300px] bg-white" />
-      </div>
-      <div className="fixed bottom-[60px] right-[100px]">
-        <Fab aria-label="add" size="small" onClick={CreateTestButton}>
-          <GrAdd color="red" />
-        </Fab>
-      </div>
+      <form onSubmit={fetchTestCards}>
+        <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">
+          slider
+        </div>
+        <div className="w-full bg-gray-600 h-[60px] row items-center justify-center">
+          <button className="rounded-lg bg-gray-900 h-[35px] text-white px-[5px] text-sm mx-[10px]">
+            태그하나
+          </button>
+        </div>
+        <div className="row my-[20px] flex-wrap justify-between">
+          {testCards.map((card, i) => {
+            return (
+              <div key={card}>
+                <Test card={card} />
+              </div>
+            );
+          })}
+          <div className="w-[350px] h-[300px] bg-white" />
+          <div className="w-[350px] h-[300px] bg-white" />
+        </div>
+        <div className="fixed bottom-[60px] right-[100px]">
+          <Fab aria-label="add" size="small" onClick={CreateTestButton}>
+            <GrAdd color="red" />
+          </Fab>
+        </div>
+        <div>
+          <Button primary fullWidth type="button">
+            테스트 버튼
+          </Button>
+        </div>
+
+        <Button type="submit" primary fullWidth>
+          로그인하기
+        </Button>
+      </form>
     </div>
   );
 }
