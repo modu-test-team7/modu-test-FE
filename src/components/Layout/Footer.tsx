@@ -4,9 +4,9 @@ type FooterProps = {};
 
 const Footer: React.FC<FooterProps> = () => {
   return (
-    <div className="shadow-top h-[150px] w-full fixed bottom-0 flex justify-center pt-[50px] text-gray-600">
-       2023 modu-test, Developed by hanghea99 16th generation team7
-    </div>
-  );
-};
+    <footer className="flex justify-cente shadow-top h-[120px] w-full bottom-0 relative pt-[50px] text-gray-600">
+      <div className='mx-auto'>2023 modu-test, Developed by hanghea99 16th generation team7</div>
+    </footer>
+  )
+}
 export default Footer;

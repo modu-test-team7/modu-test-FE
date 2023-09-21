@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from './Button';
-import { IconType } from 'react-icons';
+import IconType from 'react-icons';
 
 type ButtonGroupProps = {
   icon?: IconType;
