@@ -1,12 +1,8 @@
 'use client';
-
 import '../globals.css';
-import React, { useState, useEffect } from 'react';
-import { Inter } from 'next/font/google';
-import Header from '../components/Layout/Header';
-import Footer from '../components/Layout/Footer';
-
-const inter = Inter({ subsets: ['latin'] });
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import { useEffect, useState } from 'react';
 
 export default function RootLayout({
   children,
@@ -26,11 +22,13 @@ export default function RootLayout({
   if (!children) return null;
   return (
     <html>
-      <Header />
-      <main className={`max-w-[800px] mx-auto ${inter.className}`}>
-        {children}
-      </main>
-      <Footer />
+      <body>
+        {/* {isLoading ? null : <Header />} */}
+        <Header />
+        <div className="wrap">{children}</div>
+        {/* {isLoading ? null : <Footer />} */}
+        <Footer />
+      </body>
     </html>
   );
 }

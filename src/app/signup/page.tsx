@@ -16,16 +16,16 @@ const SignUp = () => {
           <LoginInput
             color="primary"
             placeholder="비밀번호를 입력해주세요"
-            type={showPassword ? 'text' : 'password'}
-            onIconClick={togglePassword}
-            showIcon={true}
+            // type={showPassword ? 'text' : 'password'}
+            // onIconClick={togglePassword}
+            // showIcon={true}
           />
           <LoginInput
             color="primary"
             placeholder="한 번더 비밀번호를 입력해주세요"
-            type={showPassword ? 'text' : 'password'}
-            onIconClick={togglePassword}
-            showIcon={true}
+            // type={showPassword ? 'text' : 'password'}
+            // onIconClick={togglePassword}
+            // showIcon={true}
           />
           <Button type="submit" primary fullWidth>
             회원가입하기
