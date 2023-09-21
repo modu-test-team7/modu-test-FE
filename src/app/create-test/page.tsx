@@ -9,6 +9,7 @@ import Button from '@/components/button/Button';
 import { useRouter } from 'next/navigation';
 import TestTitleInput from '@/components/createTest/TestTitleInput';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 import Image from 'next/image';
 import clsx from 'clsx';
 import Loading from '@/components/Loading';
@@ -18,8 +19,24 @@ type pageProps = {};
 const Page: React.FC<pageProps> = () => {
   const router = useRouter();
 
-  const routeCreateResult = () => {
-    return router.push('/create-test-result');
+  const handleSubmit = async () => {
+    const data = {
+      writer: "네가 원하는 작성자 이름",
+      title: "테스트 제목",
+      details: "테스트 내용",
+    };
+  
+    try {
+      const response = await axios.post("http://localhost:4000/testCards", data);
+      console.log("성공:", response);
+      router.push('/');  // 또는 다른 페이지로 리다이렉트
+    } catch (error) {
+      console.log("에러:", error);
+    }
+  };
+
+  const CreateTestButton = () => {
+    return router.push('/create-test');
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -31,10 +48,10 @@ const Page: React.FC<pageProps> = () => {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
-  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />
+  // if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />
 
   return (
-    <form>
+    <form onSubmit={CreateTestButton}>
       <div className="w-[800px] h-[100%] mx-auto pt-[20px] flex flex-col justify-center mb-[50px]">
         <div className="h-[60px]">
           <TestTitleInput label="테스트 제목을 적어주세요" />
@@ -63,11 +80,10 @@ const Page: React.FC<pageProps> = () => {
         </div>
 
         <Button
-          variant="contained"
+          type="button"
+          primary
           fullWidth
-          onClick={() => {
-            router.push('/');
-          }}
+          onClick={handleSubmit}
         >
           테스트 만들기 완성
         </Button>

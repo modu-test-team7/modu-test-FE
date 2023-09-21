@@ -11,13 +11,21 @@ type TestInputProps = {
   plusButton?: () => void;
   deleteButton?: () => void;
   testResult?: boolean;
+  value: string;
+  onChange: any;
 };
 
-
-
-const TestInput: React.FC<TestInputProps> = ({ plusButton, deleteButton, optionInput, optionCount, testResult }) => {
+const TestInput: React.FC<TestInputProps> = ({
+  plusButton,
+  deleteButton,
+  optionInput,
+  optionCount,
+  testResult,
+  value,
+  onChange,
+}) => {
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-  
+
   return (
     <div
       className={clsx(
@@ -30,17 +38,19 @@ const TestInput: React.FC<TestInputProps> = ({ plusButton, deleteButton, optionI
       )}
       <input
         placeholder={
-          optionInput ? '선택지를 입력 해 주세요' : testResult ? '결과를 설명해주세요' : '질문을 입력 해 주세요'
+          optionInput ? '선택지를 입력 해 주세요' : '질문을 입력 해 주세요'
         }
         className="bg-transparent w-[900px] focus:outline-none text-sm text-gray-900"
+        value={value}
+        onChange={onChange}
       />
       {optionInput && (
         <div className="text-gray-500 flex flex-row items-center justify-end">
           <button type="button">
-            <AiOutlinePlus className="ml-[5px]" onClick={plusButton}/>
+            <AiOutlinePlus onClick={plusButton} />
           </button>
           <button>
-            <FiX className="text-gray-500" onClick={deleteButton}/>
+            <FiX className="ml-[5px]" onClick={deleteButton} />
           </button>
         </div>
       )}
