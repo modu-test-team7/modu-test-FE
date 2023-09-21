@@ -21,7 +21,8 @@
   display: none;
 }
 
-html, body {
+html,
+body {
   height: 100vh;
 }
 
@@ -44,15 +45,15 @@ html, body {
 
 .focus-keep-input:focus-within {
   width: 130px !important;
-  margin-left:20px;
+  margin-left: 20px;
 }
 
-.row{
+.row {
   display: flex;
   flex-direction: row;
 }
 
-.col{
+.col {
   display: flex;
   flex-direction: column;
 }

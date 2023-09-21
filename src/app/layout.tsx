@@ -1,8 +1,9 @@
 'use client';
 import '../globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
 import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 
 export default function RootLayout({
   children,
@@ -19,14 +20,17 @@ export default function RootLayout({
     return () => clearTimeout(timer); // 컴포넌트가 언마운트될 때 타이머 해제
   }, []);
 
-
   if (!children) return null;
   return (
     <html>
       <body>
         {/* {isLoading ? null : <Header />} */}
         <Header />
-        <div className="wrap">{children}</div>
+
+        <div className="wrap">
+          {children}
+          <Toaster position="top-center" richColors />
+        </div>
         {/* {isLoading ? null : <Footer />} */}
         <Footer />
       </body>

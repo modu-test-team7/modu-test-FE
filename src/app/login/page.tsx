@@ -1,17 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
+import axios from 'axios';
+import { Toaster, toast } from 'sonner';
 import Button from '../../components/button/Button';
 import LoginInput from '../../components/Input/LoginInput';
 import OAuthButton from '../../components/button/OAuthButton';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FaGithub } from 'react-icons/fa';
-
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import useSignUpStore from '../../store/store';
 import { signIn } from 'next-auth/react';
+import useSignUpStore from '../../store/store';
 type PageProps = {};
 
 const Login: React.FC<PageProps> = () => {
@@ -20,6 +22,23 @@ const Login: React.FC<PageProps> = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const token = localStorage.getItem('jwt'); // Local Storage에서 JWT를 가져옵니다.
+
+    axios
+      .get('NEXT_PUBLIC_JSON_URL', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        // 성공적인 응답 처리
+        toast.success('로그인 성공 😎');
+      })
+      .catch((error) => {
+        // 오류 처리
+        toast.error('로그인 실패 😥');
+      });
 
     const handleKakaoLogin = () => {
       // 카카오 로그인 로직 구현
