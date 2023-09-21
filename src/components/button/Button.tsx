@@ -36,7 +36,7 @@ const TestButton: React.FC<TestButtonProps> = ({
         type={type}
         disabled={disabled}
         className={clsx(
-          'text-sm h-[40px] rounded-lg ',
+          'text-sm h-[40px] rounded-lg my-2',
           primary && ' bg-blue-200 hover:bg-blue-100 font-bold w-4/5',
           secondary && 'text-gray-500 bg-gray-200 hover:bg-gray-100 w-1/5',
           disabled && 'opacity-50 cursor-default',
