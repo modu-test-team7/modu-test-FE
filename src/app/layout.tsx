@@ -3,6 +3,7 @@ import '../globals.css';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 
 export default function RootLayout({
   children,
@@ -25,7 +26,11 @@ export default function RootLayout({
       <body>
         {/* {isLoading ? null : <Header />} */}
         <Header />
-        <div className="wrap">{children}</div>
+
+        <div className="wrap">
+          {children}
+          <Toaster position="top-center" richColors />
+        </div>
         {/* {isLoading ? null : <Footer />} */}
         <Footer />
       </body>

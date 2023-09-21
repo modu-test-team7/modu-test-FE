@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { toast } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
@@ -50,31 +50,24 @@ const SignUp = () => {
     }
   };
 
-  // mock 서버
-  const issueTokens = (user) => {
-    const accessToken = `access_token_mock_${user.id}`;
-    const refreshToken = `refresh_token_mock_${user.id}`;
-    return { accessToken, refreshToken };
-  };
-
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // 아이디 유효성 검사
-    const idRegex = /^[A-Za-z0-9]{1,20}$/;
+    const idRegex = /^[A-Za-z0-9]{1,10}$/;
     if (!idRegex.test(username)) {
       toast.error(
-        '아이디는 영문 + 숫자로 이루어진 20글자 이내로 작성해주세요.'
+        '아이디는 영문 + 숫자로 이루어진 10글자 이내로 작성해주세요.'
       );
       return;
     }
 
     // 비밀번호 유효성 검사
     const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,20}$/;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
-        '비밀번호는 영문 + 숫자 + 특수기호 포함 10글자 이상 20글자 이내로 작성해주세요.'
+        '비밀번호는 영문 + 숫자 + 특수기호 포함 8글자 이상 20글자 이내로 작성해주세요.'
       );
       return;
     }
@@ -87,8 +80,16 @@ const SignUp = () => {
 
     setIsLoading(true);
 
+    interface AxiosErrorType {
+      response?: {
+        data?: {
+          message: string;
+        };
+      };
+    }
+
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_FE_URL}/signup`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_JSON_URL}/users`, {
         username,
         password,
       });
@@ -96,7 +97,9 @@ const SignUp = () => {
       toast.success('회원가입 성공!');
       router.push('/login');
     } catch (error) {
-      toast.error('회원가입 실패');
+      const axiosError = error as AxiosErrorType;
+      console.log(axiosError.response?.data); // 오류 데이터 출력
+      toast.error(axiosError.response?.data?.message || '회원가입 실패');
     } finally {
       setIsLoading(false);
     }
@@ -107,7 +110,12 @@ const SignUp = () => {
       <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
         <form onSubmit={handleSignUp}>
           <label>아이디</label>
-          <LoginInput color="primary" placeholder="아이디를 입력해주세요" />
+          <LoginInput
+            color="primary"
+            placeholder="아이디를 입력해주세요"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
           <label>비밀번호</label>
           <LoginInput
             color="primary"
