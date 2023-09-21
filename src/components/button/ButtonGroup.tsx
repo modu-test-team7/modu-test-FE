@@ -8,10 +8,16 @@ type ButtonGroupProps = {
   secondaryName?: string;
 };
 
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ icon, primaryName, secondaryName }) => {
+const ButtonGroup: React.FC<ButtonGroupProps> = ({
+  icon,
+  primaryName,
+  secondaryName,
+}) => {
   return (
     <div className="w-full flex flex-row items-center justify-between">
-      <Button secondary icon={icon}>{secondaryName}</Button>
+      <Button secondary icon={icon} className="[mr-10px]">
+        {secondaryName}
+      </Button>
       <Button primary>{primaryName}</Button>
     </div>
   );

@@ -13,6 +13,7 @@ type TestButtonProps = {
   fullWidth?: boolean;
   icon?: IconType;
   disabled?: boolean;
+  className?: string;
 };
 
 const TestButton: React.FC<TestButtonProps> = ({
@@ -25,6 +26,7 @@ const TestButton: React.FC<TestButtonProps> = ({
   fullWidth,
   icon: Icon,
   disabled,
+  className,
 }) => {
   return (
     <>
@@ -33,17 +35,19 @@ const TestButton: React.FC<TestButtonProps> = ({
         type={type}
         disabled={disabled}
         className={clsx(
-          'text-sm h-[40px] rounded-lg last:ml-[10px]',
+          'text-sm h-[40px] rounded-lg',
           primary && ' bg-blue-200 hover:bg-blue-100 font-bold w-4/5',
           secondary && 'text-gray-500 bg-gray-200 hover:bg-gray-100 w-1/5',
           disabled && 'opacity-50 cursor-default',
           fullWidth && 'w-full',
-          danger && 'bg-white ring-1 ring-red-500 text-red-500 hover:bg-red-500 hover:text-white'
+          danger &&
+            'bg-white ring-1 ring-red-500 text-red-500 hover:bg-red-500 hover:text-white',
+          className
         )}
       >
-        <div className='w-full flex flex-row items-center justify-center relative'>
+        <div className="w-full flex flex-row items-center justify-center relative">
           {children}
-          {Icon && <Icon className={clsx(children && "ml-[10px]" )} />}
+          {Icon && <Icon className={clsx(children && 'ml-[10px]')} />}
         </div>
       </Button>
     </>
