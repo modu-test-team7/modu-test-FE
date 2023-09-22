@@ -12,44 +12,61 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+// import { signIn } from 'next-auth/react';
 import useSignUpStore from '../../store/store';
+import { postAPI } from '@/axios';
+import Cookies from 'js-cookie';
+import { access } from 'fs';
 type PageProps = {};
 
 const Login: React.FC<PageProps> = () => {
+  const [username, setUsername] = useState(''); // 아이디 상태
+  const [password, setPassword] = useState(''); // 비밀번호 상태
   const { showPassword, togglePassword } = useSignUpStore();
-  const router = useRouter(); // router 추가
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const token = localStorage.getItem('jwt'); // Local Storage에서 JWT를 가져옵니다.
-
-    axios
-      .get('NEXT_PUBLIC_JSON_URL', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        // 성공적인 응답 처리
+    await postAPI('/user/login', { username, password })
+      .then(response => {
+        Cookies.set('accessToken', response.data.token);
+        Cookies.set('refreshToken', response.data.refreshToken);
         toast.success('로그인 성공 😎');
+        router.push('/');
+        console.log(response);
       })
-      .catch((error) => {
-        // 오류 처리
-        toast.error('로그인 실패 😥');
+      .catch(error => {
+        // 요건 서버랑 맞춰야된대
+        toast.error(error.response.data.message);
+        // toast.error('로그인 실패 😥');
+        console.log(error);
       });
 
-    const handleKakaoLogin = () => {
-      // 카카오 로그인 로직 구현
-    };
+    // axios
+    //   .post(
+    //     `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/user/login`,
+    //     {
+    //       // post 메서드로 변경
+    //       username, // 아이디 전달
+    //       password, // 비밀번호 전달
+    //     },
+    //     // { withCredentials: true },
+    //   )
+    //   .then(response => {
+    //     console.log(response.data);
+    //     // const { accessToken, refreshToken } = response.data;
+    //     const accessToken = response.data.token;
+    //     const refreshToken = response.data.refreshToken;
+    //     console.log(accessToken, refreshToken);
+    //     // Cookies.set();
 
-    const handleGithubLogin = () => {
-      // 깃헙 로그인 로직 구현
-    };
-
-    // 로그인 성공 후 메인 페이지로 이동
-    router.push('/');
+    //     toast.success('로그인 성공 😎');
+    //     router.push('/');
+    //   })
+    //   .catch(error => {
+    //     console.error('Error during login:', error);
+    //     toast.error('로그인 실패 😥');
+    //   });
   };
 
   return (
@@ -57,12 +74,19 @@ const Login: React.FC<PageProps> = () => {
       <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
         <form onSubmit={handleLogin}>
           <label>아이디</label>
-          <LoginInput color="primary" placeholder="아이디를 입력해주세요" />
+          <LoginInput
+            color="primary"
+            placeholder="아이디를 입력해주세요"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
           <label>비밀번호</label>
           <LoginInput
             color="primary"
             placeholder="비밀번호를 입력해주세요"
             type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             onIconClick={togglePassword}
             icon={showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           />
@@ -76,7 +100,7 @@ const Login: React.FC<PageProps> = () => {
               icon={RiKakaoTalkFill}
               isKakao={true} // 카카오 아이콘일 경우 true로 설정
               onClick={() => {
-                signIn();
+                // signIn();
               }}
             >
               카카오로 로그인하기
@@ -86,19 +110,16 @@ const Login: React.FC<PageProps> = () => {
             <OAuthButton
               icon={FaGithub}
               onClick={() => {
-                signIn();
+                // signIn();
               }}
             >
-              깃헙으로 로그인하기
+              GitHub 으로 로그인하기
             </OAuthButton>
           </div>
 
           <div className="relative flex justify-center text-xs mt-3">
             <span className="text-gray-400">아직 회원이 아니신가요?</span>
-            <Link
-              href={'/signup'}
-              className="bg-white px-2  text-gray-600 underline"
-            >
+            <Link href={'/signup'} className="bg-white px-2  text-gray-600 underline">
               회원가입 하기
             </Link>
           </div>
