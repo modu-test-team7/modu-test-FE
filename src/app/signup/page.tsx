@@ -16,6 +16,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
@@ -23,11 +24,11 @@ const SignUp = () => {
   const router = useRouter();
 
   const togglePassword = () => {
-    setShowPassword((prevState) => !prevState);
+    setShowPassword(prevState => !prevState);
   };
 
   const toggleConfirmPassword = () => {
-    setShowConfirmPassword((prevState) => !prevState);
+    setShowConfirmPassword(prevState => !prevState);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,9 +40,7 @@ const SignUp = () => {
     }
   };
 
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value);
     if (e.target.value !== password) {
       setPasswordMatchError(true);
@@ -52,23 +51,31 @@ const SignUp = () => {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log('Username:', username);
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log('Confirm Password:', confirmPassword);
 
     // 아이디 유효성 검사
     const idRegex = /^[A-Za-z0-9]{1,10}$/;
     if (!idRegex.test(username)) {
-      toast.error(
-        '아이디는 영문 + 숫자로 이루어진 10글자 이내로 작성해주세요.'
-      );
+      console.log('Username validation failed.');
+      toast.error('아이디는 영문 + 숫자로 이루어진 10글자 이내로 작성해주세요.');
+      return;
+    }
+
+    // 이메일 유효성 검사
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(email)) {
+      console.log('Email validation failed.');
+      toast.error('올바른 이메일 형식을 입력해주세요.');
       return;
     }
 
     // 비밀번호 유효성 검사
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     if (!passwordRegex.test(password)) {
-      toast.error(
-        '비밀번호는 영문 + 숫자 + 특수기호 포함 8글자 이상 20글자 이내로 작성해주세요.'
-      );
+      toast.error('비밀번호는 영문 + 숫자 + 특수기호 포함 8글자 이상 20글자 이내로 작성해주세요.');
       return;
     }
 
@@ -89,16 +96,22 @@ const SignUp = () => {
     }
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_JSON_URL}/users`, {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}/user/signup`,
+        {
+          username,
+          password,
+          email,
+        },
+        { withCredentials: true },
+      );
+      console.log('API response:', response);
 
       toast.success('회원가입 성공!');
       router.push('/login');
     } catch (error) {
       const axiosError = error as AxiosErrorType;
-      console.log(axiosError.response?.data); // 오류 데이터 출력
+      console.log('API error:', axiosError.response?.data);
       toast.error(axiosError.response?.data?.message || '회원가입 실패');
     } finally {
       setIsLoading(false);
@@ -113,7 +126,15 @@ const SignUp = () => {
           <LoginInput
             color="primary"
             placeholder="아이디를 입력해주세요"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
+          />
+
+          <label>이메일</label>
+          <LoginInput
+            color="primary"
+            type="email"
+            placeholder="이메일을 입력해주세요"
+            onChange={e => setEmail(e.target.value)}
           />
 
           <label>비밀번호</label>
@@ -133,9 +154,7 @@ const SignUp = () => {
             type={showConfirmPassword ? 'text' : 'password'}
             onIconClick={toggleConfirmPassword}
             onChange={handleConfirmPasswordChange}
-            icon={
-              showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />
-            }
+            icon={showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           />
           {passwordMatchError && (
             <p className="text-red-500 text-xs mt-1 mb-2 text-center">
@@ -147,10 +166,7 @@ const SignUp = () => {
             회원가입하기
           </Button>
           <div className="relative flex justify-center text-xs  mt-3">
-            <Link
-              href={'/login'}
-              className="bg-white px-2 text-gray-600 underline"
-            >
+            <Link href={'/login'} className="bg-white px-2 text-gray-600 underline">
               소셜로그인으로 계속하기
             </Link>
           </div>
