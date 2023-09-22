@@ -1,14 +1,15 @@
 import React from 'react';
-import { AiFillEye } from 'react-icons/ai';
+import { AiFillEye, AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { Card } from "@/type/Card";
+import Image from 'next/image';
 
 type TestProps = {
   card: Card;
 };
 
 const Test: React.FC<TestProps> = ({ card }) => {
-  console.log(card.id)
+  const imgNum = card.id + 1
   return (
     <div className="my-[50px] shadow-md">
       <div className="text-md row items-start justify-between">
@@ -16,29 +17,34 @@ const Test: React.FC<TestProps> = ({ card }) => {
       </div>
       <div className="w-full h-[200px] overflow-hidden relative my-[5px] rounded-lg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`/lib/images/sample/sample (${card.id}).png`}
-          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-auto"
+        <Image
+          src={card.image}
           alt="테스트 썸네일"
+          height={300}
+          width={300}
         />
+        
       </div>
       <div className="col justify-between h-[100px] text-sm w-full p-[10px]">
-        {card.details}
+        {card.content}
 
         <div className='row justify-between'>
           <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`/lib/images/profile/profileSample (${card.id}).png`}
+              src={`/lib/images/profile/profileSample (${imgNum}).png`}
               className="object-cover h-full w-full"
               alt="작성자 프로필 사진"
             />
+            {card.writer}
           </div>
           <div className="row items-center text-gray-500">
-            <AiFillEye size={15} className="mr-[2px]" />
-            {card.viewCount}
-            <BiCommentDetail size={15} className="ml-[8px] mr-[3px]" />
-            {card.commentCount}
+            <AiOutlineHeart size={15} className="mr-[3px]" />
+            {card.likes}
+            <AiFillEye size={15} className="ml-[8px] mr-[3px]" />
+            {card.views}
+            {/* <BiCommentDetail size={15} className="ml-[8px] mr-[3px]" />
+            {card.commentCount} */}
           </div>
         </div>
       </div>

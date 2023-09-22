@@ -74,7 +74,9 @@ const Page: React.FC<pageProps> = () => {
             rows={4}
             variant="filled"
           />
-          <input type="text" placeholder="태그를 추가 해 주세요" />
+          {/* <select>
+            <option value={} />
+          </select> */}
         </div>
         <div>
           <TestInputGroup />
