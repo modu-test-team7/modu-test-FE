@@ -2,7 +2,9 @@ export type Card = {
     id:number;
     writer:string;
     title: string;
-    details: string;
-    viewCount: string;
-    commentCount: string;
+    content: string;
+    image: string;
+    views: string | number;
+    likes: string | number;
+    category: string;
 }
