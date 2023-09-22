@@ -1,72 +1,66 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, ChangeEvent  } from 'react';
 import TestInput from './TestInput';
 import {
   AiOutlineDelete,
   AiOutlinePicture,
   AiOutlinePlus,
 } from 'react-icons/ai';
+import useTestStore from '../../store/testStore'
 
 type TestInputGroupProps = {};
 
 const TestInputGroup: React.FC<TestInputGroupProps> = () => {
-  const [questionCount, setQuestionCount] = useState(2);
-  const [testOption, setTestOption] = useState(2);
 
-  const QuestionPlusButtonHandler = () => {
-    setQuestionCount(questionCount + 1);
+  const { questions, addQuestion, removeQuestion, addOption, removeOption, updateQuestion, updateOption } = useTestStore();
+  
+  const handleQuestionChange = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
+    updateQuestion(qIndex, e.target.value);
   };
 
-  const PictureButtonHandler = () => {
-    setQuestionCount(questionCount + 1);
-  };
-
-  const DeleteButtonHandler = () => {
-    setQuestionCount(questionCount - 1);
-  };
-
-  const OptionPlusButtonHandler = () => {
-    setTestOption(testOption + 1);
-  };
-
-  const OptionDeleteButtonHandler = () => {
-    setTestOption(testOption - 1);
+  const handleOptionChange = (qIndex: number, oIndex: number, e: ChangeEvent<HTMLInputElement>) => {
+    updateOption(qIndex, oIndex, e.target.value);
   };
 
   return (
     <div>
-      {Array.from({ length: questionCount }, (_, i) => i).map((_, i) => {
-        return (
-          <div key={i} className="mb-[60px]">
-            <div className="flex flex-row items-center justify-between">
-              <div className="text-gray-500 text-md my-[5px]">
-                {i + 1}번째 질문
-              </div>
-              <div className="text-gray-500 flex flex-row items-center justify-end">
-                <button type="button" onClick={QuestionPlusButtonHandler}>
-                  <AiOutlinePlus size={25} className="ml-[5px]" />
-                </button>
-                <button type="button" onClick={QuestionPlusButtonHandler}>
-                  <AiOutlinePicture size={25} className="ml-[5px]" />
-                </button>
-                <button type="button" onClick={DeleteButtonHandler}>
-                  <AiOutlineDelete size={25} className="ml-[5px]" />
-                </button>
-              </div>
+      {questions.map((q, qIndex) => (
+        <div key={qIndex} className="mb-[60px]">
+          <div className="flex flex-row items-center justify-between">
+            <div className="text-gray-500 text-md my-[5px]">
+              {qIndex + 1}번째 질문
             </div>
-
-            <TestInput />
-            {Array.from({ length: testOption }, (_, i) => i).map((_, i) => {
-              return (
-                <div key={i}>
-                  <TestInput optionInput optionCount plusButton={OptionPlusButtonHandler} deleteButton={OptionDeleteButtonHandler}/>
-                </div>
-              );
-            })}
+            <div className="text-gray-500 flex flex-row items-center justify-end">
+              <button type="button" onClick={addQuestion}>
+                <AiOutlinePlus size={25} className="ml-[5px]" />
+              </button>
+              <button type="button">
+                <AiOutlinePicture size={25} className="ml-[5px]" />
+              </button>
+              <button type="button" onClick={removeQuestion}>
+                <AiOutlineDelete size={25} className="ml-[5px]" />
+              </button>
+            </div>
           </div>
-        );
-      })}
+          <TestInput
+            value={q.question}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuestionChange(qIndex, e)}
+          />
+          {q.options.map((o, oIndex) => (
+            <div key={oIndex}>
+              <TestInput
+                optionInput
+                value={o}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(qIndex, oIndex, e)}
+                plusButton={() => addOption(qIndex)}
+                deleteButton={() => removeOption(qIndex)}
+              />
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
+
 export default TestInputGroup;
