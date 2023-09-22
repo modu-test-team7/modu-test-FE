@@ -1,39 +1,41 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
-
+import { useSignUpStore } from '../../store/signupStore';
 import Button from '../../components/button/Button';
 import LoginInput from '../../components/Input/LoginInput';
-import useSignUpStore from '../../store/store';
 import Link from 'next/link';
 
 const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const {
+    showPassword,
+    showConfirmPassword,
+    username,
+    password,
+    email,
+    confirmPassword,
+    passwordMatchError,
+    togglePassword,
+    toggleConfirmPassword,
+    setUsername,
+    setPassword,
+    setEmail,
+    setConfirmPassword,
+    setPasswordMatchError,
+    isLoading,
+    setIsLoading,
+  } = useSignUpStore();
 
   const router = useRouter();
 
-  const togglePassword = () => {
-    setShowPassword(prevState => !prevState);
-  };
-
-  const toggleConfirmPassword = () => {
-    setShowConfirmPassword(prevState => !prevState);
-  };
-
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    if (e.target.value !== confirmPassword) {
+    const newValue = e.target.value;
+    setPassword(newValue);
+    if (newValue !== confirmPassword) {
       setPasswordMatchError(true);
     } else {
       setPasswordMatchError(false);
@@ -41,8 +43,9 @@ const SignUp = () => {
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-    if (e.target.value !== password) {
+    const newValue = e.target.value;
+    setConfirmPassword(newValue);
+    if (newValue !== password) {
       setPasswordMatchError(true);
     } else {
       setPasswordMatchError(false);
@@ -51,10 +54,12 @@ const SignUp = () => {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log('Username:', username);
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
+    setIsLoading(false);
 
     // 아이디 유효성 검사
     const idRegex = /^[A-Za-z0-9]{1,10}$/;
@@ -97,7 +102,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}/user/signup`,
+        `${process.env.NEXT_PUBLIC_BACK_SERVER_URL}/api/user/signup`,
         {
           username,
           password,
