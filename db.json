@@ -1,44 +1,54 @@
 {
-  "testCards": [
+  "tester": [
     {
       "id": 1,
-      "writer": "김철수",
+      "userId": "김철수",
       "title": "웹 개발자 되는 법",
       "content": "HTML, CSS, 자바스크립트 기초 지식을 테스트해보세요.",
-      "image": "https://example.com/image1.jpg",
+      "image": "https://image.newsis.com/2023/05/04/NISI20230504_0001258444_web.jpg?rnd=20230504142607​",
       "views": 752,
       "likes": 100,
-      "category": "Web Development"
+      "category": "친구"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "title": "첫 번째 질문",
+      "image": "https://image.newsis.com/2023/09/23/NISI20230923_0001372565_web.jpg?rnd=20230923170850​",
+      "testId": 1
     },
     {
       "id": 2,
-      "writer": "이영희",
-      "title": "파이썬 대망의 퀴즈",
-      "content": "파이썬 3.9에 대한 이 테스트를 통과할 수 있을까요?",
-      "image": "https://example.com/image2.jpg",
-      "views": 1234,
-      "likes": 200,
-      "category": "Python Programming"
+      "title": "두 번째 질문",
+      "image": "https://image.newsis.com/2022/03/10/NISI20220310_0018577802_web.jpg?rnd=20230212124417​",
+      "testId": 1
+    }
+  ],
+  "choice": [
+    {
+      "id": 1,
+      "questionId": 1,
+      "content": "1-1",
+      "isCorrect": false
+    },
+    {
+      "id": 2,
+      "questionId": 1,
+      "content": "1-2",
+      "isCorrect": false
     },
     {
       "id": 3,
-      "writer": "박지민",
-      "title": "30분만에 React 배우기",
-      "content": "React.js 초보자 가이드입니다.",
-      "image": "https://example.com/image3.jpg",
-      "views": 890,
-      "likes": 150,
-      "category": "React"
+      "questionId": 2,
+      "content": "2-1",
+      "isCorrect": false
     },
     {
       "id": 4,
-      "writer": "김서영",
-      "title": "데이터 사이언스 입문",
-      "content": "데이터 사이언스와 머신 러닝에 대한 빠른 퀴즈입니다.",
-      "image": "https://example.com/image4.jpg",
-      "views": 921,
-      "likes": 120,
-      "category": "Data Science"
+      "questionId": 2,
+      "content": "2-2",
+      "isCorrect": false
     }
   ]
 }
