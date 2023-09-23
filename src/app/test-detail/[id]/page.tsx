@@ -1,22 +1,23 @@
 'use client';
-import { useEffect } from 'react';
+/* eslint-disable */
+
 import { Comment, CommentGroup } from '@/components/comment';
 import { ButtonGroup } from '@/components/button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiOutlineShareAlt } from 'react-icons/ai';
-import { useRouter } from 'next/navigation';
 import Loading from '@/components/Loading';
 import { Tester } from '@/type/Card';
 import axios from 'axios';
 
-type pageProps = {
-  tester: Tester;
-};
 
-const Page: React.FC<pageProps> = ({ tester }) => {
-  const router = useRouter();
+type pageProps = {};
+
+const Page = ({ params }: { params: { id: number } }) => {
+  // console.log(store);
+  // console.log('params 제발    ', params.id);
+  const paramsId = params.id;
   // const { id } = router.query; // 여기서 id 가져와.
-  const [test, setTest] = useState<Tester[]>([]);
+  const [test, setTest] = useState<Tester>();
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
 
@@ -26,7 +27,7 @@ const Page: React.FC<pageProps> = ({ tester }) => {
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:4000/tester`);
+        const { data } = await axios.get(`http://localhost:4000/tester/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -40,9 +41,9 @@ const Page: React.FC<pageProps> = ({ tester }) => {
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
       <div className="w-full row justify-between items-end">
-        <div className="text-lg font-bold">{test.title}</div>
-        <div className="row text-gray-500 text-sm">
-          <div className="">{test.userId}</div>
+        <div className="text-lg font-bold">{test?.title}</div>
+        <div className="row text-gray-500 text-sm gap-2">
+          <div className="">{test?.userId}</div>
           <div className="">2023.09.23</div>
         </div>
       </div>
@@ -64,7 +65,6 @@ const Page: React.FC<pageProps> = ({ tester }) => {
           <Comment />
         </div>
       </div>
-
       <div className="scroll-to-top w-full">
         <ButtonGroup primaryName="테스트하기" icon={AiOutlineShareAlt} />
       </div>

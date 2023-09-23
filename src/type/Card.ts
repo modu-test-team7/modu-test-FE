@@ -10,5 +10,5 @@ export type Tester = {
 }
 
 export type Questions = {
-  
+
 }

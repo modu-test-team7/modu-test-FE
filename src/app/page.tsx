@@ -9,13 +9,14 @@ import Fab from '@mui/material/Fab';
 import { GrAdd, GrLinkUp } from 'react-icons/gr';
 import { Tester } from '@/type/Card';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-
   const [testCards, setTestCards] = useState<Tester[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
 
+  const router = useRouter();
 
   useEffect(() => {
     setFadeOut(true);
@@ -54,11 +55,17 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards.map((card, i) => {
+        {testCards.map((card) => {
           return (
-            <Link key={card.id} href="test-detail/[id]" as="/test-detail/1">
+            // as={`/test-detail/${card.id}`}
+            <div
+              key={card.id}
+              onClick={() => {
+                return router.push(`/test-detail/${card.id}`);
+              }}
+            >
               <TestCard tester={card} />
-            </Link>
+            </div>
           );
         })}
       </div>

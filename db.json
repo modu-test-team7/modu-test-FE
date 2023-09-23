@@ -9,6 +9,16 @@
       "views": 752,
       "likes": 100,
       "category": "친구"
+    },
+    {
+      "id": 2,
+      "userId": "두번째",
+      "title": "웹 ㅇㄹㅇㄹㅇㄹ 되는 법",
+      "content": "HTML, CSS, 자바스크립트 기초 지식을 테스트해보세요.",
+      "image": "https://image.newsis.com/2023/05/04/NISI20230504_0001258444_web.jpg?rnd=20230504142607​",
+      "views": 752,
+      "likes": 100,
+      "category": "친구"
     }
   ],
   "questions": [
