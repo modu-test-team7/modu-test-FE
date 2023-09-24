@@ -20,11 +20,7 @@ const VisuallyHiddenInput = styled('input')({
 const TestPictureButton: React.FC<TestPictureButtonProps> = () => {
   return (
     <div>
-      <Button
-        component="label"
-        variant="contained"
-        startIcon={<BsFillCloudArrowUpFill />}
-      >
+      <Button component="label" variant="contained" startIcon={<BsFillCloudArrowUpFill />}>
         Upload file
         <VisuallyHiddenInput type="file" />
       </Button>

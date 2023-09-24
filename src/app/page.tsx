@@ -4,12 +4,7 @@ import TestCard from '../components/TestCard';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import {
-  Button,
-  ButtonGroup,
-  OAuthButton,
-  UpButton,
-} from '@/components/button';
+import { Button, ButtonGroup, OAuthButton, UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
 import Fab from '@mui/material/Fab';
 import { GrAdd, GrLinkUp } from 'react-icons/gr';
@@ -18,9 +13,7 @@ import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
-
   const [testCards, setTestCards] = useState<Card[]>([]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
 
@@ -49,9 +42,7 @@ export default function Home() {
 
   return (
     <div className=" mx-auto w-[1200px]">
-      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">
-        slider
-      </div>
+      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
       <div className="sticky z-100 mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
         <button className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px]">
           태그하나
@@ -59,7 +50,6 @@ export default function Home() {
         <button className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px]">
           태그하나
         </button>
-        
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-10">

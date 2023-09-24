@@ -19,7 +19,7 @@ type TestButtonProps = {
 
 const TestButton: React.FC<TestButtonProps> = ({
   children,
-  type = "button",
+  type = 'button',
   onClick,
   secondary,
   primary,
@@ -41,9 +41,8 @@ const TestButton: React.FC<TestButtonProps> = ({
           secondary && 'text-gray-500 bg-gray-200 hover:bg-gray-100 w-1/5',
           disabled && 'opacity-50 cursor-default',
           fullWidth && 'w-full',
-          danger &&
-            'bg-white ring-1 ring-red-500 text-red-500 hover:bg-red-500 hover:text-white',
-          className
+          danger && 'bg-white ring-1 ring-red-500 text-red-500 hover:bg-red-500 hover:text-white',
+          className,
         )}
       >
         <div className="w-full flex flex-row items-center justify-center relative">

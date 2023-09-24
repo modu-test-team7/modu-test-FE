@@ -1,14 +1,10 @@
 'use client';
 import '../globals.css';
-import { Header, Footer } from '../components/layout';
+import { Header, Footer } from '@/components/Layout';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

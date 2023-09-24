@@ -1,15 +1,19 @@
 'use client';
 
 import React from 'react';
-import { TestInput, TestInputGroup, TestPictureButton, TestThumbnail } from '@/components/createTest'
+import {
+  TestInput,
+  TestInputGroup,
+  TestPictureButton,
+  TestThumbnail,
+} from '@/components/createTest';
 import { useState, useEffect } from 'react';
 import { Button, ButtonGroup, OAuthButton } from '@/components/button';
 import { useRouter } from 'next/navigation';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 import Loading from '@/components/Loading';
-import UnderLineInput from '@/components/Input/UnderIineInput'
-
+import UnderLineInput from '@/components/Input/UnderIineInput';
 
 type pageProps = {};
 
@@ -24,10 +28,7 @@ const Page: React.FC<pageProps> = () => {
     };
 
     try {
-      const response = await axios.post(
-        'http://localhost:4000/testCards',
-        data
-      );
+      const response = await axios.post('http://localhost:4000/testCards', data);
       console.log('성공:', response);
       router.push('/'); // 또는 다른 페이지로 리다이렉트
     } catch (error) {
