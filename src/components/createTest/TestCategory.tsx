@@ -4,11 +4,11 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-type TestCaregoryProps = {
+type TestCategoryProps = {
   onCategoryChange: (category: string) => void;
 };
 
-const TestCaregory: React.FC<TestCaregoryProps> = ({ onCategoryChange }) => {
+const TestCategory: React.FC<TestCategoryProps> = ({ onCategoryChange }) => {
   const [category, setCategory] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -37,4 +37,4 @@ const TestCaregory: React.FC<TestCaregoryProps> = ({ onCategoryChange }) => {
   </div>
   )
 }
-export default TestCaregory;
+export default TestCategory;

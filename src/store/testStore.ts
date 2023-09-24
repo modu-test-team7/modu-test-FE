@@ -1,8 +1,8 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 type Question = {
   question: string;
-  options: string[];
+  Choices: string[];
 };
 
 type Card = {
@@ -20,23 +20,25 @@ type TestStore = {
   questions: Question[];
   addQuestion: () => void;
   removeQuestion: () => void;
-  addOption: (qIndex: number) => void;
-  removeOption: (qIndex: number) => void;
+  addChoice: (qIndex: number) => void;
+  removeChoice: (qIndex: number) => void;
   updateQuestion: (qIndex: number, newQuestion: string) => void;
-  updateOption: (qIndex: number, oIndex: number, newOption: string) => void;
+  updateChoice: (qIndex: number, oIndex: number, newChoice: string) => void;
   card: Card;
   setCard: (update: Partial<Card>) => void;
 };
 
 export const useTestStore = create<TestStore>(set => ({
   questions: [
-    { question: '', options: ['', ''] },
-    { question: '', options: ['', ''] },
+    { question: '', Choices: ['', ''] },
+    { question: '', Choices: ['', ''] },
   ],
-  addQuestion: () =>
+  addQuestion: () => {
+    console.log('add');
     set(state => ({
-      questions: [...state.questions, { question: '', options: ['', ''] }],
-    })),
+      questions: [...state.questions, { question: '', Choices: ['', ''] }],
+    }));
+  },
   removeQuestion: () =>
     set(state => {
       if (state.questions.length > 1) {
@@ -46,17 +48,17 @@ export const useTestStore = create<TestStore>(set => ({
       }
       return state; // 이 부분을 추가
     }),
-  addOption: qIndex =>
+  addChoice: qIndex =>
     set(state => {
       const newQuestions = [...state.questions];
-      newQuestions[qIndex].options.push('');
+      newQuestions[qIndex].Choices.push('');
       return { questions: newQuestions };
     }),
-  removeOption: qIndex =>
+  removeChoice: qIndex =>
     set(state => {
       const newQuestions = [...state.questions];
-      if (newQuestions[qIndex].options.length > 1) {
-        newQuestions[qIndex].options.pop();
+      if (newQuestions[qIndex].Choices.length > 1) {
+        newQuestions[qIndex].Choices.pop();
       }
       return { questions: newQuestions };
     }),
@@ -66,10 +68,10 @@ export const useTestStore = create<TestStore>(set => ({
       newQuestions[qIndex].question = newQuestion;
       return { questions: newQuestions };
     }),
-  updateOption: (qIndex, oIndex, newOption) =>
+  updateChoice: (qIndex, oIndex, newChoice) =>
     set(state => {
       const newQuestions = [...state.questions];
-      newQuestions[qIndex].options[oIndex] = newOption;
+      newQuestions[qIndex].Choices[oIndex] = newChoice;
       return { questions: newQuestions };
     }),
   card: {

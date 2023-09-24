@@ -2,15 +2,15 @@ import Image from 'next/image';
 import React from 'react';
 
 type TestThumbnailProps = {
-  picture?: string;
+  image?: string;
 };
 
-const TestThumbnail: React.FC<TestThumbnailProps> = ({ picture }) => {
+const TestThumbnail: React.FC<TestThumbnailProps> = ({ image }) => {
   return (
     <div className='w-full h-full flex items-center justify-center'>
-      {picture && (
+      {image && (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={picture} alt="썸네일 이미지" className='rounded-lg'/>
+        <img src={image} alt="썸네일 이미지" className='rounded-lg max-h-[300px]'/>
       )}
     </div>
   );

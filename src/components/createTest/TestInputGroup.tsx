@@ -1,40 +1,58 @@
-import React from 'react';
-import { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, SetStateAction } from 'react';
 import { AiOutlineDelete, AiOutlineSmile, AiOutlinePlus } from 'react-icons/ai';
-import { useTestStore } from '../../store/testStore';
 import { TestThumbnail, TestInput, TestPictureButton } from '.';
+import { Choice, Questions } from '@/type/Card';
+import { useTestStore } from '../../store/testStore';
 
-type TestInputGroupProps = {};
+type TestInputGroupProps = {
+  questionValue: any;
+  choiceValue: any;
+  setTitleValue?: (value: string) => void;
+  name?: string;
+  addQuestion: () => void;
+  removeQuestion: () => void;
+  updateQuestion: (qIndex: number, newQuestion: string) => void;
+  updateChoice: (qIndex: number, cIndex: number, newChoice: string) => void;
+  addChoice: (qIndex: number) => void;
+  removeChoice: (qIndex: number, cIndex: number) => void;
+  updateQuestionImage: (qIndex: number, newImage: string) => void;
+};
 
-const TestInputGroup: React.FC<TestInputGroupProps> = () => {
-  const [questionPicture, setQuestionPicture] = useState('');
+const TestInputGroup: React.FC<TestInputGroupProps> = ({
+  questionValue,
+  setTitleValue,
+  name,
+  addQuestion,
+  removeQuestion,
+  updateQuestion,
+  updateChoice,
+  addChoice,
+  removeChoice,
+  updateQuestionImage,
+}) => {
 
-  const {
-    questions,
-    addQuestion,
-    removeQuestion,
-    addOption,
-    removeOption,
-    updateQuestion,
-    updateOption,
-  } = useTestStore();
-
-  const handleQuestionChange = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeQuestion = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
     updateQuestion(qIndex, e.target.value);
   };
 
-  const handleOptionChange = (qIndex: number, oIndex: number, e: ChangeEvent<HTMLInputElement>) => {
-    updateOption(qIndex, oIndex, e.target.value);
+  const onChangeChoice = (qIndex: number, cIndex: number, e: ChangeEvent<HTMLInputElement>) => {
+    updateChoice(qIndex, cIndex, e.target.value);
   };
 
+  const changeQuestionPicture = (qIndex: number, newImage: string) => {
+    updateQuestionImage(qIndex, newImage)
+  }  
+
+
+  console.log(questionValue);
   return (
     <div>
-      {questions.map((q, qIndex) => (
+      {questionValue.map((question: Questions, qIndex: number) => (
         <div key={qIndex} className="mb-[30px]">
           <div className="flex flex-row items-center justify-between">
             <div className="text-gray-500 text-md my-[5px] row items-center gap-2">
-                <AiOutlineSmile color="orange" size={20} />
-                {qIndex + 1}번째 질문
+              <AiOutlineSmile color="orange" size={20} />
+              {qIndex + 1}번째 질문
             </div>
 
             {/* 질문 버튼들 */}
@@ -43,7 +61,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = () => {
                 <AiOutlinePlus size={25} className="ml-[5px]" />
               </button>
               <div className="ml-auto mt-[10px]">
-                <TestPictureButton small setPicture={setQuestionPicture} />
+              <TestPictureButton small questionId={question.id} setImage={changeQuestionPicture} />
               </div>
               <button type="button" onClick={removeQuestion}>
                 <AiOutlineDelete size={25} className="ml-[5px]" />
@@ -53,24 +71,24 @@ const TestInputGroup: React.FC<TestInputGroupProps> = () => {
 
           {/* 질문 사진 */}
           <div className="mx-auto max-w-[500px] rounded-lg mb-[10px]">
-            <TestThumbnail picture={questionPicture} />
+            <TestThumbnail image={question.image} />
           </div>
           <TestInput
-            value={q.question}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuestionChange(qIndex, e)}
+            value={question.title}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeQuestion(qIndex, e)}
           />
 
           {/* 선택지 */}
-          {q.options.map((o, oIndex) => (
-            <div key={oIndex}>
+          {question.choices.map((choice: Choice, cIndex: number) => (
+            <div key={cIndex}>
               <TestInput
                 optionInput
-                value={o}
+                value={choice.content}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleOptionChange(qIndex, oIndex, e)
+                  onChangeChoice(qIndex, cIndex, e)
                 }
-                plusButton={() => addOption(qIndex)}
-                deleteButton={() => removeOption(qIndex)}
+                plusButton={() => addChoice(qIndex)}
+                deleteButton={() => removeChoice(qIndex, cIndex)}
               />
             </div>
           ))}

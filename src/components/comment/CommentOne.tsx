@@ -1,12 +1,16 @@
-import React from 'react';
+import { Comment } from '@/type/Card';
+import React, { useState } from 'react';
 
-type CommentProps = {};
+type CommentProps = {
+  paramsId: number | string;
+};
 
 const Comment: React.FC<CommentProps> = () => {
+  const [comment, setComment] = useState<Comment>();
   return (
-    <div className='mb-[20px]'>
+    <div className="mb-[20px]">
       {/* 작성 정보 */}
-      <div className='row justify-between items-center text-gray-500 text-sm mb-[10px]'>
+      <div className="row justify-between items-center text-gray-500 text-sm mb-[10px]">
         {/* 작성자 */}
         <div className="row gap-1 items-center font-bold ">
           <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
@@ -27,7 +31,7 @@ const Comment: React.FC<CommentProps> = () => {
       {/* 댓글 내용 */}
       <div>댓글 내용</div>
       <div></div>
-      <hr className='my-[20px]'/>
+      <hr className="my-[20px]" />
     </div>
   );
 };

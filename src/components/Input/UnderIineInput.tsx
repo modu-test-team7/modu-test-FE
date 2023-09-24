@@ -4,9 +4,10 @@ type TestInputProps = {
   label?: string;
   value: string;
   setValue: (value:string) => void;
+  name?: string;
 };
 
-const TestInput: React.FC<TestInputProps> = ({ label, value, setValue }) => {
+const TestInput: React.FC<TestInputProps> = ({ label, value, setValue, name }) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
@@ -20,6 +21,7 @@ const TestInput: React.FC<TestInputProps> = ({ label, value, setValue }) => {
         onChange={(e) =>  onChangeHandler(e)}
         required
         className="all input"
+        name={name}
       />
       <label className="all label">{label}</label>
       <span className="all span"></span>
