@@ -129,7 +129,7 @@ const Page = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(`http://13.125.200.12/api/test/testMake`, {
-        ...formData
+        ...formData,
       });
       toast.message('테스트가 만들기 성공😊');
       console.log('성공:', response);

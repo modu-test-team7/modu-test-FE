@@ -30,9 +30,9 @@ const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small, 
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        if(typeof reader.result === "string") {
-          setImage(questionId,reader.result);
-        } 
+        if (typeof reader.result === 'string') {
+          setImage(questionId, reader.result);
+        }
       };
 
       if (file) {

@@ -5,4 +5,11 @@ import TestThumbnail from './TestThumbnail';
 import TestCategory from './TestCategory';
 import TestThumbnailButton from './TestThumbnailButton';
 
-export { TestInput, TestInputGroup, TestPictureButton, TestThumbnail, TestCategory, TestThumbnailButton }
+export {
+  TestInput,
+  TestInputGroup,
+  TestPictureButton,
+  TestThumbnail,
+  TestCategory,
+  TestThumbnailButton,
+};

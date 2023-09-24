@@ -37,4 +37,4 @@ export type User = {
   password: string;
   nickname: string;
   image: string;
-}
+};

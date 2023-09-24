@@ -30,7 +30,6 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
   removeChoice,
   updateQuestionImage,
 }) => {
-
   const onChangeQuestion = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
     updateQuestion(qIndex, e.target.value);
   };
@@ -40,9 +39,8 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
   };
 
   const changeQuestionPicture = (qIndex: number, newImage: string) => {
-    updateQuestionImage(qIndex, newImage)
-  }  
-
+    updateQuestionImage(qIndex, newImage);
+  };
 
   console.log(questionValue);
   return (
@@ -61,7 +59,11 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
                 <AiOutlinePlus size={25} className="ml-[5px]" />
               </button>
               <div className="ml-auto mt-[10px]">
-              <TestPictureButton small questionId={question.id} setImage={changeQuestionPicture} />
+                <TestPictureButton
+                  small
+                  questionId={question.id}
+                  setImage={changeQuestionPicture}
+                />
               </div>
               <button type="button" onClick={removeQuestion}>
                 <AiOutlineDelete size={25} className="ml-[5px]" />

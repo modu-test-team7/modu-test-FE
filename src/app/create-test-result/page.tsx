@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import TestResult from '@/components/createTest/TestResult';
 import React, { useState } from 'react';
@@ -12,7 +12,9 @@ const Page: React.FC<pageProps> = () => {
       {Array.from({ length: score }, (_, i) => i).map((_, i) => {
         return (
           <div key={i} className="mb-[40px]">
-            <div className="text-sm text-gray-500">{i}점 이상 {i}점 이하</div>
+            <div className="text-sm text-gray-500">
+              {i}점 이상 {i}점 이하
+            </div>
             <TestResult />
           </div>
         );

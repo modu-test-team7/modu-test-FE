@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  console.log(testCards)
+  console.log(testCards);
   return (
     <div className=" mx-auto w-[1200px]">
       <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
@@ -55,7 +55,7 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards.map((card) => {
+        {testCards.map(card => {
           return (
             // as={`/test-detail/${card.id}`}
             <div
