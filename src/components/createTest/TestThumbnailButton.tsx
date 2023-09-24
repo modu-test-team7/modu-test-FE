@@ -6,9 +6,8 @@ import { AiOutlinePicture } from 'react-icons/ai';
 import clsx from 'clsx';
 
 type TestPictureButtonProps = {
-  setImage: (qIndex: number, newImage: string) => void;
+  setImage: ( newImage: string) => void;
   small?: boolean;
-  questionId: number;
 };
 
 const VisuallyHiddenInput = styled('input')({
@@ -23,16 +22,16 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small, questionId }) => {
+const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small }) => {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setImage(questionId, reader.result);
-        }
+        if(typeof reader.result === "string") {
+          setImage(reader.result);
+        } 
       };
 
       if (file) {

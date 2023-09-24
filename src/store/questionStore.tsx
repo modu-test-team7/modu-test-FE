@@ -1,6 +1,6 @@
 // src/store/testStore.ts
 import { create } from 'zustand';
-import * as api from '../api/questionApi'
+import * as api from '../api/questions'
 
 export type Option = {
   optionId: string;

@@ -49,7 +49,7 @@ const TestInput: React.FC<TestInputProps> = ({
           <button type="button">
             <AiOutlinePlus onClick={plusButton} />
           </button>
-          <button>
+          <button type="button">
             <FiX className="ml-[5px]" onClick={deleteButton} />
           </button>
         </div>

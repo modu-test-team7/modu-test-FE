@@ -14,9 +14,18 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
   secondaryName,
 }) => {
   return (
-    <div className="w-full flex flex-row items-center justify-between">
-      {IconComponent && <IconComponent />}
-      <Button secondary>{secondaryName}</Button>
+    <div className="w-full flex flex-row gap-2 items-center justify-between">
+      <Button secondary>
+        {IconComponent ? (
+          <div className='row items-center gap-2'>
+            
+            {secondaryName}
+            <IconComponent size={18}/>
+          </div>
+        ) : (
+          secondaryName
+        )}
+      </Button>
       <Button primary>{primaryName}</Button>
     </div>
   );
