@@ -60,5 +60,19 @@
       "content": "2-2",
       "isCorrect": false
     }
+  ],
+  "comment": [
+    {
+      "id": 1,
+      "content": "댓글~~~~",
+      "userId": 1,
+      "testId": 1
+    },
+    {
+      "content": "테스트~!",
+      "userId": "testUser",
+      "testId": 1,
+      "id": 2
+    }
   ]
 }

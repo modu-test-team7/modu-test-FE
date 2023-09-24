@@ -1,25 +1,49 @@
 'use client';
 /* eslint-disable */
 
-import { Comment, CommentGroup } from '@/components/comment';
-import { ButtonGroup } from '@/components/button';
-import React, { useState, useEffect } from 'react';
-import { AiOutlineShareAlt } from 'react-icons/ai';
-import Loading from '@/components/Loading';
-import { Tester } from '@/type/Card';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
+import { CommentOne } from '@/components/comment';
+import { ButtonGroup } from '@/components/button';
+import Loading from '@/components/Loading';
+import { Tester, Comment } from '@/type/Card';
+
+import { AiOutlineShareAlt } from 'react-icons/ai';
+import { BiCommentDetail } from 'react-icons/bi';
+import { FiSend } from 'react-icons/fi';
+import { toast } from 'sonner';
 
 type pageProps = {};
 
 const Page = ({ params }: { params: { id: number } }) => {
-  // console.log(store);
-  // console.log('params 제발    ', params.id);
   const paramsId = params.id;
-  // const { id } = router.query; // 여기서 id 가져와.
   const [test, setTest] = useState<Tester>();
+  const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
+  const router = useRouter();
+
+  const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://localhost:4000/comment', {
+        content,
+        userId: 'testUser',
+        testId: test?.id
+      });
+      toast.message('저장되었습니다');
+      console.log('성공:', response);
+      return router.push('/'); // 또는 다른 페이지로 리다이렉트
+    } catch (error) {
+      toast.message('실패하였습니다');
+      console.log('에러:', error);
+    }
+  };
 
   useEffect(() => {
     setFadeOut(true);
@@ -56,13 +80,34 @@ const Page = ({ params }: { params: { id: number } }) => {
           className="rounded-xl max-h-[300px] my-[20px]"
         />
       </div>
-      <div className="text-md text-gray-600 my-[10px]">테스트 내용</div>
+      <div className="text-md bg-blue-100 p-[15px] overflow-hidden h-[100px] w-full rounded-lg text-gray-600 my-[10px] border-2 border-gray-200">
+        {test?.content}
+      </div>
       <div className="w-full my-[50px] col gap-10">
-        <CommentGroup />
+        <hr className="border-gray-500" />
+        <div>
+          <div className="row gap-2 items-center justify-start text-gray-500">
+            <BiCommentDetail size={15} className="mt-1" />
+            {/* {test?.commentCount} */}
+            123
+          </div>
+          <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
+            <textarea
+              rows={3}
+              placeholder="댓글을 입력해주세요"
+              className="w-full focus:outline-none resize-none bg-transparent"
+              value={content}
+              onChange={onChangeComment}
+              name="testTitle"
+            />
+            <button type="button" onClick={handleSubmit}>
+              <FiSend size={20} className="text-gray-500 mt-auto" />
+            </button>
+          </div>
+        </div>
+
         <div className="">
-          <Comment />
-          <Comment />
-          <Comment />
+          <CommentOne paramsId={paramsId}/>
         </div>
       </div>
       <div className="scroll-to-top w-full">

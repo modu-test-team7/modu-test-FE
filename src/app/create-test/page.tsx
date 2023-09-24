@@ -1,6 +1,15 @@
 'use client';
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useRouter, usePathname } from 'next/navigation';
+
+import { TextField } from '@mui/material';
+import { toast } from 'sonner';
+
+import { Button, ButtonGroup, OAuthButton } from '@/components/button';
+import Loading from '@/components/Loading';
+import UnderLineInput from '@/components/Input/UnderIineInput';
 import {
   TestInput,
   TestInputGroup,
@@ -8,39 +17,65 @@ import {
   TestThumbnail,
   TestCaregory,
 } from '@/components/createTest';
-import { useState, useEffect } from 'react';
-import { Button, ButtonGroup, OAuthButton } from '@/components/button';
-import { useRouter, usePathname  } from 'next/navigation';
-import { TextField } from '@mui/material';
-import axios from 'axios';
-import Loading from '@/components/Loading';
-import UnderLineInput from '@/components/Input/UnderIineInput';
-import { toast } from 'sonner';
 
 type pageProps = {};
 
 const Page: React.FC<pageProps> = () => {
   const router = useRouter();
 
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
-  const [content, setContent] = useState('');
-  const [thumbnail, setThumbnail] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [category, setCategory] = useState('');
+  // const [content, setContent] = useState('');
+  // const [thumbnail, setThumbnail] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
 
-  const onChangeContent = (e: ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    image: '',
+    category: '',
+    questions: [
+      {
+        title: '',
+        image: '',
+        choices: [
+          {
+            content: '',
+            images: '',
+          },
+        ],
+      },
+    ],
+    results: [
+      {
+        image: '',
+        content: '',
+        score: 0,
+      },
+    ],
+  });
+
+  const updateFormData = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
   };
 
-  const handleCategoryChange = (category: string) => {
-    setCategory(category);
+  const onChangeTestContent = (e: ChangeEvent<HTMLInputElement>) => {
+    updateFormData('content', e.target.value);
+  };
+
+  const onChangeCategory = (category: string) => {
+    updateFormData('category', category);
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:4000/testCards', {
+      const response = await axios.post('http://localhost:4000/tester', {
+        ...formData,
         writer: '김철수',
         title,
         content,
@@ -49,11 +84,11 @@ const Page: React.FC<pageProps> = () => {
         likes: 100,
         category,
       });
-      toast.message('저장되었습니다')
+      toast.message('저장되었습니다');
       console.log('성공:', response);
       return router.push('/'); // 또는 다른 페이지로 리다이렉트
     } catch (error) {
-      toast.message('실패하였습니다')
+      toast.message('실패하였습니다');
       console.log('에러:', error);
     }
   };
@@ -67,10 +102,20 @@ const Page: React.FC<pageProps> = () => {
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <div className="w-[800px] h-[100%] mx-auto pt-[20px] flex flex-col justify-center my-[50px]">
         <div className="h-[60px] mt-[50px] text-sm">
-          <UnderLineInput label="테스트 제목을 적어주세요" value={title} setValue={setTitle} />
+          <UnderLineInput
+            label="테스트 제목을 적어주세요"
+            value={title}
+            setValue={setTitle}
+            name="testTitle"
+          />
         </div>
 
         <div className="flex w-full flex-col justify-center items-center">
@@ -90,10 +135,10 @@ const Page: React.FC<pageProps> = () => {
             rows={4}
             variant="filled"
             value={content}
-            onChange={onChangeContent}
+            onChange={onChangeTestContent}
           />
         </div>
-        <TestCaregory onCategoryChange={handleCategoryChange} />
+        <TestCaregory onCategoryChange={onChangeCategory} />
         <div>
           <TestInputGroup />
         </div>
