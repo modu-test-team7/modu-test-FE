@@ -24,7 +24,7 @@ export default function Home() {
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:4000/tester`);
+        const { data } = await axios.get(`http://13.125.200.12/api/test`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
-
+  console.log(testCards)
   return (
     <div className=" mx-auto w-[1200px]">
       <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>

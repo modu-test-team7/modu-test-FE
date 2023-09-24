@@ -14,6 +14,7 @@ export type Questions = {
   title: string;
   image: string;
   testId: number;
+  choices: Choice[];
 };
 
 export type Choice = {

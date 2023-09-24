@@ -34,11 +34,11 @@ const Test: React.FC<TestProps> = ({ tester }) => {
           <div className='row gap-1 items-center text-gray-500 font-bold text-sm'>
             <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              {/* <img
                 src={`/lib/images/profile/profileSample (${imgNum}).png`}
                 className="object-cover h-full w-full"
                 alt="작성자 프로필 사진"
-              />
+              /> */}
             </div>
             {tester.userId}
           </div>

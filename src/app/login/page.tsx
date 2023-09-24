@@ -27,7 +27,7 @@ const Login: React.FC<PageProps> = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await postAPI('/user/login', { username, password })
+    await postAPI('/api/user/login', { username, password })
       .then(response => {
         Cookies.set('accessToken', response.data.token);
         Cookies.set('refreshToken', response.data.refreshToken);

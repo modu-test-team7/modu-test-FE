@@ -31,7 +31,7 @@ const Page = ({ params }: { params: { id: number } }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:4000/comment', {
+      const response = await axios.post('http://13.125.200.12/api/comment', {
         content,
         userId: 'testUser',
         testId: test?.id
@@ -45,13 +45,15 @@ const Page = ({ params }: { params: { id: number } }) => {
     }
   };
 
+  console.log(test)
+
   useEffect(() => {
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:4000/tester/${paramsId}`);
+        const { data } = await axios.get(`http://13.125.200.12/api/test/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);

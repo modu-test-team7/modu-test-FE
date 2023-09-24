@@ -97,7 +97,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}/user/signup`,
+        `http://13.125.200.12/api/user/signup`,
         {
           username,
           password,
