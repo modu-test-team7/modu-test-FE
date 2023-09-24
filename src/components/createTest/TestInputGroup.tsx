@@ -1,19 +1,22 @@
 import React from 'react';
-import { useState, ChangeEvent  } from 'react';
+import { useState, ChangeEvent } from 'react';
 import TestInput from './TestInput';
-import {
-  AiOutlineDelete,
-  AiOutlinePicture,
-  AiOutlinePlus,
-} from 'react-icons/ai';
-import useTestStore from '../../store/testStore'
+import { AiOutlineDelete, AiOutlinePicture, AiOutlinePlus } from 'react-icons/ai';
+import useTestStore from '../../store/testStore';
 
 type TestInputGroupProps = {};
 
 const TestInputGroup: React.FC<TestInputGroupProps> = () => {
+  const {
+    questions,
+    addQuestion,
+    removeQuestion,
+    addOption,
+    removeOption,
+    updateQuestion,
+    updateOption,
+  } = useTestStore();
 
-  const { questions, addQuestion, removeQuestion, addOption, removeOption, updateQuestion, updateOption } = useTestStore();
-  
   const handleQuestionChange = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
     updateQuestion(qIndex, e.target.value);
   };
@@ -27,9 +30,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = () => {
       {questions.map((q, qIndex) => (
         <div key={qIndex} className="mb-[60px]">
           <div className="flex flex-row items-center justify-between">
-            <div className="text-gray-500 text-md my-[5px]">
-              {qIndex + 1}번째 질문
-            </div>
+            <div className="text-gray-500 text-md my-[5px]">{qIndex + 1}번째 질문</div>
             <div className="text-gray-500 flex flex-row items-center justify-end">
               <button type="button" onClick={addQuestion}>
                 <AiOutlinePlus size={25} className="ml-[5px]" />
@@ -51,7 +52,9 @@ const TestInputGroup: React.FC<TestInputGroupProps> = () => {
               <TestInput
                 optionInput
                 value={o}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOptionChange(qIndex, oIndex, e)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleOptionChange(qIndex, oIndex, e)
+                }
                 plusButton={() => addOption(qIndex)}
                 deleteButton={() => removeOption(qIndex)}
               />
