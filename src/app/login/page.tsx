@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 import Button from '../../components/button/Button';
 import LoginInput from '../../components/Input/LoginInput';
@@ -13,21 +12,30 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 // import { signIn } from 'next-auth/react';
-import useSignUpStore from '../../store/store';
+import useSignUpStore from '@/store/loginStore';
 import { postAPI } from '@/axios';
 import Cookies from 'js-cookie';
-import { access } from 'fs';
+
 type PageProps = {};
 
 const Login: React.FC<PageProps> = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const accessToken = Cookies.get('accessToken');
+
+    if (accessToken) {
+      router.push('/'); // 로그인이 되어 있으면 홈 페이지로 이동
+    }
+  }, []);
+
   const [username, setUsername] = useState(''); // 아이디 상태
   const [password, setPassword] = useState(''); // 비밀번호 상태
   const { showPassword, togglePassword } = useSignUpStore();
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await postAPI('/user/login', { username, password })
+    await postAPI('/api/user/login', { username, password })
       .then(response => {
         Cookies.set('accessToken', response.data.token);
         Cookies.set('refreshToken', response.data.refreshToken);
@@ -38,7 +46,7 @@ const Login: React.FC<PageProps> = () => {
       .catch(error => {
         // 요건 서버랑 맞춰야된대
         toast.error(error.response.data.message);
-        // toast.error('로그인 실패 😥');
+        toast.error('로그인 실패 😥');
         console.log(error);
       });
 
