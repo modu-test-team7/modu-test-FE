@@ -4,23 +4,18 @@ import TestCard from '../components/TestCard';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, ButtonGroup, OAuthButton, UpButton } from '@/components/button';
-import { Button, ButtonGroup, OAuthButton, UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
 import Fab from '@mui/material/Fab';
 import { GrAdd, GrLinkUp } from 'react-icons/gr';
 import { Tester } from '@/type/Card';
-import { Tester } from '@/type/Card';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [testCards, setTestCards] = useState<Tester[]>([]);
-  const [testCards, setTestCards] = useState<Tester[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
 
-  const router = useRouter();
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +24,7 @@ export default function Home() {
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:4000/tester`);
+        const { data } = await axios.get(`http://13.125.200.12/api/test`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -39,24 +34,9 @@ export default function Home() {
   }, []);
 
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  console.log(testCards)
+  console.log(testCards);
   return (
     <div className=" mx-auto w-[1200px]">
-      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
-
-      <div className="sticky mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">친구</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">가족</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">진지</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">재미</Link>
-        </div>
       <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
 
       <div className="sticky mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
@@ -75,7 +55,7 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards.map((card) => {
+        {testCards.map(card => {
           return (
             // as={`/test-detail/${card.id}`}
             <div
