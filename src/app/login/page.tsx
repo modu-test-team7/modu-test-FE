@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 // import { signIn } from 'next-auth/react';
 import useSignUpStore from '@/store/loginStore';
 import { postAPI } from '@/axios';
+import { GetServerSideProps } from 'next';
 import Cookies from 'js-cookie';
 
 type PageProps = {};
