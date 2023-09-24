@@ -20,19 +20,12 @@ const Header: React.FC<HeaderProps> = () => {
     <div className="w-full fixed top-0 z-50 h-[60px] shadow-bottom flex flex-row items-center justify-around bg-white">
       <div className="w-[1200px] flex flex-row items-center justify-between">
         <Link href="/">
-          <Image
-            src="/lib/images/logo_clear.png"
-            alt="logo"
-            height={30}
-            width={80}
-          />
+          <Image src="/lib/images/logo_clear.png" alt="logo" height={30} width={80} />
         </Link>
 
         <div className="flex flex-row items-center justify-cente">
           <div className="text-sm relative" onClick={onClickDropdown}>
-            <Link href="signup">
-              <FiUser size={20} />
-            </Link>
+            <FiUser size={20} />
             {isDropdownOpen && <HeaderDropdown />}
           </div>
         </div>
