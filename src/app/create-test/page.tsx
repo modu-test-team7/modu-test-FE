@@ -94,29 +94,32 @@ const Page = () => {
     });
   };
 
-  const removeQuestion = () => {
+  const removeQuestion = (qIndex: number) => {
     setFormData(prevFormData => {
-      if (prevFormData.questions.length > 1) {
-        return { ...prevFormData, questions: _.dropRight(prevFormData.questions) };
+      const newQuestions = [...prevFormData.questions];
+      if (newQuestions.length > 1) {
+        newQuestions.splice(qIndex, 1);
+        return { ...prevFormData, questions: newQuestions };
       }
       return prevFormData;
     });
   };
 
   const updateFormData = (field: string, value: any) => {
+    console.log(formData)
     setFormData({
       ...formData,
       [field]: value,
     });
   };
 
-  const updateQuestionImage = (questionId: number, newImage: string) => {
-    setFormData(prevFormData => {
-      const updatedQuestions = [...prevFormData.questions]; // 배열 복사!
-      updatedQuestions[questionId].image = newImage; // image 업데이트!
-      return { ...prevFormData, questions: updatedQuestions }; // 최종 formData 업데이트!
-    });
-  };
+  // const updateQuestionImage = (qIndex: number, newImage: string) => {
+  //   setFormData(prevFormData => {
+  //     const updatedQuestions = [...prevFormData.questions]; // 배열 복사!
+  //     updatedQuestions[qIndex].image = newImage; // image 업데이트!
+  //     return { ...prevFormData, questions: updatedQuestions }; // 최종 formData 업데이트!
+  //   });
+  // };
 
   const onChangeTestContent = (e: ChangeEvent<HTMLInputElement>) => {
     updateFormData('content', e.target.value);
@@ -126,8 +129,17 @@ const Page = () => {
     updateFormData('category', category);
   };
 
+  const onClickCheckChoice = (qIndex: number, cIndex: number) => {
+    setFormData(prevFormData => {
+      const newQuestions = _.cloneDeep(prevFormData.questions);
+      newQuestions[qIndex].choices[cIndex].isCorrect = !newQuestions[qIndex].choices[cIndex].isCorrect;
+      return { ...prevFormData, questions: newQuestions };
+    });
+  };
+
   const handleSubmit = async () => {
     try {
+      console.log(formData)
       const response = await axios.post(`http://13.125.200.12/api/test/testMake`, {
         ...formData,
       });
@@ -141,12 +153,13 @@ const Page = () => {
   };
 
   useEffect(() => {
-    // 클라이언트 쪽에서만 Router 객체를 사용하는 로직을 넣어줘
+    window.scrollTo(0, 0);
+
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
-  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  if (isLoading) {return <Loading fadeout={fadeout} isLoading={isLoading} />}
 
   return (
     <form
@@ -196,9 +209,11 @@ const Page = () => {
             updateChoice={updateChoice}
             addChoice={addChoice}
             removeChoice={removeChoice}
-            updateQuestionImage={updateQuestionImage}
+            updateFormData={updateFormData}
+            onClickCheckChoice={onClickCheckChoice}
           />
         </div>
+
 
         <Button type="submit" primary fullWidth>
           테스트 만들기 완성
