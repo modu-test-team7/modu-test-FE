@@ -8,7 +8,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { useSignUpStore } from '../../store/signupStore';
 import Button from '@/components/button/Button';
 import { toast } from 'sonner';
-import SignUpInput from '../../components/Input/SignUpInput';
+import { SignUpInput } from '@/components/Input';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import {
