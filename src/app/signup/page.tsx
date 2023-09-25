@@ -8,7 +8,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { useSignUpStore } from '../../store/signupStore';
 import Button from '@/components/button/Button';
 import { toast } from 'sonner';
-import LoginInput from '@/components/Input/LoginInput';
+import SignUpInput from '../../components/Input/SignUpInput';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { validateEmail, validatePassword, validateUsername } from '@/utils/validation';
@@ -30,12 +30,14 @@ const SignUp: React.FC = () => {
     username,
     password,
     email,
+    nickname,
     confirmPassword,
     passwordMatchError,
     togglePassword,
     toggleConfirmPassword,
     setUsername,
     setPassword,
+    setNickname,
     setEmail,
     setConfirmPassword,
     setPasswordMatchError,
@@ -68,6 +70,7 @@ const SignUp: React.FC = () => {
     setIsLoading(true);
     console.log('Username:', username);
     console.log('Email:', email);
+    console.log('nickname:', nickname);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
     setIsLoading(false);
@@ -110,11 +113,12 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_TEST_SERVER_URL}/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}/api/user/signup`,
         {
           username,
           password,
           email,
+          nickname,
         },
         { withCredentials: true },
       );
@@ -136,32 +140,35 @@ const SignUp: React.FC = () => {
       <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
         <form onSubmit={handleSignUp}>
           <label>아이디</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="아이디를 입력해주세요"
             onChange={e => setUsername(e.target.value)}
           />
-
           <label>이메일</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             type="email"
             placeholder="이메일을 입력해주세요"
             onChange={e => setEmail(e.target.value)}
           />
-
+          <label>닉네임</label> {/* New nickname field */}
+          <SignUpInput
+            color="primary"
+            placeholder="닉네임을 입력해주세요"
+            onChange={e => setNickname(e.target.value)}
+          />
           <label>비밀번호</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="비밀번호를 입력해주세요"
             type={showPassword ? 'text' : 'password'}
             onIconClick={togglePassword}
-            onChange={handlePasswordChange} // 이 부분 추가
+            onChange={handlePasswordChange}
             icon={showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           />
-
           <label>비밀번호 확인</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="한 번 더 비밀번호를 입력해주세요"
             type={showConfirmPassword ? 'text' : 'password'}
@@ -174,7 +181,6 @@ const SignUp: React.FC = () => {
               비밀번호가 일치하지 않습니다.
             </p>
           )}
-
           <Button type="submit" primary fullWidth>
             회원가입하기
           </Button>
