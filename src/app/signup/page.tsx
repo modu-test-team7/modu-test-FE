@@ -11,7 +11,12 @@ import { toast } from 'sonner';
 import SignUpInput from '../../components/Input/SignUpInput';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { validateEmail, validatePassword, validateUsername } from '@/utils/validation';
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+  validateNickname,
+} from '@/utils/validation';
 
 const SignUp: React.FC = () => {
   const router = useRouter();
@@ -73,12 +78,12 @@ const SignUp: React.FC = () => {
     console.log('nickname:', nickname);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
-    setIsLoading(false);
 
     // 아이디 유효성 검사
     if (!validateUsername(username)) {
       console.log('Username validation failed.');
       toast.error('아이디는 영문 + 숫자로 이루어진 4글자 이상 10글자 이내로 작성해주세요.');
+      setIsLoading(false);
       return;
     }
 
@@ -86,18 +91,29 @@ const SignUp: React.FC = () => {
     if (!validateEmail(email)) {
       console.log('Email validation failed.');
       toast.error('올바른 이메일 형식을 입력해주세요.');
+      setIsLoading(false);
+      return;
+    }
+
+    // 닉네임 유효성 검사
+    if (!validateNickname(nickname)) {
+      console.log('Nickname validation failed.');
+      toast.error('닉네임은 한글 혹은 영문으로 이루어진 2~8글자로 설정해주세요.');
+      setIsLoading(false); // 유효성 검사 실패 시 로딩 상태를 false로 변경
       return;
     }
 
     // 비밀번호 유효성 검사
     if (!validatePassword(password)) {
       toast.error('비밀번호는 영문 + 숫자 + 특수기호 포함 8글자 이상 20글자 이내로 작성해주세요.');
+      setIsLoading(false);
       return;
     }
 
     // 기존 비밀번호 일치 검사
     if (password !== confirmPassword) {
       toast.error('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      setIsLoading(false);
       return;
     }
 
