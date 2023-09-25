@@ -1,6 +1,6 @@
 'use client';
 
-import TestCard from '../components/TestCard';
+import TestCard from '../components/test/TestCard';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, ButtonGroup, OAuthButton, UpButton } from '@/components/button';
@@ -30,8 +30,10 @@ export default function Home() {
     }
   };
 
-  console.log(testCards)
+  console.log(testCards);
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
@@ -49,27 +51,26 @@ export default function Home() {
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
   console.log(testCards);
   return (
-    <div className=" mx-auto w-[1200px]">
+    <div className=" mx-auto min-h-screen w-[1200px]">
       <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
 
       <div className="sticky mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">친구</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">가족</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">진지</Link>
-        </div>
-        <div className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
-          <Link href="">재미</Link>
-        </div>
+        <button onClick={() => console.log('친구')} className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
+          친구
+        </button>
+        <button onClick={() => console.log('가족')} className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
+          가족
+        </button>
+        <button onClick={() => console.log('진지')} className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
+          진지
+        </button>
+        <button onClick={() => console.log('재미')} className="shadow-md bg-gray-50 rounded-[15px] h-[35px] text-gray-600 font-bold text-sm px-[10px] flex items-center">
+          재미
+        </button>
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
         {testCards.map(card => {
-          
           return (
             // as={`/test-detail/${card.id}`}
             <div
@@ -83,7 +84,7 @@ export default function Home() {
           );
         })}
       </div>
-      <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
+      <div className="sticky z-100 translate-y-[200px] transform translate-x-[1250px] mb-[50px]">
         <div className="col gap-[20px]">
           <Fab
             onClick={handleMyPageClick}

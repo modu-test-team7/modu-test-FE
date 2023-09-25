@@ -1,12 +1,12 @@
 import { Comment } from '@/type/Card';
 import React, { useState } from 'react';
 
-type CommentProps = {
+type CommentOneProps = {
   paramsId: number | string;
+  comment: string;
 };
 
-const Comment: React.FC<CommentProps> = () => {
-  const [comment, setComment] = useState<Comment>();
+const CommentOne: React.FC<CommentOneProps> = ({comment}) => {
   return (
     <div className="mb-[20px]">
       {/* 작성 정보 */}
@@ -29,10 +29,10 @@ const Comment: React.FC<CommentProps> = () => {
       </div>
 
       {/* 댓글 내용 */}
-      <div>댓글 내용</div>
+      <div>{comment}</div>
       <div></div>
       <hr className="my-[20px]" />
     </div>
   );
 };
-export default Comment;
+export default CommentOne;

@@ -52,11 +52,6 @@ const Page = () => {
   });
 
   const updateChoice = (qIndex: number, cIndex: number, newContent: string) => {
-    // setFormData(prevFormData => {
-    //   const updatedQuestions = _.cloneDeep(prevFormData.questions);
-    //   _.set(updatedQuestions, `[${qIndex}].choices[${cIndex}].content`, newContent);
-    //   return { ...prevFormData, questions: updatedQuestions };
-    // });
     setFormData(prevFormData => {
       const copyPrev = { ...prevFormData };
       const { questions } = copyPrev;
@@ -66,11 +61,6 @@ const Page = () => {
   };
 
   const updateChoiceCorrect = (qIndex: number, cIndex: number, curIsCorrect: boolean) => {
-    // setFormData(prevFormData => {
-    //   const updatedQuestions = _.cloneDeep(prevFormData.questions);
-    //   _.set(updatedQuestions, `[${qIndex}].choices[${cIndex}].content`, newContent);
-    //   return { ...prevFormData, questions: updatedQuestions };
-    // });
     setFormData(prevFormData => {
       const copyPrev = { ...prevFormData };
       const { questions } = copyPrev;
@@ -100,11 +90,6 @@ const Page = () => {
   };
 
   const updateQuestion = (qIndex: number, title: string) => {
-    // setFormData(prevFormData => {
-    //   const updatedQuestions = _.cloneDeep(prevFormData.questions);
-    //   _.set(updatedQuestions, `[${qIndex}].title`, newQuestion);
-    //   return { ...prevFormData, questions: updatedQuestions };
-    // });
     setFormData(prevFormData => {
       const updatedQuestions = [ ...prevFormData.questions ];
       updatedQuestions[qIndex].title = title;
@@ -120,14 +105,6 @@ const Page = () => {
     });
   };
 
-  // const removeQuestion = () => {
-  //   setFormData(prevFormData => {
-  //     if (prevFormData.questions.length > 1) {
-  //       return { ...prevFormData, questions: _.dropRight(prevFormData.questions) };
-  //     }
-  //     return prevFormData;
-  //   });
-  // };
   const removeQuestion = (qIndex: number) => {
     setFormData(prevFormData => {
       const newQuestions = [...prevFormData.questions];
@@ -162,17 +139,9 @@ const Page = () => {
     updateFormData('category', category);
   };
 
-  // const onClickCheckChoice = (qIndex: number, cIndex: number) => {
-  //   setFormData(prevFormData => {
-  //     const newQuestions = _.cloneDeep(prevFormData.questions);
-  //     newQuestions[qIndex].choices[cIndex].isCorrect = !newQuestions[qIndex].choices[cIndex].isCorrect;
-  //     return { ...prevFormData, questions: newQuestions };
-  //   });
-  // };
-
   const handleSubmit = async () => {
     try {
-      console.log(formData)
+      console.log('=================formData' , formData)
       const response = await axios.post(`http://13.125.200.12/api/test/testMake`, {
         ...formData,
       });
@@ -184,10 +153,6 @@ const Page = () => {
       console.log('에러:', error);
     }
   };
-
-  const onClickCheckChoice = () => {
-
-  }
 
   useEffect(() => {
     window.scrollTo(0, 0);

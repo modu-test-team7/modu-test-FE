@@ -12,7 +12,6 @@ const Test: React.FC<TestProps> = ({ tester }) => {
   const imgNum = tester.testerId + 1;
   return (
     <div className=" shadow-sm cursor-pointer">
-      tester.image = {tester.image}
       <div className="w-full flex h-[200px] overflow-hidden my-[5px] rounded-lg  shadow-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

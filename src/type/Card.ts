@@ -7,6 +7,10 @@ export type Tester = {
   views: string | number;
   likes: string | number;
   category: string;
+  username?: string;
+  comments: string[];
+  questions: string[];
+  comment: string;
 };
 
 export type Questions = {
