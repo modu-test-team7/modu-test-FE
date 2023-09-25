@@ -16,6 +16,8 @@ import Image from 'next/image';
 import profileImage from '../../../public/lib/images/profile/profile.jpg';
 import { ChangeEvent, FC, ReactElement } from 'react';
 
+type PageProps = {};
+
 const Page: FC<PageProps> = (): ReactElement => {
   const router = useRouter();
 
@@ -129,10 +131,11 @@ const Page: FC<PageProps> = (): ReactElement => {
             <>
               <UnderLineInput
                 value={tempUsername}
+                setValue={setTempUsername} // Assuming setTempUsername is the correct function to use
                 onChange={handleUsernameChange}
-                inputProps={{ maxLength: 15 }} // 글자 수를 15자로 제한
-                error={!!error} // 에러 상태에 따라 error 속성 설정
-                helperText={error} // 에러 메시지 표시
+                inputProps={{ maxLength: 15 }}
+                error={!!error}
+                helperText={error}
               />
               <div className="cursor-pointer ml-1 mt-5" onClick={handleCheckIconClick}>
                 <BsCheckLg />
