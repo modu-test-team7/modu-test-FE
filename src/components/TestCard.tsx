@@ -9,14 +9,14 @@ type TestProps = {
 };
 
 const Test: React.FC<TestProps> = ({ tester }) => {
-  const imgNum = tester.id + 1;
+  const imgNum = tester.testerId + 1;
   return (
     <div className=" shadow-sm cursor-pointer">
-      
-      <div className="w-ful flex h-[200px] overflow-hidden my-[5px] rounded-lg  shadow-md">
+      tester.image = {tester.image}
+      <div className="w-full flex h-[200px] overflow-hidden my-[5px] rounded-lg  shadow-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={tester.image}
+          src={tester.image === 'Test Image' || '' ? 'lib/images/logo_clear.png' : tester.image}
           className="object-cover h-full w-full"
           alt="테스트 썸네일"
           height={300}
@@ -27,18 +27,18 @@ const Test: React.FC<TestProps> = ({ tester }) => {
       <div className="text-lg row items-start justify-between pt-[10px]">
         <div className="font-bold text-gray-600">{tester.title}</div>
       </div>
-      <div className="col justify-between h-[100px] text-sm w-full py-[10px]">
-        {tester.content}
+      <div className="col justify-between  h-[100px] text-sm w-full py-[10px]">
+        <div className="h-full w-full">{tester.content}</div>
 
         <div className="row justify-between">
-          <div className='row gap-1 items-center text-gray-500 font-bold text-sm'>
+          <div className="row gap-1 items-center text-gray-500 font-bold text-sm">
             <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {/* <img
-                src={`/lib/images/profile/profileSample (${imgNum}).png`}
+              <img
+                src={`/lib/images/profile/profileSample (1).png`}
                 className="object-cover h-full w-full"
                 alt="작성자 프로필 사진"
-              /> */}
+              />
             </div>
             {tester.userId}
           </div>

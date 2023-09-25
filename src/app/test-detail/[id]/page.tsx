@@ -14,8 +14,8 @@ import { AiOutlineShareAlt } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 
-type pageProps = {};
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -25,16 +25,50 @@ const Page = ({ params }: { params: { id: number } }) => {
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
 
-  const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    image: '',
+    category: '',
+    questions: [
+      {
+        title: '',
+        image: '',
+        choices: [
+          {
+            content: '',
+            isCorrect: false,
+          },
+        ],
+      },
+    ],
+    results: [
+      {
+        image: '',
+        content: '',
+        score: 0,
+      },
+    ],
+  });
+
+  const updateFormData = (field: string, value: any) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
   };
+
+  const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    updateFormData('comment', e.target.value);
+  };
+
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post('http://13.125.200.12/api/comment', {
         content,
         userId: 'testUser',
-        testId: test?.id
+        testId: test?.testerId
       });
       toast.message('저장되었습니다');
       console.log('성공:', response);
@@ -48,21 +82,32 @@ const Page = ({ params }: { params: { id: number } }) => {
   console.log(test)
 
   useEffect(() => {
+    // accessToken 체크
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      router.replace('/');
+    }
+  
+    // 로딩 애니메이션 설정
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
-
+  
+    // 데이터 가져오기
     const fetchTestCards = async () => {
       try {
+        window.scrollTo(0, 0);
         const { data } = await axios.get(`http://13.125.200.12/api/test/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
       }
     };
+  
     fetchTestCards();
-  }, []);
+    
+  }, [router]);  // dependency 배열
 
-  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  if (isLoading) {return <Loading fadeout={fadeout} isLoading={isLoading} />}
 
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
@@ -86,31 +131,31 @@ const Page = ({ params }: { params: { id: number } }) => {
         {test?.content}
       </div>
       <div className="w-full my-[50px] col gap-10">
-        <hr className="border-gray-500" />
-        <div>
-          <div className="row gap-2 items-center justify-start text-gray-500">
-            <BiCommentDetail size={15} className="mt-1" />
-            {/* {test?.commentCount} */}
-            123
-          </div>
-          <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
-            <textarea
-              rows={3}
-              placeholder="댓글을 입력해주세요"
-              className="w-full focus:outline-none resize-none bg-transparent"
-              value={content}
-              onChange={onChangeComment}
-              name="testTitle"
-            />
-            <button type="button" onClick={handleSubmit}>
-              <FiSend size={20} className="text-gray-500 mt-auto" />
-            </button>
-          </div>
+      <hr className="border-gray-500" />
+      <div>
+        <div className="row gap-2 items-center justify-start text-gray-500">
+          <BiCommentDetail size={15} className="mt-1" />
+          {/* {test?.commentCount} */}
+          123
         </div>
+        <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
+          <textarea
+            rows={3}
+            placeholder="댓글을 입력해주세요"
+            className="w-full focus:outline-none resize-none bg-transparent"
+            value={content}
+            onChange={onChangeComment}
+            name="testTitle"
+          />
+          <button type="button" onClick={handleSubmit}>
+            <FiSend size={20} className="text-gray-500 mt-auto" />
+          </button>
+        </div>
+      </div>
 
-        <div className="">
-          <CommentOne paramsId={paramsId}/>
-        </div>
+      <div className="">
+        <CommentOne paramsId={paramsId} />
+      </div>
       </div>
       <div className="scroll-to-top w-full">
         <ButtonGroup primaryName="테스트하기" icon={AiOutlineShareAlt} />

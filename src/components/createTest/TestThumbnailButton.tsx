@@ -4,9 +4,10 @@ import { styled } from '@mui/material/styles';
 import { BsFillCloudArrowUpFill } from 'react-icons/bs';
 import { AiOutlinePicture } from 'react-icons/ai';
 import clsx from 'clsx';
+import axios from 'axios';
 
 type TestPictureButtonProps = {
-  setImage: ( newImage: string) => void;
+  setImage: (newImage: string) => void;
   small?: boolean;
 };
 
@@ -23,16 +24,20 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small }) => {
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
       const reader = new FileReader();
-
-      reader.onloadend = () => {
-        if(typeof reader.result === "string") {
-          setImage(reader.result);
-        } 
-      };
+      const formData = new FormData();
+      formData.append('image', file);
+      const result = await axios.post(`http://13.125.200.12/api/upload`, formData);
+      console.log(result);
+      // reader.onloadend = () => {
+      //   if (typeof reader.result === 'string') {
+      //     setImage(reader.result);
+      //   }
+      // };
+      setImage(result.data)
 
       if (file) {
         reader.readAsDataURL(file);
