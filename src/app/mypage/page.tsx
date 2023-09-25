@@ -9,8 +9,6 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { TextField } from '@mui/material';
-import Loading from '@/components/Loading';
 import UnderLineInput from '@/components/Input/UnderIineInput';
 import Image from 'next/image';
 import profileImage from '../../../public/lib/images/profile/profile.jpg';
@@ -136,7 +134,7 @@ const Page: FC<PageProps> = (): ReactElement => {
                 inputProps={{ maxLength: 15 }}
                 error={!!error}
                 helperText={error}
-              />
+              ></UnderLineInput>
               <div className="cursor-pointer ml-1 mt-5" onClick={handleCheckIconClick}>
                 <BsCheckLg />
               </div>
