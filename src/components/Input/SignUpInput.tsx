@@ -1,20 +1,18 @@
 import React from 'react';
-import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
-interface LoginInputProps {
+interface SignUpInputProps {
   color: string;
   placeholder: string;
   type?: string;
-  value?: string;
   onIconClick?: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   icon?: React.ReactNode;
 }
 
-const LoginInput: React.FC<LoginInputProps> = ({
+const SignUpInput: React.FC<SignUpInputProps> = ({
   color,
   type = 'text', // default value for type
   placeholder,
@@ -42,4 +40,4 @@ const LoginInput: React.FC<LoginInputProps> = ({
   );
 };
 
-export default LoginInput;
+export default SignUpInput;

@@ -8,10 +8,15 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { useSignUpStore } from '../../store/signupStore';
 import Button from '@/components/button/Button';
 import { toast } from 'sonner';
-import LoginInput from '@/components/Input/LoginInput';
+import SignUpInput from '../../components/Input/SignUpInput';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { validateEmail, validatePassword, validateUsername } from '@/utils/validation';
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+  validateNickname,
+} from '@/utils/validation';
 
 const SignUp: React.FC = () => {
   const router = useRouter();
@@ -30,12 +35,14 @@ const SignUp: React.FC = () => {
     username,
     password,
     email,
+    nickname,
     confirmPassword,
     passwordMatchError,
     togglePassword,
     toggleConfirmPassword,
     setUsername,
     setPassword,
+    setNickname,
     setEmail,
     setConfirmPassword,
     setPasswordMatchError,
@@ -68,14 +75,15 @@ const SignUp: React.FC = () => {
     setIsLoading(true);
     console.log('Username:', username);
     console.log('Email:', email);
+    console.log('nickname:', nickname);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
-    setIsLoading(false);
 
     // 아이디 유효성 검사
     if (!validateUsername(username)) {
       console.log('Username validation failed.');
       toast.error('아이디는 영문 + 숫자로 이루어진 4글자 이상 10글자 이내로 작성해주세요.');
+      setIsLoading(false);
       return;
     }
 
@@ -83,18 +91,29 @@ const SignUp: React.FC = () => {
     if (!validateEmail(email)) {
       console.log('Email validation failed.');
       toast.error('올바른 이메일 형식을 입력해주세요.');
+      setIsLoading(false);
+      return;
+    }
+
+    // 닉네임 유효성 검사
+    if (!validateNickname(nickname)) {
+      console.log('Nickname validation failed.');
+      toast.error('닉네임은 한글 혹은 영문으로 이루어진 2~8글자로 설정해주세요.');
+      setIsLoading(false); // 유효성 검사 실패 시 로딩 상태를 false로 변경
       return;
     }
 
     // 비밀번호 유효성 검사
     if (!validatePassword(password)) {
       toast.error('비밀번호는 영문 + 숫자 + 특수기호 포함 8글자 이상 20글자 이내로 작성해주세요.');
+      setIsLoading(false);
       return;
     }
 
     // 기존 비밀번호 일치 검사
     if (password !== confirmPassword) {
       toast.error('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      setIsLoading(false);
       return;
     }
 
@@ -110,11 +129,12 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_TEST_SERVER_URL}/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}/api/user/signup`,
         {
           username,
           password,
           email,
+          nickname,
         },
         { withCredentials: true },
       );
@@ -136,32 +156,35 @@ const SignUp: React.FC = () => {
       <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
         <form onSubmit={handleSignUp}>
           <label>아이디</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="아이디를 입력해주세요"
             onChange={e => setUsername(e.target.value)}
           />
-
           <label>이메일</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             type="email"
             placeholder="이메일을 입력해주세요"
             onChange={e => setEmail(e.target.value)}
           />
-
+          <label>닉네임</label> {/* New nickname field */}
+          <SignUpInput
+            color="primary"
+            placeholder="닉네임을 입력해주세요"
+            onChange={e => setNickname(e.target.value)}
+          />
           <label>비밀번호</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="비밀번호를 입력해주세요"
             type={showPassword ? 'text' : 'password'}
             onIconClick={togglePassword}
-            onChange={handlePasswordChange} // 이 부분 추가
+            onChange={handlePasswordChange}
             icon={showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           />
-
           <label>비밀번호 확인</label>
-          <LoginInput
+          <SignUpInput
             color="primary"
             placeholder="한 번 더 비밀번호를 입력해주세요"
             type={showConfirmPassword ? 'text' : 'password'}
@@ -174,7 +197,6 @@ const SignUp: React.FC = () => {
               비밀번호가 일치하지 않습니다.
             </p>
           )}
-
           <Button type="submit" primary fullWidth>
             회원가입하기
           </Button>
