@@ -14,8 +14,7 @@ import { AiOutlineShareAlt } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import { toast } from 'sonner';
-
-type pageProps = {};
+import Cookies from 'js-cookie';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -25,8 +24,41 @@ const Page = ({ params }: { params: { id: number } }) => {
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
 
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    image: '',
+    category: '',
+    questions: [
+      {
+        title: '',
+        image: '',
+        choices: [
+          {
+            content: '',
+            isCorrect: false,
+          },
+        ],
+      },
+    ],
+    results: [
+      {
+        image: '',
+        content: '',
+        score: 0,
+      },
+    ],
+  });
+
+  const updateFormData = (field: string, value: any) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
   const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+    updateFormData('comment', e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -34,7 +66,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       const response = await axios.post('http://13.125.200.12/api/comment', {
         content,
         userId: 'testUser',
-        testId: test?.id,
+        testId: test?.testerId,
       });
       toast.message('저장되었습니다');
       console.log('성공:', response);
@@ -48,21 +80,33 @@ const Page = ({ params }: { params: { id: number } }) => {
   console.log(test);
 
   useEffect(() => {
+    // accessToken 체크
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      router.replace('/');
+    }
+
+    // 로딩 애니메이션 설정
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
+    // 데이터 가져오기
     const fetchTestCards = async () => {
       try {
+        window.scrollTo(0, 0);
         const { data } = await axios.get(`http://13.125.200.12/api/test/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
       }
     };
-    fetchTestCards();
-  }, []);
 
-  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
+    fetchTestCards();
+  }, [router]); // dependency 배열
+
+  if (isLoading) {
+    return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  }
 
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">

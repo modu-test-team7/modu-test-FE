@@ -16,10 +16,17 @@ import { ChangeEvent, FC, ReactElement } from 'react';
 
 type PageProps = {};
 
-const Page: FC<PageProps> = (): ReactElement => {
+const Page = (): ReactElement => {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [fadeout, setFadeOut] = useState(false);
+
   useEffect(() => {
+    // 로딩 애니메이션 설정
+    setFadeOut(true);
+    setTimeout(() => setIsLoading(false), 1000);
+
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
       router.replace('/');
@@ -88,6 +95,8 @@ const Page: FC<PageProps> = (): ReactElement => {
       console.error(e.response);
     }
   };
+
+  if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
 
   return (
     <div className="w-[800px] h-[100%] mx-auto mt-16 p-8 flex bg-[--dark_gray]">

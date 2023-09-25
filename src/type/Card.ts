@@ -1,5 +1,5 @@
 export type Tester = {
-  id: number;
+  testerId: number;
   userId: string;
   title: string;
   content: string;

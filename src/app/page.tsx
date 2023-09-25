@@ -10,6 +10,8 @@ import { GrAdd, GrLinkUp } from 'react-icons/gr';
 import { Tester } from '@/type/Card';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 
 export default function Home() {
   const [testCards, setTestCards] = useState<Tester[]>([]);
@@ -18,6 +20,17 @@ export default function Home() {
 
   const router = useRouter();
 
+  const isLogged = Boolean(Cookies.get('accessToken'));
+
+  const handleMyPageClick = () => {
+    if (isLogged) {
+      router.push('/create-test');
+    } else {
+      toast.error('로그인을 먼저 해주세요!');
+    }
+  };
+
+  console.log(testCards)
   useEffect(() => {
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
@@ -56,12 +69,13 @@ export default function Home() {
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
         {testCards.map(card => {
+          
           return (
             // as={`/test-detail/${card.id}`}
             <div
-              key={card.id}
+              key={card.testerId}
               onClick={() => {
-                return router.push(`/test-detail/${card.id}`);
+                return router.push(`/test-detail/${card.testerId}`);
               }}
             >
               <TestCard tester={card} />
@@ -71,11 +85,14 @@ export default function Home() {
       </div>
       <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
         <div className="col gap-[20px]">
-          <Link href="create-test">
-            <Fab aria-label="add" size="small" className=" hover:shadow-sm">
-              <GrAdd />
-            </Fab>
-          </Link>
+          <Fab
+            onClick={handleMyPageClick}
+            aria-label="add"
+            size="small"
+            className=" hover:shadow-sm"
+          >
+            <GrAdd />
+          </Fab>
           <UpButton />
         </div>
       </div>
