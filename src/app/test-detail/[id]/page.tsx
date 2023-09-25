@@ -34,7 +34,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       const response = await axios.post('http://13.125.200.12/api/comment', {
         content,
         userId: 'testUser',
-        testId: test?.id
+        testId: test?.id,
       });
       toast.message('저장되었습니다');
       console.log('성공:', response);
@@ -45,7 +45,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     }
   };
 
-  console.log(test)
+  console.log(test);
 
   useEffect(() => {
     setFadeOut(true);
@@ -109,7 +109,7 @@ const Page = ({ params }: { params: { id: number } }) => {
         </div>
 
         <div className="">
-          <CommentOne paramsId={paramsId}/>
+          <CommentOne paramsId={paramsId} />
         </div>
       </div>
       <div className="scroll-to-top w-full">
