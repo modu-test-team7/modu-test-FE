@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { MypageButton } from '@/components/button';
 import { getAPI } from '@/axios';
 
 export default function ParticipatedTests() {
-  const handleParticipatedTestsClick = async () => {
+  const ParticipatedTests = async () => {
     try {
       const response = await getAPI(`/api/user/join`);
       ParticipatedTests();
