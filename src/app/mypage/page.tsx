@@ -9,12 +9,12 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { TextField } from '@mui/material';
-import Loading from '@/components/Loading';
 import UnderLineInput from '@/components/Input/UnderIineInput';
 import Image from 'next/image';
 import profileImage from '../../../public/lib/images/profile/profile.jpg';
 import { ChangeEvent, FC, ReactElement } from 'react';
+
+type PageProps = {};
 
 const Page = (): ReactElement => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const Page = (): ReactElement => {
     // 로딩 애니메이션 설정
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
-    
+
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
       router.replace('/');
@@ -138,11 +138,12 @@ const Page = (): ReactElement => {
             <>
               <UnderLineInput
                 value={tempUsername}
+                setValue={setTempUsername} // Assuming setTempUsername is the correct function to use
                 onChange={handleUsernameChange}
-                inputProps={{ maxLength: 15 }} // 글자 수를 15자로 제한
-                error={!!error} // 에러 상태에 따라 error 속성 설정
-                helperText={error} // 에러 메시지 표시
-              />
+                inputProps={{ maxLength: 15 }}
+                error={!!error}
+                helperText={error}
+              ></UnderLineInput>
               <div className="cursor-pointer ml-1 mt-5" onClick={handleCheckIconClick}>
                 <BsCheckLg />
               </div>

@@ -14,7 +14,6 @@ import TestDoit from '@/components/test/TestDoit';
 import { BiCommentDetail } from 'react-icons/bi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { postAPI } from '@/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -144,6 +143,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     fetchTestCards();
   }, [router]);
 
+
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
   }
@@ -176,6 +176,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
         <div className="h-full w-full bg-white p-[10px]">{test?.content}</div>
       </div>
+      
       <div className="ml-auto bg-gray-200 px-[10px] font-bold py-[3px] rounded-[20px] text-xs text-gray-500">
         {test?.category}
       </div>
@@ -219,6 +220,7 @@ const Page = ({ params }: { params: { id: number } }) => {
             </div>
           );
         })}
+
       </div>
       <div className="sticky z-100 bottom-[40px] transform translate-x-[1050px]">
         <UpButton />

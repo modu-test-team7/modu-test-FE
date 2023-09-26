@@ -35,7 +35,6 @@ const HeaderDropdown: React.FC<HeaderDropdownProps> = () => {
           <div className="py-[5px] text-xs font-bold text-gray-600">로그인</div>
         </Link>
       )}
-    
     </div>
   );
 };
