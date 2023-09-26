@@ -52,8 +52,6 @@ const Page = ({ params }: { params: { id: number } }) => {
     comments: [
       {
         comment: '',
-        createdAt: '',
-        modifiedAt: '',
       },
     ],
   });
@@ -70,24 +68,26 @@ const Page = ({ params }: { params: { id: number } }) => {
       console.log('댓글 저장 버튼 클릭');
 
       // 댓글 추가
-      const newComments = [
-        ...formData.comments,
-        {
-          comment: commentValue,
-          createdAt: new Date().toISOString(),
-          modifiedAt: new Date().toISOString(),
-        },
-      ];
+      const newComment = {
+        comment: commentValue,
+      };
+
+      const newComments = [...formData.comments, newComment];
 
       // formData 업데이트
-      setFormData({
+      const updatedFormData = {
         ...formData,
         comments: newComments,
-      });
+      };
 
-      const response = await axios.post(`http://13.125.200.12/api/${paramsId}/comment`, {
-        ...formData,
-      });
+      setFormData(updatedFormData);
+
+      setCommentValue('');
+      console.log(formData);
+      const response = await axios.post(
+        `http://13.125.200.12/api/${paramsId}/comment`,
+        commentValue,
+      );
       toast.message('댓글이 저장되었습니다');
       console.log('성공:', response);
     } catch (error) {
@@ -187,53 +187,13 @@ const Page = ({ params }: { params: { id: number } }) => {
           }}
           onClickSaveComment={onClickSaveComment}
         />
-        {/* {test?.comments.map((comment, index) => {
+        {formData.comments.map((comment, index) => {
           return (
             <div>
-              <CommentOne comment={comment} paramsId={paramsId} />
+              <CommentOne comment={comment.comment} />
             </div>
           );
-        })} */}
-
-        {/* 댓글 하나 map 성공하면 지우기 */}
-        <div className="mb-[20px]">
-          {/* 작성 정보 */}
-
-          {/* 댓글 내용 */}
-          {formData.comments.map((comment, index) => (
-            <div className="col justify-center text-gray-500 text-sm mb-[10px]">
-              <div className="row justify-between items-center text-gray-500 text-sm mb-[10px]">
-                {/* 작성자 */}
-                <div className="row gap-1 items-center font-bold ">
-                  <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/lib/images/profile/profileSample (1).png"
-                      className="object-cover h-full w-full"
-                      alt="작성자 프로필 사진"
-                    />
-                  </div>
-                  작성자
-                </div>
-
-                {/* 작성일자 */}
-                <div>2023.09.23 14:35</div>
-              </div>
-
-              <div key={index} className="min-h-[50px] bg-gray-100">
-                {comment.comment}
-              </div>
-              <div>
-                <button type="button" onClick={() => toast.message('수정버튼')}>
-                  수정
-                </button>
-                <button>삭제</button>
-              </div>
-            </div>
-          ))}
-          {/* <div className="min-h-[50px]">{test?.comment}</div> */}
-          <hr className="my-[20px]" />
-        </div>
+        })}
       </div>
       <div className="sticky z-100 bottom-[40px] transform translate-x-[1050px]">
         <UpButton />

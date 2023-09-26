@@ -1,14 +1,13 @@
-import { Comment } from '@/type/Card';
+import { Comment, Tester } from '@/type/Card';
 import React, { useState } from 'react';
 
 type CommentOneProps = {
-  paramsId: number | string;
-  comment: string;
+  comment: string ;
 };
 
-const CommentOne: React.FC<CommentOneProps> = ({comment}) => {
+const CommentOne: React.FC<CommentOneProps> = ({comment, }) => {
   return (
-    <div className="mb-[20px]">
+    <div className="">
       {/* 작성 정보 */}
       <div className="row justify-between items-center text-gray-500 text-sm mb-[10px]">
         {/* 작성자 */}
@@ -25,7 +24,7 @@ const CommentOne: React.FC<CommentOneProps> = ({comment}) => {
         </div>
 
         {/* 작성일자 */}
-        <div>2023.09.23 14:35</div>
+        <div>2023-09-26 16:32</div>
       </div>
 
       {/* 댓글 내용 */}
