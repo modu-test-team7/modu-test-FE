@@ -18,6 +18,7 @@ import {
   TestThumbnailButton,
 } from '@/components/createTest';
 import _ from 'lodash';
+import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();
@@ -106,7 +107,7 @@ const Page = () => {
   };
 
   const updateFormData = (field: string, value: any) => {
-    console.log(formData)
+    console.log(formData);
     setFormData({
       ...formData,
       [field]: value,
@@ -132,15 +133,16 @@ const Page = () => {
   const onClickCheckChoice = (qIndex: number, cIndex: number) => {
     setFormData(prevFormData => {
       const newQuestions = _.cloneDeep(prevFormData.questions);
-      newQuestions[qIndex].choices[cIndex].isCorrect = !newQuestions[qIndex].choices[cIndex].isCorrect;
+      newQuestions[qIndex].choices[cIndex].isCorrect =
+        !newQuestions[qIndex].choices[cIndex].isCorrect;
       return { ...prevFormData, questions: newQuestions };
     });
   };
 
   const handleSubmit = async () => {
     try {
-      console.log(formData)
-      const response = await axios.post(`http://13.125.200.12/api/test/testMake`, {
+      console.log(formData);
+      const response = await postAPI(`/api/test/testMake`, {
         ...formData,
       });
       toast.message('테스트가 만들기 성공😊');
@@ -159,7 +161,9 @@ const Page = () => {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
-  if (isLoading) {return <Loading fadeout={fadeout} isLoading={isLoading} />}
+  if (isLoading) {
+    return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  }
 
   return (
     <form
@@ -213,7 +217,6 @@ const Page = () => {
             onClickCheckChoice={onClickCheckChoice}
           />
         </div>
-
 
         <Button type="submit" primary fullWidth>
           테스트 만들기 완성
