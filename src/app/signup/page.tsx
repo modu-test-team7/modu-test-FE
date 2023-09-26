@@ -130,7 +130,7 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `http://ec2-52-1-45-245.compute-1.amazonaws.com/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}/api/user/signup`,
         {
           username,
           password,

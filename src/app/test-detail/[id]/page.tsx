@@ -145,9 +145,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     fetchTestCards();
   }, [router]);
 
-  if (isLoading) {
-    return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  }
+
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
   }
@@ -180,6 +178,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
         <div className="h-full w-full bg-white p-[10px]">{test?.content}</div>
       </div>
+      
       <div className="ml-auto bg-gray-200 px-[10px] font-bold py-[3px] rounded-[20px] text-xs text-gray-500">
         {test?.category}
       </div>
