@@ -13,6 +13,7 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { validateEmail, validatePassword, validateUsername } from '@/utils/validation';
 
+
 const SignUp: React.FC = () => {
   const router = useRouter();
 
@@ -110,7 +111,7 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_TEST_SERVER_URL}/api/user/signup`,
+        `http://ec2-52-1-45-245.compute-1.amazonaws.com/api/user/signup`,
         {
           username,
           password,

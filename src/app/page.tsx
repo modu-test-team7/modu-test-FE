@@ -39,7 +39,7 @@ export default function Home() {
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://13.125.200.12/api/test`);
+        const { data } = await axios.get(`/api/test`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);

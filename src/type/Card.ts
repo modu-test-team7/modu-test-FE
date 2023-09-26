@@ -10,7 +10,7 @@ export type Tester = {
   username?: string;
   comments: string[];
   questions: string[];
-  comment: string;
+  comment: string | string[];
 };
 
 export type Questions = {

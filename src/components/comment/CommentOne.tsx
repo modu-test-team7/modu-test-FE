@@ -3,9 +3,14 @@ import React, { useState } from 'react';
 
 type CommentOneProps = {
   comment: string ;
+  onClickDeleteComment: () => void;
 };
 
-const CommentOne: React.FC<CommentOneProps> = ({comment, }) => {
+const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment}) => {
+  const onCllickDeleteButton = () => {
+    onClickDeleteComment(comment);
+  }
+
   return (
     <div className="">
       {/* 작성 정보 */}
@@ -29,7 +34,13 @@ const CommentOne: React.FC<CommentOneProps> = ({comment, }) => {
 
       {/* 댓글 내용 */}
       <div>{comment}</div>
-      <div></div>
+
+      {/* 수정 삭제 버튼 */}
+      <div className='w-full row gap-2 items-center justify-end text-xs text-gray-500'>
+        <button className=' hover:font-bold'>수정</button>
+        |
+        <button type="button" onClick={onCllickDeleteButton} className='hover:text-gray-400'>삭제</button>
+      </div>
       <hr className="my-[20px]" />
     </div>
   );

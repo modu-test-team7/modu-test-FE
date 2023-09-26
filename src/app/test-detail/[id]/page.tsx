@@ -14,6 +14,7 @@ import TestDoit from '@/components/test/TestDoit';
 import { BiCommentDetail } from 'react-icons/bi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
+import { postAPI } from '@/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -22,7 +23,7 @@ const Page = ({ params }: { params: { id: number } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -63,18 +64,37 @@ const Page = ({ params }: { params: { id: number } }) => {
     });
   };
 
+  const onClickDeleteComment = async (commentToDelete: string) => {
+    try {
+      // 여기에 DB에서 댓글을 삭제하는 코드를 넣어줘.
+      await axios.delete(`/api/${paramsId}/comment`, {
+        data: { comment: commentToDelete },
+      });
+  
+      // 프론트에서도 댓글 삭제
+      const updatedComments = test?.comments.filter((comment) => comment.comment !== commentToDelete);
+      setTest({ ...test, comments: updatedComments });
+  
+      toast.message('댓글이 삭제되었습니다!');
+    } catch (error) {
+      toast.message('댓글 삭제에 실패했습니다');
+      console.log('에러:', error);
+    }
+  };
+
   const onClickSaveComment = async () => {
     try {
-      console.log('댓글 저장 버튼 클릭');
+      if(commentValue.trim() === '') {
+        toast.message('댓글을 입력해주세요');
+        return ;
+      }
 
-      // 댓글 추가
       const newComment = {
         comment: commentValue,
       };
 
       const newComments = [...formData.comments, newComment];
 
-      // formData 업데이트
       const updatedFormData = {
         ...formData,
         comments: newComments,
@@ -82,13 +102,19 @@ const Page = ({ params }: { params: { id: number } }) => {
 
       setFormData(updatedFormData);
 
-      setCommentValue('');
-      console.log(formData);
-      const response = await axios.post(
-        `http://13.125.200.12/api/${paramsId}/comment`,
-        commentValue,
-      );
+      setTest({
+        ...test,
+        comments: [...test?.comments || [], newComment],
+      });
+
+      const response = await postAPI(
+        `/api/${paramsId}/comment`,
+        {content: commentValue},
+        )
+        // .then((data:any) => console.log(data));
+
       toast.message('댓글이 저장되었습니다');
+      setCommentValue('');
       console.log('성공:', response);
     } catch (error) {
       toast.message('실패하였습니다');
@@ -126,8 +152,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     setIsOpen(!isOpen);
     console.log(isOpen);
   };
-  console.log(paramsId);
-
+  console.log(test)
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
       <div className="w-full row justify-between items-end">
@@ -164,7 +189,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       </div>
 
       {/* 테스트하기 */}
-      {/* {isOpen && <TestDoit test={test}/>} */}
+      {isOpen && <TestDoit paramsId={paramsId}/>}
       {/* {isOpen && (
         <div>
       )} */}
@@ -187,10 +212,10 @@ const Page = ({ params }: { params: { id: number } }) => {
           }}
           onClickSaveComment={onClickSaveComment}
         />
-        {formData.comments.map((comment, index) => {
+        {test?.comments.map((comment, index) => {
           return (
             <div>
-              <CommentOne comment={comment.comment} />
+              <CommentOne comment={comment.comment} onClickDeleteComment={onClickDeleteComment}/>
             </div>
           );
         })}

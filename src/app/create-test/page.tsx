@@ -18,6 +18,7 @@ import {
   TestThumbnailButton,
 } from '@/components/createTest';
 import _ from 'lodash';
+import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();
@@ -142,7 +143,7 @@ const Page = () => {
   const handleSubmit = async () => {
     try {
       console.log('=================formData' , formData)
-      const response = await axios.post(`http://13.125.200.12/api/test/testMake`, {
+      const response = await postAPI(`/api/test/testMake`, {
         ...formData,
       });
       toast.message('테스트가 만들기 성공😊');
