@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
+import { getAPI } from '@/axios';
 
 export default function Home() {
   const [testCards, setTestCards] = useState<Tester[]>([]);
@@ -30,14 +31,14 @@ export default function Home() {
     }
   };
 
-  console.log(testCards)
+  console.log(testCards);
   useEffect(() => {
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await axios.get(`http://13.125.200.12/api/test`);
+        const { data } = await getAPI(`/api/test`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -69,7 +70,6 @@ export default function Home() {
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
         {testCards.map(card => {
-          
           return (
             // as={`/test-detail/${card.id}`}
             <div
@@ -83,7 +83,7 @@ export default function Home() {
           );
         })}
       </div>
-      <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
+      {/* <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
         <div className="col gap-[20px]">
           <Fab
             onClick={handleMyPageClick}
@@ -95,7 +95,7 @@ export default function Home() {
           </Fab>
           <UpButton />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

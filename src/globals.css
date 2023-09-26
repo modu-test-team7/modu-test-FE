@@ -82,14 +82,18 @@ body {
   z-index: 5;
 }
 
-.input::placeholder { color: #aaaaaa; }
-.input:focus { outline: none; }
+.input::placeholder {
+  color: #aaaaaa;
+}
+.input:focus {
+  outline: none;
+}
 
 .span {
   display: block;
   position: absolute;
   bottom: 0;
-  left: 0%;  /* right로만 바꿔주면 오 - 왼 */
+  left: 0%; /* right로만 바꿔주면 오 - 왼 */
   background-color: #666;
   width: 0;
   height: 2px;
@@ -103,16 +107,18 @@ body {
   left: 14px;
   font-size: 14px;
   bottom: 8px;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
-.input:focus ~ .label, .input:valid ~ .label {
+.input:focus ~ .label,
+.input:valid ~ .label {
   font-size: 12px;
   bottom: 40px;
   color: #666;
   font-weight: bold;
 }
 
-.input:focus ~ .span, .input:valid ~ .span {
+.input:focus ~ .span,
+.input:valid ~ .span {
   width: 100%;
 }

@@ -8,7 +8,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { useSignUpStore } from '../../store/signupStore';
 import Button from '@/components/button/Button';
 import { toast } from 'sonner';
-import SignUpInput from '../../components/Input/SignUpInput';
+import { SignUpInput } from '@/components/Input';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import {
@@ -129,7 +129,7 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_TEST_SERVER_URL}/api/user/signup`,
         {
           username,
           password,
