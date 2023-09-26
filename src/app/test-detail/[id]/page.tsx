@@ -5,7 +5,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-import { CommentOne, CommentInput } from '@/components/comment';
+import { CommentOne, CommentInput } from '@/app/test-detail/[id]/component';
 import { Button, ButtonGroup, UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
 import { Tester, Comment } from '@/type/Card';
@@ -82,7 +82,7 @@ const Page = ({ params }: { params: { id: number } }) => {
   const onClickSaveComment = async () => {
     try {
       if(commentValue.trim() === '') {
-        toast.message('댓글을 입력해주세요');
+        toast.error('댓글을 입력해주세요');
         return ;
       }
 
@@ -213,10 +213,9 @@ const Page = ({ params }: { params: { id: number } }) => {
           onClickSaveComment={onClickSaveComment}
         />
         {test?.comments.map((comment, index) => {
-          console.log('test==================', test)
           return (
             <div key={index}>
-              <CommentOne commentWriter={comment.username} comment={comment.comment} onClickDeleteComment={onClickDeleteComment}/>
+              <CommentOne commentWriter={comment.username} comment={comment.content} onClickDeleteComment={onClickDeleteComment}/>
             </div>
           );
         })}

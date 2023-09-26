@@ -1,30 +1,20 @@
 'use client';
 
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 import { TextField } from '@mui/material';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/button';
-import Loading from '@/components/Loading';
 import UnderLineInput from '@/components/Input/UnderIineInput';
-import {
-  TestInputGroup,
-  TestPictureButton,
-  TestThumbnail,
-  TestCategory,
-  TestThumbnailButton,
-} from '@/components/createTest';
+import { TestCategory, TestThumbnail, TestThumbnailButton } from './components/'
+import TestInputGroup from './components/TestInPutGroup/TestInputGroup';
 import _ from 'lodash';
 import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [fadeout, setFadeOut] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -156,15 +146,9 @@ const Page = () => {
   };
 
   useEffect(() => {
+    // 페이지 이동 후 자동으로 (0, 0) 위치 보여줌
     window.scrollTo(0, 0);
-
-    setFadeOut(true);
-    setTimeout(() => setIsLoading(false), 1000);
   }, []);
-
-  if (isLoading) {
-    return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  }
 
   return (
     <form

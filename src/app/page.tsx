@@ -33,7 +33,7 @@ export default function Home() {
 
     const fetchTestCards = async () => {
       try {
-        const { data } = await getAPI(`/api/test`);
+        const { data } = await getAPI(`/api/tests`);
         // const { data } = await getAPI(`/api/tests`);
         setTestCards(data);
       } catch (error) {
@@ -85,7 +85,7 @@ export default function Home() {
               key={index}
               onClick={() => {
                 if (isLogged) {
-                  router.push(`/test-detail/${card.testerId}`);
+                  router.push(`/test-detail/${card.testId}`);
                 } else {
                   toast.error('로그인을 먼저 해주세요!');
                 }
@@ -97,7 +97,7 @@ export default function Home() {
         })}
       </div>
 
-      <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
+      <div className="sticky z-100 transform translate-x-[1250px] translate-y-[200px] mb-[50px]">
         <div className="col gap-[20px]">
           <Fab
             onClick={() => {

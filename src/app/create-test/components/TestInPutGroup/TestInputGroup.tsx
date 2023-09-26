@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, SetStateAction } from 'react';
 import { AiOutlineDelete, AiOutlineSmile, AiOutlinePlus } from 'react-icons/ai';
-import { TestThumbnail, TestInput, TestPictureButton } from '.';
+import { TestThumbnail,  } from '..';
+import TestInput from './TestInput/TestInput'
 import { Choice, Questions } from '@/type/Card';
-import { useTestStore } from '../../store/testStore';
 
 type TestInputGroupProps = {
   questionValue: any;
@@ -42,7 +42,6 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
   };
 
 
-  console.log(questionValue);
   return (
     <div>
       {questionValue.map((question: Questions, qIndex: number) => (
