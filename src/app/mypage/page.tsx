@@ -1,166 +1,86 @@
 'use client';
-
-import React from 'react';
-
-import { useState, useEffect, useRef } from 'react';
-import { RiImageEditFill, RiEdit2Fill } from 'react-icons/ri';
-import { BsCheckLg } from 'react-icons/bs';
-import { MdOutlineCancel } from 'react-icons/md';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { TextField } from '@mui/material';
 import Loading from '@/components/Loading';
-import UnderLineInput from '@/components/Input/UnderIineInput';
-import Image from 'next/image';
-import profileImage from '../../../public/lib/images/profile/profile.jpg';
-import { ChangeEvent, FC, ReactElement } from 'react';
+import { MypageButton } from '@/components/button';
+import { ProfileImage, UserInfo, ParticipatedTests, CreatedTests } from '@/app/mypage/components';
 
-const Page = (): ReactElement => {
+const Mypage: React.FC = () => {
   const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
+  const [image, setImage] = useState<string>('/lib/images/blank.png');
+  const [username, setUsername] = useState<string>('지두팔'); // 임시
+  const [participatedTests, setParticipatedTests] = useState(false);
+  const [createdTests, setCreatedTests] = useState<any[]>([]);
+  const [isParticipatedTestsVisible, setIsParticipatedTestsVisible] = useState(false);
+  const [isCreatedTestsVisible, setIsCreatedTestsVisible] = useState(false);
 
   useEffect(() => {
     // 로딩 애니메이션 설정
     setFadeOut(true);
-    setTimeout(() => setIsLoading(false), 1000);
-    
-    const accessToken = Cookies.get('accessToken');
-    if (!accessToken) {
-      router.replace('/');
+
+    async function initialize() {
+      // 토큰 확인
+      const accessToken = Cookies.get('accessToken'); // 쿠키에서 엑세스 토큰 가져오기
+      // if 엑세스 토큰이 없으면?
+      if (!accessToken) {
+        router.replace('/'); // 메인으로 리다이렉트
+        return; // 토큰이 없으면 여기서 종료 (이후 코드 실행 X)
+      }
+
+      try {
+        // 서버에서 사용자 정보를 가져오는 함수
+        const response = await axios.get('/user');
+        // 응답에서 username을 가져와 setUsername 상태를 업데이트하거나, username이 없으면 '지두팔'로 설정
+        setUsername(response.data.username || '지두팔');
+        // 응답에서 image를 가져와 setImage 상태를 업데이트하거나, image가 없으면 기본 이미지
+        setImage(response.data.image || '/lib/images/blank.png');
+      } catch (error) {
+        // 요청 실패 시, catch 블록 실행됨, 에러 객체 받음
+        console.error('Failed to fetch user info:', error);
+      } finally {
+        // try || catch 블록 실행 후 finally 블록 실행
+        // 로딩 애니메이션 종료
+        setTimeout(() => setIsLoading(false), 1000); // 1초 후 setIsLoading 호출하며 로딩 상태를 false로 설정
+      }
     }
+
+    initialize(); // 위에서 정의한 함수를 호출
   }, [router]);
 
-  // 초기값은 프로필 사진 없을 때 넣을 기본 이미지
-  const [image, setImage] = useState<string>('/lib/images/blank.png');
-  const fileInput = useRef<HTMLInputElement>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
-  const [tempUsername, setTempUsername] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-
-  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-    if (value.length > 15) {
-      setError('닉네임은 15자를 초과할 수 없습니다.'); // 15자를 초과하면 에러 메시지 설정
-    } else {
-      setError(null); // 그렇지 않으면 에러 메시지 제거
-    }
-    setTempUsername(value); // 사용자가 입력한 값을 tempUsername 상태에 저장
+  const handleCreatedTestsClick = () => {
+    setIsCreatedTestsVisible(prevState => !prevState); // 만든 테스트를 보이게 설정
+    setIsParticipatedTestsVisible(false); // 참여 테스트를 숨기게 설정
   };
 
-  // 닉네임 edit 아이콘🖍 클릭 시,
-  const handleEditIconClick = (): void => {
-    setIsEditing(true);
-    setTempUsername(username);
-  };
-
-  // 닉네임 수정 후 체크✅ 아이콘 클릭 시,
-  const handleCheckIconClick = (): void => {
-    setIsEditing(false);
-    setUsername(tempUsername);
-  };
-
-  // 닉네임 수정 후 🚫 cancle 아이콘 클릭 시,
-  const handleCancelIconClick = (): void => {
-    setIsEditing(false);
-  };
-
-  const handleImage = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
-    // 내가 받을 파일은 하나기 때문에 index 0값의 이미지를 가짐
-    const file = e.target.files ? e.target.files[0] : null;
-    if (!file) return;
-
-    // 이미지 화면에 띄우기
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e: Event) => {
-      const target = e.target as FileReader;
-      if (target.readyState === FileReader.DONE) {
-        setImage(target.result as string);
-      }
-    };
-
-    // 이미지 파일을 formData에 담아서 서버에 보내고, 서버는 받은 이미지 파일을 S3에 저장하고 받은 URL 값을 클라이언트로 반환해준다.
-    const formData = new FormData();
-    formData.append('image', file);
-    try {
-      const imageRes = await axios.post(process.env.NEXT_PUBLIC_TEST_SERVER_URL!, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      const image_URL = imageRes.data.imageURL;
-    } catch (e: any) {
-      console.error(e.response);
-    }
+  const handleParticipatedTestsClick = () => {
+    setIsParticipatedTestsVisible(prevState => !prevState); // 참여 테스트를 보이게 설정
+    setIsCreatedTestsVisible(false); // 만든 테스트를 숨기게 설정
   };
 
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
 
   return (
-    <div className="w-[800px] h-[100%] mx-auto mt-16 p-8 flex bg-[--dark_gray]">
-      <div className="relative">
-        <div className="flex flex-col justify-center items-center h-[150px] w-[150px] rounded-full overflow-hidden border border-gray-300">
-          <Image
-            src={image !== '/lib/images/blank.png' ? image : profileImage}
-            alt="프로필 사진"
-            width={150}
-            height={150}
-          />
-        </div>
-        {/* 실제 이미지 받을 file 타입의 input */}
-        <input
-          type="file"
-          name="image_URL"
-          id="input-file"
-          accept="image/*"
-          style={{ display: 'none' }}
-          ref={fileInput}
-          onChange={handleImage}
-        />
-        <div>
-          {/* 이미지 파일 업로드 아이콘 */}
-          <label
-            className="absolute bottom-2 right-0 z-500 flex items-center justify-center h-10 w-10 rounded-full bg-black"
-            htmlFor="input-file"
-            style={{ cursor: 'pointer' }}
-          >
-            <RiImageEditFill className="text-white" size={24} />
-          </label>
-        </div>
+    <div>
+      <div className="max-w-[1200px] mx-auto mt-16 p-8 flex bg-[#11B767]">
+        <ProfileImage image={image} setImage={setImage} />
+        <UserInfo username={username} setUsername={setUsername} />
       </div>
-
-      <div className="flex-col m-auto">
-        <h5 className="text-lg">환영합니다 👼</h5>
-        <div className="flex">
-          {isEditing ? (
-            <>
-              <UnderLineInput
-                value={tempUsername}
-                onChange={handleUsernameChange}
-                inputProps={{ maxLength: 15 }} // 글자 수를 15자로 제한
-                error={!!error} // 에러 상태에 따라 error 속성 설정
-                helperText={error} // 에러 메시지 표시
-              />
-              <div className="cursor-pointer ml-1 mt-5" onClick={handleCheckIconClick}>
-                <BsCheckLg />
-              </div>
-              <div className="cursor-pointer ml-1 mt-5" onClick={handleCancelIconClick}>
-                <MdOutlineCancel />
-              </div>
-            </>
-          ) : (
-            <>
-              <h1 className="text-3xl">{username}</h1>
-              <div className="cursor-pointer ml-1 mt-5" onClick={handleEditIconClick}>
-                <RiEdit2Fill />
-              </div>
-            </>
-          )}
+      <div className="flex flex-col w-[1200px] h-[100vh] mx-auto p-5 bg-slate-100 overflow-y-auto">
+        <div className="mt-5 flex-grow bg-slate-100">
+          <MypageButton label="참여 테스트" onClick={handleParticipatedTestsClick} />
+          <MypageButton label="만든 테스트" onClick={handleCreatedTestsClick} />
+        </div>
+        <div className="max-w-[1150px] mx-auto">
+          {isParticipatedTestsVisible && <ParticipatedTests />}
+          {isCreatedTestsVisible && <CreatedTests />}
         </div>
       </div>
     </div>
   );
 };
-export default Page;
+
+export default Mypage;

@@ -141,9 +141,13 @@ const Page = ({ params }: { params: { id: number } }) => {
       }
     };
 
+
     fetchTestCards();
   }, [router]);
 
+  if (isLoading) {
+    return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  }
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
   }

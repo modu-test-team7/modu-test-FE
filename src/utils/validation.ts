@@ -12,3 +12,8 @@ export const validateUsername = (username: string): boolean => {
   const idRegex = /^[A-Za-z0-9]{4,10}$/;
   return idRegex.test(username);
 };
+
+export const validateNickname = (nickname: string): boolean => {
+  const regex = /^[a-zA-Z가-힣]{2,8}$/;
+  return regex.test(nickname);
+};

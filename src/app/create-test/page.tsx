@@ -19,6 +19,7 @@ import {
 } from '@/components/createTest';
 import _ from 'lodash';
 import { postAPI } from '@/axios';
+import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();
@@ -162,7 +163,9 @@ const Page = () => {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
-  if (isLoading) {return <Loading fadeout={fadeout} isLoading={isLoading} />}
+  if (isLoading) {
+    return <Loading fadeout={fadeout} isLoading={isLoading} />;
+  }
 
   return (
     <form
@@ -216,7 +219,6 @@ const Page = () => {
             updateChoiceCorrect={updateChoiceCorrect}
           />
         </div>
-
 
         <Button type="submit" primary fullWidth>
           테스트 만들기 완성
