@@ -9,10 +9,11 @@ export type Tester = {
   likes: string | number;
   category: string;
   username?: string;
-  comments: string[];
+  comments: string[] | string;
   questions: string[];
   comment: any;
   commentId: number;
+  participates: number;
 };
 
 export type Questions = {

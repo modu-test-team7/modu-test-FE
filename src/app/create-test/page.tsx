@@ -16,7 +16,7 @@ import { postAPI } from '@/axios';
 const Page = () => {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateTest>({
     title: '',
     content: '',
     image: '',
@@ -38,6 +38,11 @@ const Page = () => {
         image: '',
         content: '',
         score: 0,
+      },
+    ],
+    comments: [
+      {
+        comment: '',
       },
     ],
   });
@@ -192,14 +197,15 @@ const Page = () => {
           <TestInputGroup
             questionValue={formData.questions}
             choiceValue={formData.questions.map(q => q.choices)}
-            addQuestion={addQuestion}
-            removeQuestion={removeQuestion}
-            updateQuestion={updateQuestion}
-            updateChoice={updateChoice}
-            addChoice={addChoice}
-            removeChoice={removeChoice}
-            updateQuestionImage={updateQuestionImage}
-            updateChoiceCorrect={updateChoiceCorrect}
+            // addQuestion={addQuestion}
+            // removeQuestion={removeQuestion}
+            // updateQuestion={updateQuestion}
+            // updateChoice={updateChoice}
+            // addChoice={addChoice}
+            // removeChoice={removeChoice}
+            // updateQuestionImage={updateQuestionImage}
+            // updateChoiceCorrect={updateChoiceCorrect}
+            setFormData={setFormData}
           />
         </div>
 

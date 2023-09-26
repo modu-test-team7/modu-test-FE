@@ -18,19 +18,18 @@ import { getAPI, postAPI } from '@/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
-  const [test, setTest] = useState<Tester>();
+  const [test, setTest] = useState<Tester[]>([]);
   const [commentValue, setCommentValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateTest>({
     title: '',
     content: '',
     image: '',
     category: '',
-    participates: 1,
     questions: [
       {
         title: '',
@@ -65,7 +64,6 @@ const Page = ({ params }: { params: { id: number } }) => {
   };
 
   const onClickDeleteComment = async (comment: any) => {
-    
     try {
       const response = await axios.delete(`/api/${paramsId}/comment/${comment.commentId}`);
       if (response.data.statusCode === 200) {
@@ -73,7 +71,6 @@ const Page = ({ params }: { params: { id: number } }) => {
         // 댓글 목록 새로고침 로직이나 다른 후처리
       }
     } catch (error) {
-      console.log('{test?.commentId}',test?.commentId)
       toast.message('댓글 삭제 실패');
       console.log('에러:', error);
     }
@@ -81,33 +78,37 @@ const Page = ({ params }: { params: { id: number } }) => {
 
   const onClickSaveComment = async () => {
     try {
-      if(commentValue.trim() === '') {
+      if (commentValue.trim() === '') {
         toast.error('댓글을 입력해주세요');
-        return ;
+        return;
       }
 
       const newComment = {
         comment: commentValue,
       };
 
-      const newComments = [...formData.comments, newComment];
+      // const newComments = [...formData.comments, newComment];
 
-      const updatedFormData = {
-        ...formData,
+      // const updatedFormData = {
+      //   ...formData,
+      //   comments: newComments,
+      // };
+
+      // setFormData(updatedFormData);
+
+      const newComments = [...(test?.comments || []), { username: '나중에 바꿔', content: commentValue }];
+
+      // setTest({
+      //   ...test,
+      //   comments: [...(test?.comments || []), newComment],
+      // });
+      setTest((prevTest) => ({
+        ...prevTest,
         comments: newComments,
-      };
+      }));
 
-      setFormData(updatedFormData);
-
-      setTest({
-        ...test,
-        comments: [...test?.comments || [], newComment],
-      });
-
-      const response = await postAPI(
-        `/api/${paramsId}/comment`,
-        {content: commentValue},
-        ).then((data:any) => console.log(data));
+      const response = await postAPI(`/api/${paramsId}/comment`, { content: commentValue });
+      // .then((data:any) => console.log(data));
 
       toast.message('댓글이 저장되었습니다');
       setCommentValue('');
@@ -121,7 +122,7 @@ const Page = ({ params }: { params: { id: number } }) => {
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
-      toast.message('로그인 후 이용 해 주세요')
+      toast.message('로그인 후 이용 해 주세요');
       router.replace('/');
     }
 
@@ -137,11 +138,11 @@ const Page = ({ params }: { params: { id: number } }) => {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
       }
     };
-
-
+    
     fetchTestCards();
   }, [router]);
 
+  
 
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
@@ -151,9 +152,10 @@ const Page = ({ params }: { params: { id: number } }) => {
     setIsOpen(!isOpen);
     console.log(isOpen);
   };
-  console.log(test)
+  
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
+      <button className="bg-red-200 p-[10px] rounded-lg" onClick={() => console.log(test)}>데이터 찍어보기</button>
       <div className="w-full row justify-between items-end">
         <div className="text-lg font-bold">{test?.title}</div>
         <div className="row text-gray-500 text-sm gap-2">
@@ -175,7 +177,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
         <div className="h-full w-full bg-white p-[10px]">{test?.content}</div>
       </div>
-      
+
       <div className="ml-auto bg-gray-200 px-[10px] font-bold py-[3px] rounded-[20px] text-xs text-gray-500">
         {test?.category}
       </div>
@@ -189,7 +191,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       </div>
 
       {/* 테스트하기 */}
-      {isOpen && <TestDoit paramsId={paramsId}/>}
+      {isOpen && <TestDoit paramsId={paramsId} />}
       {/* {isOpen && (
         <div>
       )} */}
@@ -212,10 +214,14 @@ const Page = ({ params }: { params: { id: number } }) => {
           }}
           onClickSaveComment={onClickSaveComment}
         />
-        {test?.comments.map((comment, index) => {
+        {test?.comments?.map((comment, index) => {
           return (
             <div key={index}>
-              <CommentOne commentWriter={comment.username} comment={comment.content} onClickDeleteComment={onClickDeleteComment}/>
+              <CommentOne
+                commentWriter={comment.username}
+                comment={comment.content}
+                onClickDeleteComment={onClickDeleteComment}
+              />
             </div>
           );
         })}

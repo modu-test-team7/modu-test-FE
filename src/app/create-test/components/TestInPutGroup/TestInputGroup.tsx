@@ -1,46 +1,98 @@
-import React, { useState, ChangeEvent, SetStateAction } from 'react';
+import React, { SetStateAction } from 'react';
 import { AiOutlineDelete, AiOutlineSmile, AiOutlinePlus } from 'react-icons/ai';
-import { TestThumbnail,  } from '..';
-import TestInput from './TestInput/TestInput'
+import { FiX } from 'react-icons/fi';
+import { BsCheckLg } from 'react-icons/bs';
 import { Choice, Questions } from '@/type/Card';
+import Checkbox from '@mui/material/Checkbox';
 
 type TestInputGroupProps = {
   questionValue: any;
-  choiceValue: any;
-  setTitleValue?: (value: string) => void;
-  name?: string;
-  addQuestion: () => void;
-  removeQuestion: (qIndex:number) => void;
-  updateQuestion: (qIndex: number, newQuestion: string) => void;
-  updateChoice: (qIndex: number, cIndex: number, newChoice: string) => void;
-  updateChoiceCorrect: (qIndex: number, cIndex: number, curIsCorrect: boolean) => void;
-  addChoice: (qIndex: number) => void;
-  removeChoice: (qIndex: number, cIndex: number) => void;
-  updateQuestionImage: (qIndex: number, newImage: string) => void;
-  // setState:React.Dispatch<SetStateAction<스테이트의 type>>;
+  setFormData: React.Dispatch<SetStateAction<CreateTest>>;
 };
 
-const TestInputGroup: React.FC<TestInputGroupProps> = ({
-  questionValue,
-  setTitleValue,
-  name,
-  addQuestion,
-  removeQuestion,
-  updateQuestion,
-  updateChoice,
-  addChoice,
-  removeChoice,
-  updateQuestionImage,
-  updateChoiceCorrect
-}) => {
-  const onChangeQuestion = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
-    updateQuestion(qIndex, e.target.value);
+const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormData }) => {
+  // 질문 +
+  const addQuestion = () => {
+    setFormData(prevFormData => {
+      const addQ = {
+        title: '',
+        image: '',
+        choices: [{ content: '', isCorrect: false }],
+      };
+      return { ...prevFormData, questions: [...prevFormData.questions, addQ] };
+    });
   };
 
-  const onChangeChoice = (qIndex: number, cIndex: number, e: ChangeEvent<HTMLInputElement>) => {
-    updateChoice(qIndex, cIndex, e.target.value);
+  // 질문 -
+  const removeQuestion = (qIndex: number) => {
+    setFormData(prevFormData => {
+      const prevQ = [...prevFormData.questions].filter((_, idx) => qIndex !== idx);
+      return { ...prevFormData, questions: prevQ };
+    });
   };
 
+  // 질문 Onchange
+  const onChangeQuestion = (qIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prevFormData => {
+      const updatedQuestions = [...prevFormData.questions];
+      updatedQuestions[qIndex].title = e.target.value;
+      return { ...prevFormData, questions: updatedQuestions };
+    });
+  };
+
+  // 선택지 +
+  const addChoice = (qIndex: number) => {
+    console.log('addChoice');
+    setFormData?.(prevFormData => {
+      const updatedQuestions = [...prevFormData.questions];
+
+      const newChoice = {
+        content: '',
+        isCorrect: false,
+      };
+
+      updatedQuestions[qIndex].choices = [...updatedQuestions[qIndex].choices, newChoice];
+
+      return { ...prevFormData, questions: updatedQuestions };
+    });
+  };
+
+  // 선택지 -
+  const removeChoice = (qIndex: number, cIndex: number) => {
+    setFormData?.(prevFormData => {
+      const updatedQuestions = [...prevFormData.questions];
+
+      updatedQuestions[qIndex].choices = updatedQuestions[qIndex].choices.filter(
+        (_, index) => index !== cIndex,
+      );
+
+      return { ...prevFormData, questions: updatedQuestions };
+    });
+  };
+
+  // 선택지 onChange
+  const onChangeChoice = (
+    qIndex: number,
+    cIndex: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setFormData?.(prevFormData => {
+      const updatedQuestions = [...prevFormData.questions];
+      if (updatedQuestions[qIndex] && updatedQuestions[qIndex].choices[cIndex]) {
+        updatedQuestions[qIndex].choices[cIndex].content = e.target.value;
+      }
+      return { ...prevFormData, questions: updatedQuestions };
+    });
+  };
+
+  const onChnageCheckbox = (qIndex: number, cIndex: number, curIsCorrect: boolean) => {
+    setFormData(prevFormData => {
+      const copyPrev = { ...prevFormData };
+      const { questions } = copyPrev;
+      questions[qIndex].choices[cIndex].isCorrect = !curIsCorrect;
+      return { ...prevFormData, questions };
+    });
+  };
 
   return (
     <div>
@@ -57,45 +109,50 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
               <button type="button" onClick={addQuestion}>
                 <AiOutlinePlus size={25} className="ml-[5px]" />
               </button>
-              {/* <div className="ml-auto mt-[10px]">
-                <TestPictureButton
-                  small
-                  questionId={question.id}
-                  // setImage={value => updateFormData('image', value)}
-                />
-              </div> */}
+
               <button type="button" onClick={() => removeQuestion(qIndex)}>
                 <AiOutlineDelete size={25} className="ml-[5px]" />
               </button>
             </div>
           </div>
 
-          {/* 질문 사진 */}
-          <div className="mx-auto max-w-[500px] rounded-lg mb-[10px]">
-            <TestThumbnail image={question.image} />
+          <div className="bg-blue-50 h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[15px]">
+            <input
+              placeholder="질문을 입력 해 주세요"
+              className="bg-transparent w-[900px] focus:outline-none text-sm text-gray-900"
+              value={question.title}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeQuestion(qIndex, e)}
+            />
           </div>
-          <TestInput
-            value={question.title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeQuestion(qIndex, e)}
-          />
 
           {/* 선택지 */}
           {question.choices.map((choice: Choice, cIndex: number) => (
-            <div key={cIndex}>
-              <TestInput
-                optionInput
-                // qIndex={qIndex}
-                // cIndex={cIndex}
-                onChnageCheckbox={(value:boolean) =>{
-                updateChoiceCorrect(qIndex, cIndex, value)}}
+            <div
+              key={cIndex}
+              className="bg-blue-50 h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[5px]"
+            >
+              <Checkbox
+                onChange={() => onChnageCheckbox(qIndex, cIndex, choice.isCorrect)}
+                icon={<BsCheckLg />}
+                checkedIcon={<BsCheckLg />}
+                checked={choice.isCorrect}
+              />
+              <input
+                placeholder="선택지를 입력 해 주세요"
+                className="bg-transparent w-[900px] focus:outline-none text-sm text-gray-900"
                 value={choice.content}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   onChangeChoice(qIndex, cIndex, e)
                 }
-                plusButton={() => addChoice(qIndex)}
-                deleteButton={() => removeChoice(qIndex, cIndex)}
-                isCorrect={choice.isCorrect}
               />
+              <div className="text-gray-500 flex flex-row items-center justify-end">
+                <button type="button">
+                  <AiOutlinePlus onClick={() => addChoice(qIndex)} />
+                </button>
+                <button type="button">
+                  <FiX className="ml-[5px]" onClick={() => removeChoice(qIndex, cIndex)} />
+                </button>
+              </div>
             </div>
           ))}
         </div>
