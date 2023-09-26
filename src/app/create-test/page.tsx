@@ -19,7 +19,6 @@ import {
 } from '@/components/createTest';
 import _ from 'lodash';
 import { postAPI } from '@/axios';
-import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();

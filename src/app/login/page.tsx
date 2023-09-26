@@ -49,6 +49,9 @@ const Login: React.FC<PageProps> = () => {
         toast.error(error.response.data.message);
         toast.error('로그인 실패 😥');
         console.log(error);
+        if (error.response) {
+          console.log("Data:", JSON.stringify(error.response.data, null, 2));
+        }
       });
 
     // axios

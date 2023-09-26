@@ -17,6 +17,7 @@ import {
   validateUsername,
   validateNickname,
 } from '@/utils/validation';
+import { postAPI } from '@/axios';
 
 
 const SignUp: React.FC = () => {
@@ -129,15 +130,14 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}/api/user/signup`,
+      const response = await postAPI(
+        `/api/user/signup`,
         {
           username,
           password,
           email,
           nickname,
-        },
-        { withCredentials: true },
+        }
       );
       console.log('API response:', response);
 

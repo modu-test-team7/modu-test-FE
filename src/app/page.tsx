@@ -23,14 +23,6 @@ export default function Home() {
 
   const isLogged = Boolean(Cookies.get('accessToken'));
 
-  const handleMyPageClick = () => {
-    if (isLogged) {
-      router.push('/create-test');
-    } else {
-      toast.error('로그인을 먼저 해주세요!');
-    }
-  };
-
   console.log(testCards);
   console.log(testCards);
   useEffect(() => {
@@ -42,6 +34,7 @@ export default function Home() {
     const fetchTestCards = async () => {
       try {
         const { data } = await getAPI(`/api/test`);
+        // const { data } = await getAPI(`/api/tests`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -84,13 +77,18 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards.map(card => {
+        {testCards.map((card, index) => {
+          console.log(card);
           return (
             // as={`/test-detail/${card.id}`}
             <div
-              key={card.testerId}
+              key={index}
               onClick={() => {
-                return router.push(`/test-detail/${card.testerId}`);
+                if (isLogged) {
+                  router.push(`/test-detail/${card.testerId}`);
+                } else {
+                  toast.error('로그인을 먼저 해주세요!');
+                }
               }}
             >
               <TestCard tester={card} />
@@ -99,19 +97,23 @@ export default function Home() {
         })}
       </div>
 
-      <div className="sticky z-100 translate-y-[200px] transform translate-x-[1250px] mb-[50px]">
-        <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
-          <div className="col gap-[20px]">
-            <Fab
-              onClick={handleMyPageClick}
-              aria-label="add"
-              size="small"
-              className=" hover:shadow-sm"
-            >
-              <GrAdd />
-            </Fab>
-            <UpButton />
-          </div>
+      <div className="sticky z-100 bottom-[60px] transform translate-x-[1250px] mb-[50px]">
+        <div className="col gap-[20px]">
+          <Fab
+            onClick={() => {
+              if (isLogged) {
+                router.push(`/create-test`);
+              } else {
+                toast.error('로그인을 먼저 해주세요!');
+              }
+            }}
+            aria-label="add"
+            size="small"
+            className=" hover:shadow-sm"
+          >
+            <GrAdd />
+          </Fab>
+          <UpButton />
         </div>
       </div>
     </div>

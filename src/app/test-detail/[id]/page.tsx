@@ -14,7 +14,7 @@ import TestDoit from '@/components/test/TestDoit';
 import { BiCommentDetail } from 'react-icons/bi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { postAPI } from '@/axios';
+import { getAPI, postAPI } from '@/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -64,20 +64,17 @@ const Page = ({ params }: { params: { id: number } }) => {
     });
   };
 
-  const onClickDeleteComment = async (commentToDelete: string) => {
+  const onClickDeleteComment = async (comment: any) => {
+    
     try {
-      // 여기에 DB에서 댓글을 삭제하는 코드를 넣어줘.
-      await axios.delete(`/api/${paramsId}/comment`, {
-        data: { comment: commentToDelete },
-      });
-  
-      // 프론트에서도 댓글 삭제
-      const updatedComments = test?.comments.filter((comment) => comment.comment !== commentToDelete);
-      setTest({ ...test, comments: updatedComments });
-  
-      toast.message('댓글이 삭제되었습니다!');
+      const response = await axios.delete(`/api/${paramsId}/comment/${comment.commentId}`);
+      if (response.data.statusCode === 200) {
+        toast.message('댓글 삭제 완료');
+        // 댓글 목록 새로고침 로직이나 다른 후처리
+      }
     } catch (error) {
-      toast.message('댓글 삭제에 실패했습니다');
+      console.log('{test?.commentId}',test?.commentId)
+      toast.message('댓글 삭제 실패');
       console.log('에러:', error);
     }
   };
@@ -110,8 +107,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       const response = await postAPI(
         `/api/${paramsId}/comment`,
         {content: commentValue},
-        )
-        // .then((data:any) => console.log(data));
+        ).then((data:any) => console.log(data));
 
       toast.message('댓글이 저장되었습니다');
       setCommentValue('');
@@ -125,6 +121,7 @@ const Page = ({ params }: { params: { id: number } }) => {
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
+      toast.message('로그인 후 이용 해 주세요')
       router.replace('/');
     }
 
@@ -134,7 +131,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     const fetchTestCards = async () => {
       try {
         window.scrollTo(0, 0);
-        const { data } = await axios.get(`http://13.125.200.12/api/test/${paramsId}`);
+        const { data } = await getAPI(`/api/test/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -216,9 +213,10 @@ const Page = ({ params }: { params: { id: number } }) => {
           onClickSaveComment={onClickSaveComment}
         />
         {test?.comments.map((comment, index) => {
+          console.log('test==================', test)
           return (
-            <div>
-              <CommentOne comment={comment.comment} onClickDeleteComment={onClickDeleteComment}/>
+            <div key={index}>
+              <CommentOne commentWriter={comment.username} comment={comment.comment} onClickDeleteComment={onClickDeleteComment}/>
             </div>
           );
         })}

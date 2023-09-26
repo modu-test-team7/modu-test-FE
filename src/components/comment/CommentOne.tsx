@@ -4,12 +4,15 @@ import React, { useState } from 'react';
 type CommentOneProps = {
   comment: string ;
   onClickDeleteComment: () => void;
+  commentWriter: string;
 };
 
-const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment}) => {
+const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment, commentWriter}) => {
   const onCllickDeleteButton = () => {
     onClickDeleteComment(comment);
   }
+
+  
 
   return (
     <div className="">
@@ -25,7 +28,7 @@ const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment}) 
               alt="작성자 프로필 사진"
             />
           </div>
-          작성자
+          {commentWriter} 작성자
         </div>
 
         {/* 작성일자 */}

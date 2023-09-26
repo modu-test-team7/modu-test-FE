@@ -5,6 +5,7 @@ interface MypageButtonProps {
   onClick?: () => void;
   className?: string;
   label: string;
+}
 
 const MypageButton: React.FC<MypageButtonProps> = ({
   label,

@@ -31,9 +31,14 @@ const HeaderDropdown: React.FC<HeaderDropdownProps> = () => {
           <div className="py-[5px] text-xs font-bold text-gray-600">로그아웃</div>
         </Link>
       ) : (
-        <Link href="/login">
-          <div className="py-[5px] text-xs font-bold text-gray-600">로그인</div>
-        </Link>
+        <div className='col items-center justify-center'>
+          <Link href="/login">
+            <div className="py-[5px] text-xs font-bold text-gray-600">로그인</div>
+          </Link>
+          <Link href="/signup">
+            <div className="py-[5px] text-xs font-bold text-gray-600">회원가입</div>
+          </Link>
+        </div>
       )}
     </div>
   );
