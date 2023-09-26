@@ -48,48 +48,51 @@ const UserInfo: React.FC<UserInfoProps> = ({ username, setUsername }) => {
   return (
     <div className="flex-col m-auto">
       {isEditing ? null : <h5 className="text-lg ">환영합니다 👼</h5>}
-      <div className="flex">
-        {isEditing ? (
-          <>
-            <Box
-              sx={{
-                py: 2,
-                display: 'grid',
-                gap: 2,
-                alignItems: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <TextField
-                value={tempUsername}
-                onChange={handleUsernameChange}
-                inputProps={{ maxLength: 15, className: 'custom-text' }}
-                error={!!error}
-                helperText={error || ' '}
-                variant="filled"
-                InputProps={{
-                  style: { fontSize: '1.25rem' },
+      <div className="flex justify-between items-start">
+        <div className="flex">
+          {isEditing ? (
+            <>
+              <Box
+                sx={{
+                  py: 2,
+                  display: 'grid',
+                  gap: 2,
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
                 }}
-              />
-            </Box>
-            <div className="cursor-pointer ml-3 mt-12" onClick={handleCheckIconClick}>
-              {/* 닉네임 수정 완료 (체크 아이콘) */}
-              <BsCheckLg className="w-6 h-6" />
-            </div>
-            <div className="cursor-pointer ml-3 mt-12" onClick={handleCancelIconClick}>
-              <FcCancel className="w-6 h-6" />
-            </div>
-          </>
-        ) : (
-          <>
-            <h1 className="text-3xl">{username}</h1>
-            <MypageButton label="정보수정"></MypageButton>
-            <div className="cursor-pointer ml-4 mt-5" onClick={handleEditIconClick}>
-              {/* 닉네임 변경 아이콘 */}
-              <RiEdit2Fill />
-            </div>
-          </>
-        )}
+              >
+                <TextField
+                  value={tempUsername}
+                  onChange={handleUsernameChange}
+                  inputProps={{ maxLength: 15, className: 'custom-text' }}
+                  error={!!error}
+                  helperText={error || ' '}
+                  variant="filled"
+                  InputProps={{
+                    style: { fontSize: '1.25rem' },
+                  }}
+                />
+              </Box>
+              <div className="cursor-pointer ml-3 mt-12" onClick={handleCheckIconClick}>
+                {/* 닉네임 수정 완료 (체크 아이콘) */}
+                <BsCheckLg className="w-6 h-6" />
+              </div>
+              <div className="cursor-pointer ml-3 mt-12" onClick={handleCancelIconClick}>
+                <FcCancel className="w-6 h-6" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mx-auto">
+                <h1 className="text-3xl mx-auto">{username}</h1>
+              </div>
+              <div className="cursor-pointer ml-4 mt-5" onClick={handleEditIconClick}>
+                {/* 닉네임 변경 아이콘 */}
+                {isEditing ? <RiEdit2Fill /> : null}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

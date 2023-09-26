@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface MypageButtonProps {
-  type: 'button';
+  type?: 'button';
   onClick?: () => void;
   className?: string;
   label: string;
