@@ -1,14 +1,21 @@
-import { Comment } from '@/type/Card';
+import { Comment, Tester } from '@/type/Card';
 import React, { useState } from 'react';
 
-type CommentProps = {
-  paramsId: number | string;
+type CommentOneProps = {
+  comment: string ;
+  onClickDeleteComment: () => void;
+  commentWriter: string;
 };
 
-const Comment: React.FC<CommentProps> = () => {
-  const [comment, setComment] = useState<Comment>();
+const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment, commentWriter}) => {
+  const onCllickDeleteButton = () => {
+    onClickDeleteComment(comment);
+  }
+
+  
+
   return (
-    <div className="mb-[20px]">
+    <div className="">
       {/* 작성 정보 */}
       <div className="row justify-between items-center text-gray-500 text-sm mb-[10px]">
         {/* 작성자 */}
@@ -21,18 +28,24 @@ const Comment: React.FC<CommentProps> = () => {
               alt="작성자 프로필 사진"
             />
           </div>
-          작성자
+          {commentWriter} 작성자
         </div>
 
         {/* 작성일자 */}
-        <div>2023.09.23 14:35</div>
+        <div>2023-09-26 16:32</div>
       </div>
 
       {/* 댓글 내용 */}
-      <div>댓글 내용</div>
-      <div></div>
+      <div>{comment}</div>
+
+      {/* 수정 삭제 버튼 */}
+      <div className='w-full row gap-2 items-center justify-end text-xs text-gray-500'>
+        <button className=' hover:font-bold'>수정</button>
+        |
+        <button type="button" onClick={onCllickDeleteButton} className='hover:text-gray-400'>삭제</button>
+      </div>
       <hr className="my-[20px]" />
     </div>
   );
 };
-export default Comment;
+export default CommentOne;

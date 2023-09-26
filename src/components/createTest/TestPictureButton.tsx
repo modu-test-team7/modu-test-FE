@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import axios from 'axios';
 
 type TestPictureButtonProps = {
-  setImage: (qIndex: number, newImage: string) => void;
+  setImage?: (qIndex: number, newImage: string) => void;
   small?: boolean;
   questionId: number;
 };

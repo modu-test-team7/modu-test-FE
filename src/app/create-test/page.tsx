@@ -54,11 +54,22 @@ const Page = () => {
 
   const updateChoice = (qIndex: number, cIndex: number, newContent: string) => {
     setFormData(prevFormData => {
-      const updatedQuestions = _.cloneDeep(prevFormData.questions);
-      _.set(updatedQuestions, `[${qIndex}].choices[${cIndex}].content`, newContent);
-      return { ...prevFormData, questions: updatedQuestions };
-    });
+      const copyPrev = { ...prevFormData };
+      const { questions } = copyPrev;
+      questions[qIndex].choices[cIndex].content = newContent;
+      return { ...prevFormData, questions };
+      });
   };
+
+  const updateChoiceCorrect = (qIndex: number, cIndex: number, curIsCorrect: boolean) => {
+    setFormData(prevFormData => {
+      const copyPrev = { ...prevFormData };
+      const { questions } = copyPrev;
+      questions[qIndex].choices[cIndex].isCorrect = !curIsCorrect;
+      return { ...prevFormData, questions };
+      });
+  };
+
 
   const addChoice = (qIndex: number) => {
     setFormData(prevFormData => {
@@ -79,12 +90,12 @@ const Page = () => {
     });
   };
 
-  const updateQuestion = (qIndex: number, newQuestion: string) => {
+  const updateQuestion = (qIndex: number, title: string) => {
     setFormData(prevFormData => {
-      const updatedQuestions = _.cloneDeep(prevFormData.questions);
-      _.set(updatedQuestions, `[${qIndex}].title`, newQuestion);
+      const updatedQuestions = [ ...prevFormData.questions ];
+      updatedQuestions[qIndex].title = title;
       return { ...prevFormData, questions: updatedQuestions };
-    });
+      });
   };
 
   const addQuestion = () => {
@@ -107,20 +118,19 @@ const Page = () => {
   };
 
   const updateFormData = (field: string, value: any) => {
-    console.log(formData);
     setFormData({
       ...formData,
       [field]: value,
     });
   };
 
-  // const updateQuestionImage = (qIndex: number, newImage: string) => {
-  //   setFormData(prevFormData => {
-  //     const updatedQuestions = [...prevFormData.questions]; // 배열 복사!
-  //     updatedQuestions[qIndex].image = newImage; // image 업데이트!
-  //     return { ...prevFormData, questions: updatedQuestions }; // 최종 formData 업데이트!
-  //   });
-  // };
+  const updateQuestionImage = (questionId: number, newImage: string) => {
+    setFormData(prevFormData => {
+      const updatedQuestions = [...prevFormData.questions]; // 배열 복사!
+      updatedQuestions[questionId].image = newImage; // image 업데이트!
+      return { ...prevFormData, questions: updatedQuestions }; // 최종 formData 업데이트!
+    });
+  };
 
   const onChangeTestContent = (e: ChangeEvent<HTMLInputElement>) => {
     updateFormData('content', e.target.value);
@@ -130,18 +140,9 @@ const Page = () => {
     updateFormData('category', category);
   };
 
-  const onClickCheckChoice = (qIndex: number, cIndex: number) => {
-    setFormData(prevFormData => {
-      const newQuestions = _.cloneDeep(prevFormData.questions);
-      newQuestions[qIndex].choices[cIndex].isCorrect =
-        !newQuestions[qIndex].choices[cIndex].isCorrect;
-      return { ...prevFormData, questions: newQuestions };
-    });
-  };
-
   const handleSubmit = async () => {
     try {
-      console.log(formData);
+      console.log('=================formData' , formData)
       const response = await postAPI(`/api/test/testMake`, {
         ...formData,
       });
@@ -213,8 +214,8 @@ const Page = () => {
             updateChoice={updateChoice}
             addChoice={addChoice}
             removeChoice={removeChoice}
-            updateFormData={updateFormData}
-            onClickCheckChoice={onClickCheckChoice}
+            updateQuestionImage={updateQuestionImage}
+            updateChoiceCorrect={updateChoiceCorrect}
           />
         </div>
 

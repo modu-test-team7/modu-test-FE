@@ -5,30 +5,32 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-import { CommentOne } from '@/components/comment';
-import { ButtonGroup } from '@/components/button';
+import { CommentOne, CommentInput } from '@/components/comment';
+import { Button, ButtonGroup, UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
 import { Tester, Comment } from '@/type/Card';
+import TestDoit from '@/components/test/TestDoit';
 
-import { AiOutlineShareAlt } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
-import { FiSend } from 'react-icons/fi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
+import { getAPI, postAPI } from '@/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
   const [test, setTest] = useState<Tester>();
-  const [content, setContent] = useState('');
+  const [commentValue, setCommentValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
     content: '',
     image: '',
     category: '',
+    participates: 1,
     questions: [
       {
         title: '',
@@ -48,6 +50,11 @@ const Page = ({ params }: { params: { id: number } }) => {
         score: 0,
       },
     ],
+    comments: [
+      {
+        comment: '',
+      },
+    ],
   });
 
   const updateFormData = (field: string, value: any) => {
@@ -57,78 +64,137 @@ const Page = ({ params }: { params: { id: number } }) => {
     });
   };
 
-  const onChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData('comment', e.target.value);
+  const onClickDeleteComment = async (comment: any) => {
+    
+    try {
+      const response = await axios.delete(`/api/${paramsId}/comment/${comment.commentId}`);
+      if (response.data.statusCode === 200) {
+        toast.message('댓글 삭제 완료');
+        // 댓글 목록 새로고침 로직이나 다른 후처리
+      }
+    } catch (error) {
+      console.log('{test?.commentId}',test?.commentId)
+      toast.message('댓글 삭제 실패');
+      console.log('에러:', error);
+    }
   };
 
-  const handleSubmit = async () => {
+  const onClickSaveComment = async () => {
     try {
-      const response = await axios.post('http://13.125.200.12/api/comment', {
-        content,
-        userId: 'testUser',
-        testId: test?.testerId,
+      if(commentValue.trim() === '') {
+        toast.message('댓글을 입력해주세요');
+        return ;
+      }
+
+      const newComment = {
+        comment: commentValue,
+      };
+
+      const newComments = [...formData.comments, newComment];
+
+      const updatedFormData = {
+        ...formData,
+        comments: newComments,
+      };
+
+      setFormData(updatedFormData);
+
+      setTest({
+        ...test,
+        comments: [...test?.comments || [], newComment],
       });
-      toast.message('저장되었습니다');
+
+      const response = await postAPI(
+        `/api/${paramsId}/comment`,
+        {content: commentValue},
+        ).then((data:any) => console.log(data));
+
+      toast.message('댓글이 저장되었습니다');
+      setCommentValue('');
       console.log('성공:', response);
-      return router.push('/'); // 또는 다른 페이지로 리다이렉트
     } catch (error) {
       toast.message('실패하였습니다');
       console.log('에러:', error);
     }
   };
 
-  console.log(test);
-
   useEffect(() => {
-    // accessToken 체크
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
+      toast.message('로그인 후 이용 해 주세요')
       router.replace('/');
     }
 
-    // 로딩 애니메이션 설정
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
-    // 데이터 가져오기
     const fetchTestCards = async () => {
       try {
         window.scrollTo(0, 0);
-        const { data } = await axios.get(`http://13.125.200.12/api/test/${paramsId}`);
+        const { data } = await getAPI(`/api/test/${paramsId}`);
         setTest(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
       }
     };
 
+
     fetchTestCards();
-  }, [router]); // dependency 배열
+  }, [router]);
+
 
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
   }
 
+  const onClickModal = () => {
+    setIsOpen(!isOpen);
+    console.log(isOpen);
+  };
+  console.log(test)
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
       <div className="w-full row justify-between items-end">
         <div className="text-lg font-bold">{test?.title}</div>
         <div className="row text-gray-500 text-sm gap-2">
-          <div className="">{test?.userId}</div>
+          <div className="">{test?.username} | </div>
           <div className="">2023.09.23</div>
         </div>
       </div>
 
       <div className="mx-auto">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/lib/images/logo_clear.png"
-          alt="썸네일 이미지"
-          className="rounded-xl max-h-[300px] my-[20px]"
-        />
+        {test?.image && (
+          <img
+            src={test?.image}
+            alt="썸네일 이미지"
+            className="rounded-xl max-h-[300px] my-[20px] mx-auto"
+          />
+        )}
       </div>
-      <div className="text-md bg-blue-100 p-[15px] overflow-hidden h-[100px] w-full rounded-lg text-gray-600 my-[10px] border-2 border-gray-200">
-        {test?.content}
+      <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
+        <div className="h-full w-full bg-white p-[10px]">{test?.content}</div>
       </div>
+      
+      <div className="ml-auto bg-gray-200 px-[10px] font-bold py-[3px] rounded-[20px] text-xs text-gray-500">
+        {test?.category}
+      </div>
+
+      {/* 테스트 버튼 */}
+      <div className="w-full flex flex-row gap-2 items-center justify-between">
+        <Button secondary>공유하기</Button>
+        <Button primary onClick={onClickModal}>
+          {isOpen ? '테스트 닫기' : '테스트 하기'}
+        </Button>
+      </div>
+
+      {/* 테스트하기 */}
+      {isOpen && <TestDoit paramsId={paramsId}/>}
+      {/* {isOpen && (
+        <div>
+      )} */}
+
+      {/* 댓글 */}
       <div className="w-full my-[50px] col gap-10">
         <hr className="border-gray-500" />
         <div>
@@ -137,27 +203,26 @@ const Page = ({ params }: { params: { id: number } }) => {
             {/* {test?.commentCount} */}
             123
           </div>
-          <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
-            <textarea
-              rows={3}
-              placeholder="댓글을 입력해주세요"
-              className="w-full focus:outline-none resize-none bg-transparent"
-              value={content}
-              onChange={onChangeComment}
-              name="testTitle"
-            />
-            <button type="button" onClick={handleSubmit}>
-              <FiSend size={20} className="text-gray-500 mt-auto" />
-            </button>
-          </div>
         </div>
-
-        <div className="">
-          <CommentOne paramsId={paramsId} />
-        </div>
+        <CommentInput
+          value={commentValue}
+          setValue={value => {
+            setCommentValue(value); // 새로운 상태 업데이트
+            updateFormData('comment', value);
+          }}
+          onClickSaveComment={onClickSaveComment}
+        />
+        {test?.comments.map((comment, index) => {
+          console.log('test==================', test)
+          return (
+            <div key={index}>
+              <CommentOne commentWriter={comment.username} comment={comment.comment} onClickDeleteComment={onClickDeleteComment}/>
+            </div>
+          );
+        })}
       </div>
-      <div className="scroll-to-top w-full">
-        <ButtonGroup primaryName="테스트하기" icon={AiOutlineShareAlt} />
+      <div className="sticky z-100 bottom-[40px] transform translate-x-[1050px]">
+        <UpButton />
       </div>
     </div>
   );

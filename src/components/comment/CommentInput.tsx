@@ -1,19 +1,33 @@
-'use client';
+// CommentInput.tsx
+import React, { ChangeEvent } from 'react';
+import { FiSend } from 'react-icons/fi';
 
-import React, { ChangeEvent, useState } from 'react';
+interface CommentInputProps {
+  value?: string;
+  setValue: (value: string) => void;
+  onClickSaveComment: () => void;
+}
 
-
-type ReplyProps = {};
-
-const Reply: React.FC<ReplyProps> = () => {
-  const [comment, setComment] = useState('');
-
-  const onChangeContent = (e: ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
+const CommentInput: React.FC<CommentInputProps> = ({ value, setValue, onClickSaveComment }) => {
+  const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
   };
 
   return (
-    <div></div>
+    <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
+      <textarea
+        rows={3}
+        placeholder="댓글을 입력해주세요"
+        className="w-full focus:outline-none resize-none bg-transparent"
+        value={value}
+        onChange={e => onChangeHandler(e)}
+        name="testTitle"
+      />
+      <button type="button" onClick={onClickSaveComment}>
+        <FiSend size={20} className="text-gray-500 mt-auto" />
+      </button>
+    </div>
   );
 };
-export default Reply;
+
+export default CommentInput;

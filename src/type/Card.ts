@@ -1,5 +1,6 @@
 export type Tester = {
-  testerId: number;
+  testId: number;
+  testerId:number;
   userId: string;
   title: string;
   content: string;
@@ -7,6 +8,11 @@ export type Tester = {
   views: string | number;
   likes: string | number;
   category: string;
+  username?: string;
+  comments: string[];
+  questions: string[];
+  comment: any;
+  commentId: number;
 };
 
 export type Questions = {

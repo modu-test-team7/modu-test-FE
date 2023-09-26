@@ -13,7 +13,8 @@ type TestInputProps = {
   testResult?: boolean;
   value: string;
   onChange: any;
-  // onClickCheckChoice: (qIndex: number, cIndex: number) => void;
+  isCorrect?:boolean;
+  onChnageCheckbox?:(value:boolean)=>void
 };
 
 const TestInput: React.FC<TestInputProps> = ({
@@ -24,28 +25,31 @@ const TestInput: React.FC<TestInputProps> = ({
   testResult,
   value,
   onChange,
+  isCorrect,
+  onChnageCheckbox,
 }) => {
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+  const onChangeChoiceCheck = {
+
+  }
 
   return (
     <div
       className={clsx(
         'bg-blue-50 h-[50px] flex flex-row justify-between items-center rounded-md px-[20px]',
-        optionInput ? 'mb-[5px]' : 'mb-[15px]',
+        optionInput ? 'mb-[5px]' : 'mb-[15px]'
       )}
     >
       {optionInput && (
-        <Checkbox
-          {...label}
-          icon={<BsCheckLg />}
-          checkedIcon={<BsCheckLg />}
-          // checked={question.choices[cIndex].isCorrect} // 이미 값이 true인지 false인지에 따라 체크박스 상태 결정
-          // onClick={() => onClickCheckChoice(qIndex, cIndex)} // 이 부분 추가!
-
-        />
+        <Checkbox onChange={()=>{
+          onChnageCheckbox&&onChnageCheckbox(!!isCorrect);
+        }} {...label} icon={<BsCheckLg />} checkedIcon={<BsCheckLg />} checked={isCorrect}/>
       )}
       <input
-        placeholder={optionInput ? '선택지를 입력 해 주세요' : '질문을 입력 해 주세요'}
+        placeholder={
+          optionInput ? '선택지를 입력 해 주세요' : '질문을 입력 해 주세요'
+        }
         className="bg-transparent w-[900px] focus:outline-none text-sm text-gray-900"
         value={value}
         onChange={onChange}

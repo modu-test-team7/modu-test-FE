@@ -41,8 +41,8 @@ const Header: React.FC<HeaderProps> = () => {
         </Link>
 
         <div className="flex flex-row items-center justify-cente">
-          <div className="text-sm relative" onClick={onClickDropdown} ref={dropdownRef}>
-            <FiUser size={20} />
+          <div className="text-sm relative cursor-pointer" onClick={onClickDropdown} ref={dropdownRef}>
+            <FiUser size={20}/>
             {isDropdownOpen && <HeaderDropdown />}
           </div>
         </div>

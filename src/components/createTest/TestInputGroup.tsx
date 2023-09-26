@@ -5,28 +5,33 @@ import { Choice, Questions } from '@/type/Card';
 import { useTestStore } from '../../store/testStore';
 
 type TestInputGroupProps = {
-  updateFormData: (field: string, value: any) => void;
   questionValue: any;
   choiceValue: any;
+  setTitleValue?: (value: string) => void;
+  name?: string;
   addQuestion: () => void;
-  removeQuestion: (qIndex: number) => void;
+  removeQuestion: (qIndex:number) => void;
   updateQuestion: (qIndex: number, newQuestion: string) => void;
   updateChoice: (qIndex: number, cIndex: number, newChoice: string) => void;
+  updateChoiceCorrect: (qIndex: number, cIndex: number, curIsCorrect: boolean) => void;
   addChoice: (qIndex: number) => void;
   removeChoice: (qIndex: number, cIndex: number) => void;
-  onClickCheckChoice: (qIndex: number, cIndex: number) => void;
+  updateQuestionImage: (qIndex: number, newImage: string) => void;
+  // setState:React.Dispatch<SetStateAction<스테이트의 type>>;
 };
 
 const TestInputGroup: React.FC<TestInputGroupProps> = ({
-  updateFormData,
   questionValue,
+  setTitleValue,
+  name,
   addQuestion,
   removeQuestion,
   updateQuestion,
   updateChoice,
   addChoice,
   removeChoice,
-  onClickCheckChoice,
+  updateQuestionImage,
+  updateChoiceCorrect
 }) => {
   const onChangeQuestion = (qIndex: number, e: ChangeEvent<HTMLInputElement>) => {
     updateQuestion(qIndex, e.target.value);
@@ -35,6 +40,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
   const onChangeChoice = (qIndex: number, cIndex: number, e: ChangeEvent<HTMLInputElement>) => {
     updateChoice(qIndex, cIndex, e.target.value);
   };
+
 
   console.log(questionValue);
   return (
@@ -52,13 +58,13 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
               <button type="button" onClick={addQuestion}>
                 <AiOutlinePlus size={25} className="ml-[5px]" />
               </button>
-              <div className="ml-auto mt-[10px]">
+              {/* <div className="ml-auto mt-[10px]">
                 <TestPictureButton
                   small
                   questionId={question.id}
-                  setImage={value => updateFormData('image', value)}
+                  // setImage={value => updateFormData('image', value)}
                 />
-              </div>
+              </div> */}
               <button type="button" onClick={() => removeQuestion(qIndex)}>
                 <AiOutlineDelete size={25} className="ml-[5px]" />
               </button>
@@ -79,16 +85,17 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({
             <div key={cIndex}>
               <TestInput
                 optionInput
+                // qIndex={qIndex}
+                // cIndex={cIndex}
+                onChnageCheckbox={(value:boolean) =>{
+                updateChoiceCorrect(qIndex, cIndex, value)}}
                 value={choice.content}
-                // isCorrect={choice.isCorrect} // 이 부분 추가
-                // qIndex={qIndex} // 이 부분 추가
-                // cIndex={cIndex} // 이 부분 추가
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   onChangeChoice(qIndex, cIndex, e)
                 }
                 plusButton={() => addChoice(qIndex)}
                 deleteButton={() => removeChoice(qIndex, cIndex)}
-                // onClickCheckChoice={onClickCheckChoice}
+                isCorrect={choice.isCorrect}
               />
             </div>
           ))}

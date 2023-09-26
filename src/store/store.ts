@@ -10,3 +10,4 @@ const Page = () => {
   const [fadeout, setFadeOut] = useState(false);
   const [username, setUsername] = useState('');
   const [image, setImage] = useState('/lib/images/blank.png');
+}

@@ -3,6 +3,7 @@ import { AiFillEye, AiOutlineHeart } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { Tester } from '@/type/Card';
 import Image from 'next/image';
+import { FiUser } from 'react-icons/fi';
 
 type TestProps = {
   tester: Tester;
@@ -12,7 +13,6 @@ const Test: React.FC<TestProps> = ({ tester }) => {
   const imgNum = tester.testerId + 1;
   return (
     <div className=" shadow-sm cursor-pointer">
-      tester.image = {tester.image}
       <div className="w-full flex h-[200px] overflow-hidden my-[5px] rounded-lg  shadow-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -44,12 +44,12 @@ const Test: React.FC<TestProps> = ({ tester }) => {
           </div>
 
           <div className="row items-center text-gray-500">
-            <AiOutlineHeart size={15} className="mr-[3px]" />
-            {tester.likes}
+            {/* <AiOutlineHeart size={15} className="mr-[3px]" />
+            {tester.likes} */}
             <AiFillEye size={15} className="ml-[8px] mr-[3px]" />
             {tester.views}
-            {/* <BiCommentDetail size={15} className="ml-[8px] mr-[3px]" />
-            {tester.commentCount} */}
+            <FiUser size={15} className="ml-[8px] mr-[3px]" />
+            {tester.participates === 0 ? 0 : tester.participates}
           </div>
         </div>
       </div>
