@@ -8,10 +8,10 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/button';
 import UnderLineInput from '@/components/Input/UnderIineInput';
-import { TestCategory, TestThumbnail, TestThumbnailButton } from './components/'
+import { TestCategory, TestThumbnail, TestThumbnailButton } from './components/';
 import TestInputGroup from './components/TestInPutGroup/TestInputGroup';
 import _ from 'lodash';
-import { postAPI } from '@/axios';
+import { postAPI } from '@/config/axios';
 
 const Page = () => {
   const router = useRouter();
@@ -64,9 +64,9 @@ const Page = () => {
 
   const handleSubmit = async () => {
     const isEmptyQuestion = formData.questions.some(
-      (q) => !q.title.trim() || q.choices.some((c) => !c.content.trim())
+      q => !q.title.trim() || q.choices.some(c => !c.content.trim()),
     );
-  
+
     if (isEmptyQuestion) {
       toast.error('질문 또는 선택지를 모두 입력 해 주세요');
       return; // 여기서 함수를 종료함
@@ -129,10 +129,7 @@ const Page = () => {
         </div>
         <TestCategory onCategoryChange={onChangeCategory} />
         <div>
-          <TestInputGroup
-            questionValue={formData.questions}
-            setFormData={setFormData}
-          />
+          <TestInputGroup questionValue={formData.questions} setFormData={setFormData} />
         </div>
 
         <Button type="submit" primary fullWidth>

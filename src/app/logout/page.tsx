@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { postAPI } from '@/axios';
+import { postAPI } from '@/config/axios';
 import Cookies from 'js-cookie';
 
 const Logout: React.FC = () => {

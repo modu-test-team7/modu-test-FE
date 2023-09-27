@@ -14,7 +14,7 @@ type TestInputProps = {
   value?: string;
   onChange?: any;
   setFormData?: React.Dispatch<SetStateAction<CreateTest>>;
-  qIndex?: number;
+  qIndex?: any;
   cIndex?: number;
   // isCorrect?:boolean;
   // onChnageCheckbox?:(value:boolean)=>void
@@ -38,13 +38,13 @@ const TestInput: React.FC<TestInputProps> = ({
 
   // 선택지 +
   const addChoice = (qIndex: number) => {
-    console.log('addChoice')
+    console.log('addChoice');
     setFormData?.(prevFormData => {
       const updatedQuestions = [...prevFormData.questions];
 
       const newChoice = {
         content: '',
-        isCorrect: false
+        isCorrect: false,
       };
 
       updatedQuestions[qIndex].choices = [...updatedQuestions[qIndex].choices, newChoice];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getAPI } from '@/axios';
+import { getAPI } from '@/config/axios';
 import TestCard from '@/components/test/TestCard';
 import { Tester } from '@/type/Card';
 import { useRouter } from 'next/navigation';

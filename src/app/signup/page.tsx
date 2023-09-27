@@ -19,7 +19,7 @@ import {
   validateUsername,
   validateNickname,
 } from '@/utils/validation';
-import { postAPI } from '@/axios';
+import { postAPI } from '@/config/axios';
 
 const SignUp: React.FC = () => {
   const router = useRouter();
