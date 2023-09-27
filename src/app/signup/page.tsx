@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import React from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -18,7 +20,6 @@ import {
   validateNickname,
 } from '@/utils/validation';
 import { postAPI } from '@/axios';
-
 
 const SignUp: React.FC = () => {
   const router = useRouter();
@@ -130,15 +131,12 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await postAPI(
-        `/api/user/signup`,
-        {
-          username,
-          password,
-          email,
-          nickname,
-        }
-      );
+      const response = await postAPI(`/api/user/signup`, {
+        username,
+        password,
+        email,
+        nickname,
+      });
       console.log('API response:', response);
 
       toast.success('회원가입 성공!');
