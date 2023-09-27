@@ -14,7 +14,7 @@ import TestDoit from '@/components/test/TestDoit';
 import { BiCommentDetail } from 'react-icons/bi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { getAPI, postAPI } from '@/axios';
+import { getAPI, postAPI } from '@/config/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
@@ -159,9 +159,8 @@ const Page = ({ params }: { params: { id: number } }) => {
       <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
         <div className="h-full w-full bg-white p-[10px] cursor-default">{test?.content}</div>
       </div>
-      <div className='w-full row items-center justify-end ml-auto gap-2 text-xs text-gray-500'>
-        <div>카테고리</div>|
-        <div className="font-bold ">{test?.category}</div>
+      <div className="w-full row items-center justify-end ml-auto gap-2 text-xs text-gray-500">
+        <div>카테고리</div>|<div className="font-bold ">{test?.category}</div>
       </div>
 
       {/* 테스트 버튼 */}
