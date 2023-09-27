@@ -1,32 +1,22 @@
 'use client';
 
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 import { TextField } from '@mui/material';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/button';
-import Loading from '@/components/Loading';
 import UnderLineInput from '@/components/Input/UnderIineInput';
-import {
-  TestInputGroup,
-  TestPictureButton,
-  TestThumbnail,
-  TestCategory,
-  TestThumbnailButton,
-} from '@/components/createTest';
+import { TestCategory, TestThumbnail, TestThumbnailButton } from './components/'
+import TestInputGroup from './components/TestInPutGroup/TestInputGroup';
 import _ from 'lodash';
 import { postAPI } from '@/axios';
 
 const Page = () => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [fadeout, setFadeOut] = useState(false);
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateTest>({
     title: '',
     content: '',
     image: '',
@@ -50,85 +40,17 @@ const Page = () => {
         score: 0,
       },
     ],
+    comments: [
+      {
+        comment: '',
+      },
+    ],
   });
-
-  const updateChoice = (qIndex: number, cIndex: number, newContent: string) => {
-    setFormData(prevFormData => {
-      const copyPrev = { ...prevFormData };
-      const { questions } = copyPrev;
-      questions[qIndex].choices[cIndex].content = newContent;
-      return { ...prevFormData, questions };
-      });
-  };
-
-  const updateChoiceCorrect = (qIndex: number, cIndex: number, curIsCorrect: boolean) => {
-    setFormData(prevFormData => {
-      const copyPrev = { ...prevFormData };
-      const { questions } = copyPrev;
-      questions[qIndex].choices[cIndex].isCorrect = !curIsCorrect;
-      return { ...prevFormData, questions };
-      });
-  };
-
-
-  const addChoice = (qIndex: number) => {
-    setFormData(prevFormData => {
-      const newQuestions = _.cloneDeep(prevFormData.questions);
-      newQuestions[qIndex].choices.push({ content: '', isCorrect: false });
-      return { ...prevFormData, questions: newQuestions };
-    });
-  };
-
-  const removeChoice = (qIndex: number, cIndex: number) => {
-    setFormData(prevFormData => {
-      const newQuestions = _.cloneDeep(prevFormData.questions);
-      if (newQuestions[qIndex]?.choices.length > 1) {
-        _.pullAt(newQuestions[qIndex].choices, cIndex);
-        return { ...prevFormData, questions: newQuestions };
-      }
-      return prevFormData;
-    });
-  };
-
-  const updateQuestion = (qIndex: number, title: string) => {
-    setFormData(prevFormData => {
-      const updatedQuestions = [ ...prevFormData.questions ];
-      updatedQuestions[qIndex].title = title;
-      return { ...prevFormData, questions: updatedQuestions };
-      });
-  };
-
-  const addQuestion = () => {
-    setFormData(prevFormData => {
-      const newQuestions = _.cloneDeep(prevFormData.questions);
-      newQuestions.push({ title: '', image: '', choices: [{ content: '', isCorrect: false }] });
-      return { ...prevFormData, questions: newQuestions };
-    });
-  };
-
-  const removeQuestion = (qIndex: number) => {
-    setFormData(prevFormData => {
-      const newQuestions = [...prevFormData.questions];
-      if (newQuestions.length > 1) {
-        newQuestions.splice(qIndex, 1);
-        return { ...prevFormData, questions: newQuestions };
-      }
-      return prevFormData;
-    });
-  };
 
   const updateFormData = (field: string, value: any) => {
     setFormData({
       ...formData,
       [field]: value,
-    });
-  };
-
-  const updateQuestionImage = (questionId: number, newImage: string) => {
-    setFormData(prevFormData => {
-      const updatedQuestions = [...prevFormData.questions]; // 배열 복사!
-      updatedQuestions[questionId].image = newImage; // image 업데이트!
-      return { ...prevFormData, questions: updatedQuestions }; // 최종 formData 업데이트!
     });
   };
 
@@ -141,8 +63,16 @@ const Page = () => {
   };
 
   const handleSubmit = async () => {
+    const isEmptyQuestion = formData.questions.some(
+      (q) => !q.title.trim() || q.choices.some((c) => !c.content.trim())
+    );
+  
+    if (isEmptyQuestion) {
+      toast.error('질문 또는 선택지를 모두 입력 해 주세요');
+      return; // 여기서 함수를 종료함
+    }
+
     try {
-      console.log('=================formData' , formData)
       const response = await postAPI(`/api/test/testMake`, {
         ...formData,
       });
@@ -156,15 +86,9 @@ const Page = () => {
   };
 
   useEffect(() => {
+    // 페이지 이동 후 자동으로 (0, 0) 위치 보여줌
     window.scrollTo(0, 0);
-
-    setFadeOut(true);
-    setTimeout(() => setIsLoading(false), 1000);
   }, []);
-
-  if (isLoading) {
-    return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  }
 
   return (
     <form
@@ -207,15 +131,7 @@ const Page = () => {
         <div>
           <TestInputGroup
             questionValue={formData.questions}
-            choiceValue={formData.questions.map(q => q.choices)}
-            addQuestion={addQuestion}
-            removeQuestion={removeQuestion}
-            updateQuestion={updateQuestion}
-            updateChoice={updateChoice}
-            addChoice={addChoice}
-            removeChoice={removeChoice}
-            updateQuestionImage={updateQuestionImage}
-            updateChoiceCorrect={updateChoiceCorrect}
+            setFormData={setFormData}
           />
         </div>
 

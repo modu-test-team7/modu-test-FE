@@ -15,7 +15,7 @@ const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment, c
   
 
   return (
-    <div className="">
+    <div className=" cursor-default">
       {/* 작성 정보 */}
       <div className="row justify-between items-center text-gray-500 text-sm mb-[10px]">
         {/* 작성자 */}

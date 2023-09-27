@@ -40,6 +40,7 @@ const Test: React.FC<TestProps> = ({ tester }) => {
                 alt="작성자 프로필 사진"
               />
             </div>
+            {tester.username}
             {tester.userId}
           </div>
 
