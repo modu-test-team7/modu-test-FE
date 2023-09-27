@@ -2,12 +2,12 @@ import { Tester } from '@/type/Card';
 import React, { useState, useEffect } from 'react';
 import { Button } from '../button';
 import Checkbox from '@mui/material/Checkbox';
-import { getAPI } from '@/axios';
+import { getAPI } from '@/config/axios';
 import { BsCheckLg } from 'react-icons/bs';
 import { toast } from 'sonner';
 import { AiTwotoneStar } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
-import { postAPI } from '@/axios';
+import { postAPI } from '@/config/axios';
 
 type TestDoitProps = {
   paramsId: number;
