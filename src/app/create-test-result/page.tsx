@@ -1,6 +1,6 @@
 'use client';
 
-import TestResult from '@/components/createTest/TestResult';
+// import TestResult from '@/components/createTest/TestResult';
 import React, { useState } from 'react';
 
 type pageProps = {};
@@ -15,7 +15,7 @@ const Page: React.FC<pageProps> = () => {
             <div className="text-sm text-gray-500">
               {i}점 이상 {i}점 이하
             </div>
-            <TestResult />
+            {/* <TestResult /> */}
           </div>
         );
       })}
