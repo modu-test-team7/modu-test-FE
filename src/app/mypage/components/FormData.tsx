@@ -1,5 +1,5 @@
 // 필요한 라이브러리를 가져옵니다.
-import { postAPI } from '@/axios';
+import { postAPI } from '@/config/axios';
 import { toast } from 'sonner';
 
 // 이 인터페이스는 서버의 응답을 설명합니다.
