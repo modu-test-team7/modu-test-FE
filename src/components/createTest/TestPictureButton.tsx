@@ -25,8 +25,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small, questionId }) => {
-
-  
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
@@ -47,7 +45,7 @@ const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small, 
       //     setImage(reader.result);
       //   }
       // };
-      setImage(questionId, result.data)
+      setImage(questionId, result.data);
 
       if (file) {
         reader.readAsDataURL(file);
