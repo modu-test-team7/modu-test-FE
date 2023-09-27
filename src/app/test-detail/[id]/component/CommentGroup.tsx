@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { BiCommentDetail } from 'react-icons/bi';
 import { FiSend } from 'react-icons/fi';
 import { Tester, Comment } from '@/type/Card';
-import { CommentOne } from '@/components/comment';
+import { CommentOne } from '@/app/test-detail/[id]/component';
 
 type CommentGroupProps = {
   onChangeComment: (testId:number, e: ChangeEvent<HTMLTextAreaElement>) => void;

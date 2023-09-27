@@ -14,7 +14,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ value, setValue, onClickSav
   };
 
   return (
-    <div className="my-[10px]  shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
+    <div className="mb-[10px] shadow-lg bg-gray-100 row justify-between items-end p-[15px] rounded-lg">
       <textarea
         rows={3}
         placeholder="댓글을 입력해주세요"

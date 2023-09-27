@@ -47,7 +47,7 @@ const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small, 
       //     setImage(reader.result);
       //   }
       // };
-      setImage(questionId, result.data)
+      setImage?.(questionId, result.data)
 
       if (file) {
         reader.readAsDataURL(file);

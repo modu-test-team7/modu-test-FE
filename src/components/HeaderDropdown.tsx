@@ -20,7 +20,7 @@ const HeaderDropdown: React.FC<HeaderDropdownProps> = () => {
   };
 
   return (
-    <div className="w-[120px] absolute z-50 shadow-md top-[50px] right-[-50px] flex flex-col items-center justify-start py-[20px] rounded-md">
+    <div className="w-[120px] bg-white bg-opacity-70 absolute z-50 shadow-md top-[50px] right-[-50px] flex flex-col items-center justify-start py-[20px] rounded-md">
       <div onClick={handleMyPageClick} className="py-[5px] text-xs font-bold cursor-pointer">
         마이페이지
       </div>

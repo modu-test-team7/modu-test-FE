@@ -46,7 +46,7 @@ const Login: React.FC<PageProps> = () => {
       })
       .catch(error => {
         // 요건 서버랑 맞춰야된대
-        toast.error(error.response.data.message);
+        // toast.error(error.response.data.message);
         toast.error('로그인 실패 😥');
         console.log(error);
         if (error.response) {
