@@ -1,6 +1,7 @@
 import CreatedTests from './CreatedTests';
 import ParticipatedTests from './ParticipatedTests';
 import ProfileImage from './ProfileImage';
-import UserInfo from './UserInfo';
+import MypageButton from './MypageButton';
+import UserProfile from './UserProfile';
 
-export { CreatedTests, ParticipatedTests, ProfileImage, UserInfo };
+export { CreatedTests, ParticipatedTests, ProfileImage, UserProfile, MypageButton };
