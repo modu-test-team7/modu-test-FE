@@ -28,14 +28,16 @@ const Login: React.FC<PageProps> = () => {
     if (accessToken) {
       router.push('/'); // 로그인이 되어 있으면 홈 페이지로 이동
     }
-  }, []);
+  }, [router]);
 
   const [username, setUsername] = useState(''); // 아이디 상태
   const [password, setPassword] = useState(''); // 비밀번호 상태
   const { showPassword, togglePassword } = useSignUpStore();
 
+  // handleLogin 이라는 비동기 함수를 정의하여 폼 제출을 처리!
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // postAPI 함수를 사용하여 로그인 API를 호출하고, 응답을 처리하거나 오류를 캐치
     await postAPI('/api/user/login', { username, password })
       .then(response => {
         Cookies.set('accessToken', response.data.token);
@@ -50,7 +52,7 @@ const Login: React.FC<PageProps> = () => {
         toast.error('로그인 실패 😥');
         console.log(error);
         if (error.response) {
-          console.log("Data:", JSON.stringify(error.response.data, null, 2));
+          console.log('Data:', JSON.stringify(error.response.data, null, 2));
         }
       });
 
