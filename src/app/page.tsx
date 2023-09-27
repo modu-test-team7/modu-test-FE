@@ -2,13 +2,11 @@
 
 import TestCard from '../components/test/TestCard';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Button, ButtonGroup, OAuthButton, UpButton } from '@/components/button';
+import { UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
 import Fab from '@mui/material/Fab';
-import { GrAdd, GrLinkUp } from 'react-icons/gr';
+import { GrAdd } from 'react-icons/gr';
 import { Tester } from '@/type/Card';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
@@ -42,6 +40,7 @@ export default function Home() {
 
     const fetchTestCards = async () => {
       try {
+        // 여기
         const { data } = await getAPI(`/api/test`);
         // const { data } = await getAPI(`/api/tests`);
         setTestCards(data);
@@ -53,10 +52,13 @@ export default function Home() {
   }, []);
 
   if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
-  console.log(testCards);
+
   return (
     <div className=" mx-auto min-h-screen w-[1200px]">
-      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
+      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">
+        <button onClick={() => console.log(testCards)}>데이터보기 버튼</button>
+        slider
+      </div>
 
       <div className="sticky mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
         <button
@@ -87,17 +89,13 @@ export default function Home() {
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
         {testCards.map((card, index) => {
-          console.log(card);
           return (
             // as={`/test-detail/${card.id}`}
             <div
               key={index}
               onClick={() => {
-                if (isLogged) {
-                  router.push(`/test-detail/${card.testerId}`);
-                } else {
-                  toast.error('로그인을 먼저 해주세요!');
-                }
+                // 여기
+                router.push(`/test-detail/${card.testerId}`);
               }}
             >
               <TestCard tester={card} />
@@ -110,12 +108,11 @@ export default function Home() {
         <div className="col gap-[20px]">
           <Fab
             onClick={() => {
-              // if (isLogged) {
-              //   router.push(`/create-test`);
-              // } else {
-              //   toast.error('로그인을 먼저 해주세요!');
-              // }
-              router.push(`/create-test`);
+              if (isLogged) {
+                router.push(`/create-test`);
+              } else {
+                toast.error('로그인을 먼저 해주세요!');
+              }
             }}
             aria-label="add"
             size="small"

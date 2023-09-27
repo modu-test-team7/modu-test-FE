@@ -1,9 +1,8 @@
 import React, { SetStateAction } from 'react';
-import { AiOutlineDelete, AiOutlineSmile, AiOutlinePlus } from 'react-icons/ai';
-import { FiX } from 'react-icons/fi';
-import { BsCheckLg } from 'react-icons/bs';
+import { AiOutlineDelete, AiOutlinePlus, AiOutlineCheck, AiOutlineClose, AiTwotoneStar } from 'react-icons/ai';
 import { Choice, Questions } from '@/type/Card';
 import Checkbox from '@mui/material/Checkbox';
+import { toast } from 'sonner';
 
 type TestInputGroupProps = {
   questionValue: any;
@@ -84,11 +83,21 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
       return { ...prevFormData, questions: updatedQuestions };
     });
   };
-
+ 
   const onChnageCheckbox = (qIndex: number, cIndex: number, curIsCorrect: boolean) => {
     setFormData(prevFormData => {
       const copyPrev = { ...prevFormData };
       const { questions } = copyPrev;
+      
+      // 이미 체크된 선택지가 있는지 검사
+      const alreadyChecked = questions[qIndex].choices.some((choice, index) => choice.isCorrect && index !== cIndex);
+  
+      if (alreadyChecked) {
+        toast.error("하나의 질문에는 하나의 정답만 가능해요!")
+        return prevFormData; // 상태를 변경하지 않고 그대로 반환
+      }
+  
+      // 선택지 업데이트
       questions[qIndex].choices[cIndex].isCorrect = !curIsCorrect;
       return { ...prevFormData, questions };
     });
@@ -99,8 +108,8 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
       {questionValue.map((question: Questions, qIndex: number) => (
         <div key={qIndex} className="mb-[30px]">
           <div className="flex flex-row items-center justify-between">
-            <div className="text-gray-500 text-md my-[5px] row items-center gap-2">
-              <AiOutlineSmile color="orange" size={20} />
+            <div className="text-gray-500 text-md my-[5px] row items-center justify-center gap-1">
+              <AiTwotoneStar color="gray" size={15} />
               {qIndex + 1}번째 질문
             </div>
 
@@ -116,7 +125,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
             </div>
           </div>
 
-          <div className="bg-blue-50 h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[15px]">
+          <div className="bg-gray-100 shadow-lg h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[15px]">
             <input
               placeholder="질문을 입력 해 주세요"
               className="bg-transparent w-[900px] focus:outline-none text-sm text-gray-900"
@@ -129,12 +138,12 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
           {question.choices.map((choice: Choice, cIndex: number) => (
             <div
               key={cIndex}
-              className="bg-blue-50 h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[5px]"
+              className="bg-gray-100 shadow-md h-[50px] flex flex-row justify-between items-center rounded-md px-[20px] mb-[5px]"
             >
               <Checkbox
                 onChange={() => onChnageCheckbox(qIndex, cIndex, choice.isCorrect)}
-                icon={<BsCheckLg />}
-                checkedIcon={<BsCheckLg />}
+                icon={<AiOutlineCheck />}
+                checkedIcon={<AiOutlineCheck color="skyblue"/>}
                 checked={choice.isCorrect}
               />
               <input
@@ -150,7 +159,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
                   <AiOutlinePlus onClick={() => addChoice(qIndex)} />
                 </button>
                 <button type="button">
-                  <FiX className="ml-[5px]" onClick={() => removeChoice(qIndex, cIndex)} />
+                  <AiOutlineClose className="ml-[5px]" onClick={() => removeChoice(qIndex, cIndex)} />
                 </button>
               </div>
             </div>

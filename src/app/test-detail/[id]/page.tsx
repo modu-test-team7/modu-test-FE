@@ -67,42 +67,34 @@ const Page = ({ params }: { params: { id: number } }) => {
     try {
       const response = await axios.delete(`/api/${paramsId}/comment/${comment.commentId}`);
       if (response.data.statusCode === 200) {
-        toast.message('댓글 삭제 완료');
+        toast.success('댓글 삭제 완료');
         // 댓글 목록 새로고침 로직이나 다른 후처리
       }
     } catch (error) {
-      toast.message('댓글 삭제 실패');
+      toast.error('댓글 삭제 실패');
       console.log('에러:', error);
     }
   };
 
   const onClickSaveComment = async () => {
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      toast.error('로그인 후 이용 해 주세요');
+      return;
+    }
+
     try {
       if (commentValue.trim() === '') {
         toast.error('댓글을 입력해주세요');
         return;
       }
 
-      const newComment = {
-        comment: commentValue,
-      };
+      const newComments = [
+        ...(test?.comments || []),
+        { username: '나중에 바꿔', content: commentValue },
+      ];
 
-      // const newComments = [...formData.comments, newComment];
-
-      // const updatedFormData = {
-      //   ...formData,
-      //   comments: newComments,
-      // };
-
-      // setFormData(updatedFormData);
-
-      const newComments = [...(test?.comments || []), { username: '나중에 바꿔', content: commentValue }];
-
-      // setTest({
-      //   ...test,
-      //   comments: [...(test?.comments || []), newComment],
-      // });
-      setTest((prevTest) => ({
+      setTest(prevTest => ({
         ...prevTest,
         comments: newComments,
       }));
@@ -120,12 +112,6 @@ const Page = ({ params }: { params: { id: number } }) => {
   };
 
   useEffect(() => {
-    const accessToken = Cookies.get('accessToken');
-    if (!accessToken) {
-      toast.message('로그인 후 이용 해 주세요');
-      router.replace('/');
-    }
-
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
@@ -138,11 +124,9 @@ const Page = ({ params }: { params: { id: number } }) => {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
       }
     };
-    
+
     fetchTestCards();
   }, [router]);
-
-  
 
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
@@ -152,18 +136,16 @@ const Page = ({ params }: { params: { id: number } }) => {
     setIsOpen(!isOpen);
     console.log(isOpen);
   };
-  
+
   return (
     <div className="w-[800px] col items-start mx-auto py-[60px] my-[50px]">
-      <button className="bg-red-200 p-[10px] rounded-lg" onClick={() => console.log(test)}>데이터 찍어보기</button>
       <div className="w-full row justify-between items-end">
-        <div className="text-lg font-bold">{test?.title}</div>
+        <div className="text-lg font-bold cursor-default">{test?.title}</div>
         <div className="row text-gray-500 text-sm gap-2">
-          <div className="">{test?.username} | </div>
-          <div className="">2023.09.23</div>
+          <div className="cursor-default">{test?.username} | </div>
+          <div className="cursor-default">2023.09.23</div>
         </div>
       </div>
-
       <div className="mx-auto">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {test?.image && (
@@ -175,11 +157,11 @@ const Page = ({ params }: { params: { id: number } }) => {
         )}
       </div>
       <div className="text-md p-[3px] flex items-center justify-center bg-blue-100 overflow-hidden h-[100px] w-full text-gray-800 my-[10px]">
-        <div className="h-full w-full bg-white p-[10px]">{test?.content}</div>
+        <div className="h-full w-full bg-white p-[10px] cursor-default">{test?.content}</div>
       </div>
-
-      <div className="ml-auto bg-gray-200 px-[10px] font-bold py-[3px] rounded-[20px] text-xs text-gray-500">
-        {test?.category}
+      <div className='w-full row items-center justify-end ml-auto gap-2 text-xs text-gray-500'>
+        <div>카테고리</div>|
+        <div className="font-bold ">{test?.category}</div>
       </div>
 
       {/* 테스트 버튼 */}
@@ -189,31 +171,29 @@ const Page = ({ params }: { params: { id: number } }) => {
           {isOpen ? '테스트 닫기' : '테스트 하기'}
         </Button>
       </div>
-
       {/* 테스트하기 */}
       {isOpen && <TestDoit paramsId={paramsId} />}
       {/* {isOpen && (
         <div>
       )} */}
-
       {/* 댓글 */}
       <div className="w-full my-[50px] col gap-10">
         <hr className="border-gray-500" />
         <div>
-          <div className="row gap-2 items-center justify-start text-gray-500">
+          <div className="row gap-2 items-center justify-start text-gray-500 mb-[10px]">
             <BiCommentDetail size={15} className="mt-1" />
-            {/* {test?.commentCount} */}
-            123
+            {test?.comments.length}
           </div>
+          <CommentInput
+            value={commentValue}
+            setValue={value => {
+              setCommentValue(value); // 새로운 상태 업데이트
+              updateFormData('comment', value);
+            }}
+            onClickSaveComment={onClickSaveComment}
+          />
         </div>
-        <CommentInput
-          value={commentValue}
-          setValue={value => {
-            setCommentValue(value); // 새로운 상태 업데이트
-            updateFormData('comment', value);
-          }}
-          onClickSaveComment={onClickSaveComment}
-        />
+
         {test?.comments?.map((comment, index) => {
           return (
             <div key={index}>
