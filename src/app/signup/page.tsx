@@ -151,60 +151,63 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="mt-16  sm:mx-auto sm:w-full sm:max-w-md">
-      <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
-        <form onSubmit={handleSignUp}>
-          <label>아이디</label>
-          <SignUpInput
-            color="primary"
-            placeholder="아이디를 입력해주세요"
-            onChange={e => setUsername(e.target.value)}
-          />
-          <label>이메일</label>
-          <SignUpInput
-            color="primary"
-            type="email"
-            placeholder="이메일을 입력해주세요"
-            onChange={e => setEmail(e.target.value)}
-          />
-          <label>닉네임</label> {/* New nickname field */}
-          <SignUpInput
-            color="primary"
-            placeholder="닉네임을 입력해주세요"
-            onChange={e => setNickname(e.target.value)}
-          />
-          <label>비밀번호</label>
-          <SignUpInput
-            color="primary"
-            placeholder="비밀번호를 입력해주세요"
-            type={showPassword ? 'text' : 'password'}
-            onIconClick={togglePassword}
-            onChange={handlePasswordChange}
-            icon={showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-          />
-          <label>비밀번호 확인</label>
-          <SignUpInput
-            color="primary"
-            placeholder="한 번 더 비밀번호를 입력해주세요"
-            type={showConfirmPassword ? 'text' : 'password'}
-            onIconClick={toggleConfirmPassword}
-            onChange={handleConfirmPasswordChange}
-            icon={showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-          />
-          {passwordMatchError && (
-            <p className="text-red-500 text-xs mt-1 mb-2 text-center">
-              비밀번호가 일치하지 않습니다.
-            </p>
-          )}
-          <Button type="submit" primary fullWidth>
-            회원가입하기
-          </Button>
-          <div className="relative flex justify-center text-xs  mt-3">
-            <Link href={'/login'} className="bg-white px-2 text-gray-600 underline">
-              소셜로그인으로 계속하기
-            </Link>
-          </div>
-        </form>
+    <div className="bg-white px-20 py-10 shadow sm:rounded-lg sm:px-10">
+      <div className="mt-16  sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white px-20 py-20 shadow sm:rounded-lg sm:px-10">
+          <form onSubmit={handleSignUp}>
+            <label>아이디</label>
+            <SignUpInput
+              color="primary"
+              placeholder="아이디를 입력해주세요"
+              onChange={e => setUsername(e.target.value)}
+            />
+            <label>이메일</label>
+            <SignUpInput
+              color="primary"
+              type="email"
+              placeholder="이메일을 입력해주세요"
+              onChange={e => setEmail(e.target.value)}
+            />
+            <label>닉네임</label> {/* New nickname field */}
+            <SignUpInput
+              color="primary"
+              placeholder="닉네임을 입력해주세요"
+              onChange={e => setNickname(e.target.value)}
+            />
+            <label>비밀번호</label>
+            <SignUpInput
+              color="primary"
+              placeholder="비밀번호를 입력해주세요"
+              type={showPassword ? 'text' : 'password'}
+              onIconClick={togglePassword}
+              onChange={handlePasswordChange}
+              icon={showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            />
+            <label>비밀번호 확인</label>
+            <SignUpInput
+              color="primary"
+              placeholder="한 번 더 비밀번호를 입력해주세요"
+              type={showConfirmPassword ? 'text' : 'password'}
+              onIconClick={toggleConfirmPassword}
+              onChange={handleConfirmPasswordChange}
+              icon={showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            />
+            {passwordMatchError && (
+              <p className="text-red-500 text-xs mt-1 mb-2 text-center">
+                비밀번호가 일치하지 않습니다.
+              </p>
+            )}
+            <Button type="submit" primary fullWidth>
+              회원가입하기
+            </Button>
+            <div className="relative flex justify-center text-xs  mt-3">
+              <span className="text-gray-400">아이디가 있으신가요?</span>
+              <Link href={'/login'} className="bg-white px-2 text-gray-600 underline">
+                로그인 하기
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
