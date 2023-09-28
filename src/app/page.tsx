@@ -10,7 +10,7 @@ import { Tester } from '@/type/Card';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { getAPI } from '@/axios';
+import { getAPI } from '@/config/axios';
 
 export default function Home() {
   const [testCards, setTestCards] = useState<Tester[]>();

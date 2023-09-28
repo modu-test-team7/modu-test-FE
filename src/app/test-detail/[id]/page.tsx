@@ -14,7 +14,7 @@ import TestDoit from '@/components/test/TestDoit';
 import { BiCommentDetail } from 'react-icons/bi';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { getAPI, postAPI } from '@/axios';
+import { getAPI, postAPI } from '@/config/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;

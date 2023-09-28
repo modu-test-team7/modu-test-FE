@@ -1,6 +1,6 @@
 export type Tester = {
   testId: number;
-  testerId:number;
+  testerId: number;
   userId: string;
   title: string;
   content: string;
@@ -15,7 +15,6 @@ export type Tester = {
   commentId: number;
   participates: number;
 };
-
 
 export type Question = {
   id: number;
