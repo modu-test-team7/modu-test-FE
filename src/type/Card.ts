@@ -9,7 +9,7 @@ export type Tester = {
   likes: string | number;
   category: string;
   username?: string;
-  comments: string[] | string;
+  comments: CommentType[];
   questions: Question[];
   comment: any;
   commentId: number;
@@ -31,11 +31,11 @@ export type Choice = {
   isCorrect: boolean;
 };
 
-export type Comment = {
+export type CommentType = {
   id: number;
   content: string;
-  userId: number;
-  testId: number;
+  userId: string;
+  cmmentId: number;
 };
 
 export type User = {

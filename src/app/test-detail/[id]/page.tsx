@@ -5,10 +5,10 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-import { CommentOne, CommentInput } from '@/app/test-detail/[id]/component';
+import { Comment, CommentWrite } from '@/app/test-detail/[id]/component';
 import { Button, ButtonGroup, UpButton } from '@/components/button';
 import Loading from '@/components/Loading';
-import { Tester, Comment } from '@/type/Card';
+import { Tester, CommentType } from '@/type/Card';
 import TestDoit from '@/components/test/TestDoit';
 
 import { BiCommentDetail } from 'react-icons/bi';
@@ -18,12 +18,29 @@ import { getAPI, postAPI } from '@/config/axios';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const paramsId = params.id;
-  const [test, setTest] = useState<Tester[]>([]);
+  const [test, setTest] = useState<Tester>({
+    testId: 0,
+    testerId: 0,
+    userId: '',
+    title: '',
+    content: '',
+    image: '',
+    views: 0,
+    likes: 0,
+    category: '',
+    username: '',
+    comments: [],
+    questions: [],
+    comment: '',
+    commentId: 0,
+    participates: 0,
+  });
   const [commentValue, setCommentValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
+  const [isFetch, setIsFetch] = useState(true);
 
   const [formData, setFormData] = useState<CreateTest>({
     title: '',
@@ -51,7 +68,9 @@ const Page = ({ params }: { params: { id: number } }) => {
     ],
     comments: [
       {
+        username: '',
         comment: '',
+        commentId: 0,
       },
     ],
   });
@@ -63,9 +82,9 @@ const Page = ({ params }: { params: { id: number } }) => {
     });
   };
 
-  const onClickDeleteComment = async (comment: any) => {
+  const onClickDeleteComment = async (commentId: number) => {
     try {
-      const response = await axios.delete(`/api/${paramsId}/comment/${comment.commentId}`);
+      const response = await axios.delete(`/api/${paramsId}/comment/${commentId}`);
       if (response.data.statusCode === 200) {
         toast.success('댓글 삭제 완료');
         // 댓글 목록 새로고침 로직이나 다른 후처리
@@ -76,7 +95,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     }
   };
 
-  const onClickSaveComment = async () => {
+  const onClickAddComment = async () => {
     const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
       toast.error('로그인 후 이용 해 주세요');
@@ -89,21 +108,14 @@ const Page = ({ params }: { params: { id: number } }) => {
         return;
       }
 
-      const newComments = [
-        ...(test?.comments || []),
-        { username: '나중에 바꿔', content: commentValue },
-      ];
-
-      setTest(prevTest => ({
-        ...prevTest,
-        comments: newComments,
-      }));
-
       const response = await postAPI(`/api/${paramsId}/comment`, { content: commentValue });
       // .then((data:any) => console.log(data));
 
+      setIsFetch(prev => !prev);
+
       toast.message('댓글이 저장되었습니다');
       setCommentValue('');
+
       console.log('성공:', response);
     } catch (error) {
       toast.message('실패하였습니다');
@@ -114,7 +126,9 @@ const Page = ({ params }: { params: { id: number } }) => {
   useEffect(() => {
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
+  }, [router]);
 
+  useEffect(() => {
     const fetchTestCards = async () => {
       try {
         window.scrollTo(0, 0);
@@ -126,7 +140,7 @@ const Page = ({ params }: { params: { id: number } }) => {
     };
 
     fetchTestCards();
-  }, [router]);
+  }, [isFetch]);
 
   if (isLoading) {
     return <Loading fadeout={fadeout} isLoading={isLoading} />;
@@ -183,22 +197,23 @@ const Page = ({ params }: { params: { id: number } }) => {
             <BiCommentDetail size={15} className="mt-1" />
             {test?.comments.length}
           </div>
-          <CommentInput
+          <CommentWrite
             value={commentValue}
             setValue={value => {
               setCommentValue(value); // 새로운 상태 업데이트
               updateFormData('comment', value);
             }}
-            onClickSaveComment={onClickSaveComment}
+            onClickAddComment={onClickAddComment}
           />
         </div>
 
-        {test?.comments?.map((comment, index) => {
+        {test?.comments?.map((comment: any, index: number) => {
           return (
             <div key={index}>
-              <CommentOne
-                commentWriter={comment.username}
+              <Comment
+                commentWriter={comment.userId}
                 comment={comment.content}
+                commentId={comment.commentId}
                 onClickDeleteComment={onClickDeleteComment}
               />
             </div>

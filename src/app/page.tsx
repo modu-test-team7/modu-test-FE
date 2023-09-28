@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 import { getAPI } from '@/config/axios';
 
 export default function Home() {
-  const [testCards, setTestCards] = useState<Tester[]>([]);
+  const [testCards, setTestCards] = useState<Tester[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const [category, setCategory] = useState<string>('');
@@ -41,8 +41,8 @@ export default function Home() {
     const fetchTestCards = async () => {
       try {
         // 여기
-        const { data } = await getAPI(`/api/test`);
-        // const { data } = await getAPI(`/api/tests`);
+        // const { data } = await getAPI(`/api/test`);
+        const { data } = await getAPI(`/api/tests`);
         setTestCards(data);
       } catch (error) {
         console.error('데이터를 가져오는데 에러가 발생했어:', error);
@@ -88,14 +88,14 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards.map((card, index) => {
+        {testCards?.map((card, index) => {
           return (
             // as={`/test-detail/${card.id}`}
             <div
               key={index}
               onClick={() => {
                 // 여기
-                router.push(`/test-detail/${card.testerId}`);
+                router.push(`/test-detail/${card.testId}`);
               }}
             >
               <TestCard tester={card} />

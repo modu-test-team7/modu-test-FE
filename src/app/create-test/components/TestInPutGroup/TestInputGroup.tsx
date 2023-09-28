@@ -89,7 +89,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
       const copyPrev = { ...prevFormData };
       const { questions } = copyPrev;
       
-      // 이미 체크된 선택지가 있는지 검사
+      // 이미 체크된 선택지가 있는지 검사 !!! 두번째꺼 선택하면 기존꺼 체크 풀리게 해보기
       const alreadyChecked = questions[qIndex].choices.some((choice, index) => choice.isCorrect && index !== cIndex);
   
       if (alreadyChecked) {

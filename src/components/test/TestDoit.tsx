@@ -72,15 +72,17 @@ const TestDoit: React.FC<TestDoitProps> = ({ paramsId }) => {
       router.push(`/test-result/${test?.testerId}`);
     }
 
-    try {
-      const response = await postAPI(`/api/participate/${test?.testerId}`, {});
-      toast.message('테스트 완료😊');
-      console.log('성공:', response);
-      return router.push('/'); // 또는 다른 페이지로 리다이렉트
-    } catch (error) {
-      toast.message('실패하였습니다🥲');
-      console.log('에러:', error);
-    }
+    // try {
+    //   const response = await postAPI(`/api/participate/${test?.paramsId}`, {
+    //     ...formData,
+    //   });
+    //   toast.message('테스트 완료😊');
+    //   console.log('성공:', response);
+    //   return router.push('/'); // 또는 다른 페이지로 리다이렉트
+    // } catch (error) {
+    //   toast.message('실패하였습니다🥲');
+    //   console.log('에러:', error);
+    // }
   };
 
   console.log(test);

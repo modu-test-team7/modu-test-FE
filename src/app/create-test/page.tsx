@@ -40,11 +40,7 @@ const Page = () => {
         score: 0,
       },
     ],
-    comments: [
-      {
-        comment: '',
-      },
-    ],
+    comments: [],
   });
 
   const updateFormData = (field: string, value: any) => {
@@ -73,7 +69,7 @@ const Page = () => {
     }
 
     try {
-      const response = await postAPI(`/api/test/testMake`, {
+      const response = await postAPI(`/api/test/testsMake`, {
         ...formData,
       });
       toast.message('테스트가 만들기 성공😊');
@@ -84,11 +80,6 @@ const Page = () => {
       console.log('에러:', error);
     }
   };
-
-  useEffect(() => {
-    // 페이지 이동 후 자동으로 (0, 0) 위치 보여줌
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <form
