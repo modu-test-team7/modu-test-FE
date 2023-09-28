@@ -30,7 +30,7 @@ const SignUp: React.FC = () => {
     if (accessToken) {
       router.push('/'); // 로그인이 되어 있으면 홈 페이지로 이동
     }
-  }, []);
+  }, [router]);
 
   const {
     showPassword,

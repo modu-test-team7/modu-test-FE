@@ -1,18 +1,17 @@
-import { Comment, Tester } from '@/type/Card';
-import React, { useState } from 'react';
+import { CommentType, Tester } from '@/type/Card';
+import React, { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS, useState } from 'react';
 
 type CommentOneProps = {
   comment: string ;
-  onClickDeleteComment: () => void;
+  onClickDeleteComment: (commentId: number) => Promise<void>;
   commentWriter: string;
+  commentId: number;
 };
 
-const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment, commentWriter}) => {
+const CommentOne: React.FC<CommentOneProps> = ({commentId, onClickDeleteComment, commentWriter, comment}) => {
   const onCllickDeleteButton = () => {
-    onClickDeleteComment(comment);
+    onClickDeleteComment(commentId);
   }
-
-  
 
   return (
     <div className=" cursor-default">
@@ -38,7 +37,7 @@ const CommentOne: React.FC<CommentOneProps> = ({comment, onClickDeleteComment, c
       {/* 댓글 내용 */}
       <div>{comment}</div>
 
-      {/* 수정 삭제 버튼 */}
+      {/* 댓글 주인만 볼 수 있어야 함. 수정 삭제 버튼 */}
       <div className='w-full row gap-2 items-center justify-end text-xs text-gray-500'>
         <button className=' hover:font-bold'>수정</button>
         |

@@ -5,10 +5,10 @@ import { FiSend } from 'react-icons/fi';
 interface CommentInputProps {
   value?: string;
   setValue: (value: string) => void;
-  onClickSaveComment: () => void;
+  onClickAddComment: () => void;
 }
 
-const CommentInput: React.FC<CommentInputProps> = ({ value, setValue, onClickSaveComment }) => {
+const CommentInput: React.FC<CommentInputProps> = ({ value, setValue, onClickAddComment }) => {
   const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   };
@@ -23,7 +23,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ value, setValue, onClickSav
         onChange={e => onChangeHandler(e)}
         name="testTitle"
       />
-      <button type="button" onClick={onClickSaveComment}>
+      <button type="button" onClick={onClickAddComment}>
         <FiSend size={20} className="text-gray-500 mt-auto" />
       </button>
     </div>

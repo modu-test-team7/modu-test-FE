@@ -1,6 +1,6 @@
 export type Tester = {
   testId: number;
-  testerId:number;
+  testerId: number;
   userId: string;
   title: string;
   content: string;
@@ -9,14 +9,14 @@ export type Tester = {
   likes: string | number;
   category: string;
   username?: string;
-  comments: string[] | string;
-  questions: string[];
+  comments: CommentType[];
+  questions: Question[];
   comment: any;
   commentId: number;
   participates: number;
 };
 
-export type Questions = {
+export type Question = {
   id: number;
   title: string;
   image: string;
@@ -31,11 +31,11 @@ export type Choice = {
   isCorrect: boolean;
 };
 
-export type Comment = {
+export type CommentType = {
   id: number;
   content: string;
-  userId: number;
-  testId: number;
+  userId: string;
+  cmmentId: number;
 };
 
 export type User = {

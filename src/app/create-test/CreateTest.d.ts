@@ -26,6 +26,7 @@ interface CreateTestQinChoices {
 }
 
 interface CreateTestComment {
-  // username: string;
+  username: string;
   comment: string;
+  commentId: number;
 }

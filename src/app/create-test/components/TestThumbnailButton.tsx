@@ -5,6 +5,7 @@ import { BsFillCloudArrowUpFill } from 'react-icons/bs';
 import { AiOutlinePicture } from 'react-icons/ai';
 import clsx from 'clsx';
 import axios from 'axios';
+import { postAPI } from '@/config/axios';
 
 type TestPictureButtonProps = {
   setImage: (newImage: string) => void;
@@ -30,14 +31,14 @@ const TestPictureButton: React.FC<TestPictureButtonProps> = ({ setImage, small }
       const reader = new FileReader();
       const formData = new FormData();
       formData.append('image', file);
-      const result = await axios.post(`http://13.125.200.12/api/upload`, formData);
+      const result = await postAPI(`/api/upload`, formData);
       console.log(result);
       // reader.onloadend = () => {
       //   if (typeof reader.result === 'string') {
       //     setImage(reader.result);
       //   }
       // };
-      setImage(result.data)
+      setImage(result.data);
 
       if (file) {
         reader.readAsDataURL(file);

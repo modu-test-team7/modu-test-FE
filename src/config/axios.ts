@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = `${process.env.NEXT_PUBLIC_TEST_SERVER_URL}`;
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_SP_BACK_SERVER_URL}`;
 
 axios.interceptors.request.use(
   config => {
