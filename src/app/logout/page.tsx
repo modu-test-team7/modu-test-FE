@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { postAPI } from '@/config/axios';
