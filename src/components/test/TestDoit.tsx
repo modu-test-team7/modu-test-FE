@@ -73,9 +73,7 @@ const TestDoit: React.FC<TestDoitProps> = ({ paramsId }) => {
     }
 
     try {
-      const response = await postAPI(`/api/participate/${teest?.testerId}`, {
-        ...formData,
-      });
+      const response = await postAPI(`/api/participate/${test?.testerId}`, {});
       toast.message('테스트 완료😊');
       console.log('성공:', response);
       return router.push('/'); // 또는 다른 페이지로 리다이렉트
@@ -103,7 +101,7 @@ const TestDoit: React.FC<TestDoitProps> = ({ paramsId }) => {
 
   return (
     <div className="w-full min-h-[50px] mt-[50px] col gap-10">
-      {test?.questions.map((question: string, qIndex: number) => {
+      {test?.questions.map((question, qIndex: number) => {
         return (
           <div key={qIndex} className="cursor-default">
             <div className="row items-center justify-start gap-1 mb-[15px]">
@@ -112,7 +110,7 @@ const TestDoit: React.FC<TestDoitProps> = ({ paramsId }) => {
             </div>
 
             <div className="col gap-2 w-full">
-              {question?.choices?.map((choice: string, cIndex: number) => {
+              {question?.choices?.map((choice, cIndex: number) => {
                 return (
                   <div
                     key={cIndex}
