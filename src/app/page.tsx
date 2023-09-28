@@ -10,10 +10,18 @@ import { Tester } from '@/type/Card';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Cookies from 'js-cookie';
-import { getAPI } from '@/config/axios';
+import { getAPI, postAPI } from '@/config/axios';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 export default function Home() {
-  const [testCards, setTestCards] = useState<Tester[]>();
+  // const [testCards, setTestCards] = useState<Tester[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [fadeout, setFadeOut] = useState(false);
   const [category, setCategory] = useState<string>('');
@@ -24,13 +32,40 @@ export default function Home() {
 
   const fetchCategory = async (category: string) => {
     try {
-      const { data } = await getAPI(`/api/tests/${category}`);
+      const data = await getAPI(`/api/tests/${category}`);
       // const { data } = await getAPI(`/api/tests`);
-      setTestCards(data);
     } catch (error) {
       console.error('데이터를 가져오는데 에러가 발생했어:', error);
     }
   };
+
+  const fetchTestCards = async () => {
+    try {
+      // 여기
+      // const { data } = await getAPI(`/api/test`);
+      const { data } = await getAPI(`/api/tests`);
+      return data;
+    } catch (error) {
+      console.error('데이터를 가져오는데 에러가 발생했어:', error);
+    }
+  };
+
+  const { data } = useQuery<Tester[]>(  // 주로 get에서 사용
+    ['test'], // query key. 고정, 유동 가능
+    () => fetchTestCards(), // 함수. 함수의 값이 axios 이어야 한다. 비동기 함수의 리턴해주는 일반 함수
+  );
+
+  console.log(data);
+
+  const mutation = useMutation(() => {});  // querykey 필요없음
+
+  // const postId = 1;
+
+  // const query1 = useQuery(
+  //   ['todosDetail', postId], // query key. 고정, 유동 가능
+  //   () => fetchTestCards(),
+  //   { enabled: !!postId }, // 옵션 /enabled => true가 됐을 대 실행
+  // );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,16 +73,6 @@ export default function Home() {
     setFadeOut(true);
     setTimeout(() => setIsLoading(false), 1000);
 
-    const fetchTestCards = async () => {
-      try {
-        // 여기
-        // const { data } = await getAPI(`/api/test`);
-        const { data } = await getAPI(`/api/tests`);
-        setTestCards(data);
-      } catch (error) {
-        console.error('데이터를 가져오는데 에러가 발생했어:', error);
-      }
-    };
     fetchTestCards();
   }, []);
 
@@ -55,10 +80,7 @@ export default function Home() {
 
   return (
     <div className=" mx-auto min-h-screen w-[1200px]">
-      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">
-        <button onClick={() => console.log(testCards)}>데이터보기 버튼</button>
-        slider
-      </div>
+      <div className="w-full bg-gray-200 h-[400px] row items-center justify-center">slider</div>
 
       <div className="sticky mt-[30px] top-[60px] transform translate-x-0 w-full bg-white bg-opacity-80 h-[60px] row items-center justify-start gap-[20px]">
         <button
@@ -88,7 +110,7 @@ export default function Home() {
       </div>
 
       <div className="my-[20px] grid grid-cols-3 gap-20">
-        {testCards?.map((card, index) => {
+        {data?.map((card: any, index: number) => {
           return (
             // as={`/test-detail/${card.id}`}
             <div

@@ -3,6 +3,10 @@ import '../globals.css';
 import { Header, Footer } from '@/components/Layout';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const queryClient = new QueryClient();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,12 +23,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <Header />
-        <div className="wrap">
-          <Toaster position="top-center" richColors />
-          {children}
-        </div>
-        <Footer />
+        <QueryClientProvider client={queryClient}>
+        {process.env.NODE_ENV !== 'production' ? <ReactQueryDevtools initialIsOpen={false} /> : null}
+          <Header />
+          <div className="wrap">
+            <Toaster position="top-center" richColors />
+            {children}
+          </div>
+          <Footer />
+        </QueryClientProvider>
       </body>
     </html>
   );

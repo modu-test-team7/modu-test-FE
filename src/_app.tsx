@@ -25,7 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
   }, [router]);
 
-  return <Component {...pageProps} />;
+  return (
+      <Component {...pageProps} />
+  );
 }
 
 export default MyApp;
