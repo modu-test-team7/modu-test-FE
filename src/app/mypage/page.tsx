@@ -11,9 +11,8 @@ import {
   ParticipatedTests,
   CreatedTests,
 } from '@/app/mypage/components';
+import { toast } from 'sonner';
 import { deleteAPI } from '@/config/axios';
-import Modal from 'react-modal';
-import MemberModal from './components/MemberModal';
 
 const customStyles = {
   content: {
@@ -53,8 +52,6 @@ const Mypage: React.FC = () => {
         return; // 토큰이 없으면 여기서 종료 (이후 코드 실행 X)
       }
 
-      if (isLoading) return <Loading fadeout={fadeout} isLoading={isLoading} />;
-
       try {
         // 서버에서 사용자 정보를 가져오는 함수
         const response = await axios.get('/user');
@@ -86,16 +83,22 @@ const Mypage: React.FC = () => {
 
   // 회원 탈퇴
   const handleUserDelete = async () => {
-    try {
+    const confirmDeletion = window.confirm('정말 탈퇴 하실 건가요? 🤧');
+    if (!confirmDeletion) return;
+
+    const promiseFn = async () => {
       await deleteAPI(`/api/user/delete`);
-      // 성공적으로 삭제되었을 때만 토큰을 제거하고 리다이렉트합니다.
-      Cookies.remove('accessToken');
-      Cookies.remove('refreshToken');
-      router.replace('/');
-    } catch (error) {
-      // 에러 처리
-      console.error(error);
-    }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      Cookies.remove('accessToken'); // 토큰 삭제
+      Cookies.remove('refreshToken'); // 리프레시 토큰 삭제 추가
+      router.replace('/'); // 홈으로 리다이렉트
+    };
+
+    toast.promise(promiseFn(), {
+      loading: '회원 탈퇴 중입니다...',
+      success: '탈퇴가 완료되었습니다!',
+      error: '탈퇴 중 에러가 발생했습니다.',
+    });
   };
 
   // 만든 테스트 버튼 클릭
@@ -112,56 +115,57 @@ const Mypage: React.FC = () => {
 
   return (
     <>
-      <div className=" max-w-[1200px] mx-auto mt-16 p-8 flex bg-[#11B767]">
-        <ProfileImage
-          image={image}
-          setImage={setImage}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-        />
-        <UserProfile
-          username={username}
-          setUsername={setUsername}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-        />
+      {isLoading ? (
+        <Loading fadeout={fadeout} isLoading={isLoading} />
+      ) : (
         <div>
-          <div className=" justify-end">
-            <MypageButton
-              label={isEditing ? '취소하기' : '정보수정'}
-              onClick={isEditing ? () => setIsEditing(false) : handleInfoEditClick}
-            ></MypageButton>
-          </div>
-          {isEditing && (
-            <div className="relative top-20">
-              <MypageButton label="회원탈퇴" onClick={openModal}></MypageButton>
+          <div className="max-w-[1200px] mx-auto mt-16 p-8 flex bg-[#11B767]">
+            <ProfileImage
+              image={image}
+              setImage={setImage}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+            />
+            <UserProfile
+              username={username}
+              setUsername={setUsername}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+            />
+            <div>
+              <div className="justify-end">
+                <MypageButton
+                  label={isEditing ? '취소하기' : '정보수정'}
+                  onClick={isEditing ? () => setIsEditing(false) : handleInfoEditClick}
+                ></MypageButton>
+              </div>
+              {isEditing && (
+                <div className="relative top-20">
+                  <MypageButton label="회원탈퇴" onClick={handleUserDelete}></MypageButton>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          <div className="flex flex-col w-[1200px] h-[100vh] mx-auto p-5 bg-slate-100 overflow-y-auto">
+            <div className="mt-5 flex-grow bg-slate-100">
+              <MypageButton
+                label="참여 테스트"
+                onClick={handleParticipatedTestsClick}
+                isActive={isParticipatedTestsVisible}
+              />
+              <MypageButton
+                label="만든 테스트"
+                onClick={handleCreatedTestsClick}
+                isActive={isCreatedTestsVisible}
+              />
+            </div>
+            <div className="max-w-[1150px] mx-auto">
+              {isParticipatedTestsVisible && <ParticipatedTests />}
+              {isCreatedTestsVisible && <CreatedTests />}
+            </div>
+          </div>
         </div>
-        <MemberModal
-          isModalOpen={isModalOpen}
-          closeModal={closeModal}
-          handleUserDelete={handleUserDelete}
-        />
-      </div>
-      <div className="flex flex-col w-[1200px] h-[100vh] mx-auto p-5 bg-slate-100 overflow-y-auto">
-        <div className="mt-5 flex-grow bg-slate-100">
-          <MypageButton
-            label="참여 테스트"
-            onClick={handleParticipatedTestsClick}
-            isActive={isParticipatedTestsVisible}
-          />
-          <MypageButton
-            label="만든 테스트"
-            onClick={handleCreatedTestsClick}
-            isActive={isCreatedTestsVisible}
-          />
-        </div>
-        <div className="max-w-[1150px] mx-auto">
-          {isParticipatedTestsVisible && <ParticipatedTests />}
-          {isCreatedTestsVisible && <CreatedTests />}
-        </div>
-      </div>
+      )}
     </>
   );
 };

@@ -24,14 +24,13 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     // postAPI 함수를 사용하여 로그인 API를 호출하고, 응답을 처리하거나 오류를 캐치
     await postAPI('/api/user/login', { username, password })
-      // 로컬 스토리지
       .then(response => {
         console.log(response);
-        localStorage.setItem('accessToken', '123');
+        localStorage.setItem('accessToken', response.data.token); // 수정된 부분
         // 쿠키 방식
         // Cookies.set('accessToken', response.data.token);
         // Cookies.set('refreshToken', response.data.refreshToken);
-        // console.log(response);
+        console.log(response);
         toast.success('로그인 성공 😎');
         router.push('/');
       })
