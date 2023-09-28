@@ -10,14 +10,13 @@ type TestProps = {
 };
 
 const Test: React.FC<TestProps> = ({ tester }) => {
-  const imgNum = tester.testerId + 1;
   return (
     <div className=" shadow-sm cursor-pointer">
       <div className="w-full flex h-[200px] overflow-hidden my-[5px] rounded-lg  shadow-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={tester.image === 'Test Image' || '' ? 'lib/images/logo_clear.png' : tester.image}
-          className="object-cover h-full w-full"
+          src={tester.image === '' ? 'lib/images/logo_clear.png' : tester.image}
+          className="object-cover w-full"
           alt="테스트 썸네일"
           height={300}
           width={300}
@@ -35,7 +34,7 @@ const Test: React.FC<TestProps> = ({ tester }) => {
             <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`/lib/images/profile/profileSample (1).png`}
+                src={`/lib/images/profile/profile.jpg`}
                 className="object-cover h-full w-full"
                 alt="작성자 프로필 사진"
               />

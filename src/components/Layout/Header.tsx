@@ -24,6 +24,11 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   useEffect(() => {
+    // 페이지 이동 후 자동으로 (0, 0) 위치 보여줌
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     // 외부 클릭을 감지하려면 이벤트 리스너를 추가
     window.addEventListener('click', handleClickOutside);
 

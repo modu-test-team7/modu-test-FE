@@ -11,6 +11,8 @@ type TestCategoryProps = {
 const TestCategory: React.FC<TestCategoryProps> = ({ onCategoryChange }) => {
   const [category, setCategory] = React.useState('');
 
+  const selectValue = ['친구','가족','진지','재미'];
+
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
     onCategoryChange(event.target.value); // 부모 컴포넌트에게 변경 사항 알려주기
@@ -28,10 +30,11 @@ const TestCategory: React.FC<TestCategoryProps> = ({ onCategoryChange }) => {
         label="카테고리"
         className='p-[5px] text-md font-bold text-gray-500'
       >
-        <MenuItem value={"친구"}>친구</MenuItem>
-        <MenuItem value={"가족"}>가족</MenuItem>
-        <MenuItem value={"진지"}>진지</MenuItem>
-        <MenuItem value={"재미"}>재미</MenuItem>
+        {selectValue.map(_key => (
+          <MenuItem key={_key} value={_key}>
+            {_key}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   </div>

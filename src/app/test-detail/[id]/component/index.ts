@@ -1,5 +1,4 @@
-import CommentOne from './CommentOne';
-import CommentGroup from './CommentInput';
-import CommentInput from './CommentInput'
+import Comment from './Comment';
+import CommentWrite from './CommentWrite';
 
-export { CommentOne, CommentGroup, CommentInput };
+export { Comment, CommentWrite };

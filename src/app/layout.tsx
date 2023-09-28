@@ -1,6 +1,6 @@
 'use client';
 import '../globals.css';
-import { Header, Footer } from '@/components/Layout';
+import { Header, Footer } from '@/components/layout';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 
