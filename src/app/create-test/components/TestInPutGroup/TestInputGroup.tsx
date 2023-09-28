@@ -1,6 +1,6 @@
 import React, { SetStateAction } from 'react';
 import { AiOutlineDelete, AiOutlinePlus, AiOutlineCheck, AiOutlineClose, AiTwotoneStar } from 'react-icons/ai';
-import { Choice, Questions } from '@/type/Card';
+import { Choice, Question } from '@/type/Card';
 import Checkbox from '@mui/material/Checkbox';
 import { toast } from 'sonner';
 
@@ -105,7 +105,7 @@ const TestInputGroup: React.FC<TestInputGroupProps> = ({ questionValue, setFormD
 
   return (
     <div>
-      {questionValue.map((question: Questions, qIndex: number) => (
+      {questionValue.map((question: Question, qIndex: number) => (
         <div key={qIndex} className="mb-[30px]">
           <div className="flex flex-row items-center justify-between">
             <div className="text-gray-500 text-md my-[5px] row items-center justify-center gap-1">
