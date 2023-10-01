@@ -54,23 +54,26 @@ const TestDoit: React.FC<TestDoitProps> = ({ paramsId }) => {
       const count = Object.values(checkedChoices).filter(Boolean).length;
       console.log('checkedChoices', checkedChoices);
 
-      // if (count === 0) {
-      //   toast.error(`질문 ${Number(qIndex) + 1} 선택지 체크를 다 하셨나요?`);
-      //   isValid = false;
-      //   return;
-      // }
+      if (count == 0) {
+        toast.error(`질문 ${Number(qIndex) + 1} 선택지 체크를 다 하셨나요?`);
+        isValid = false;
+        return;
+      }
 
       if (count > 1) {
         toast.error(`질문 ${Number(qIndex) + 1}에 여러 선택지를 선택하셨어요!`);
         isValid = false;
         return;
       }
-    });
 
+      
+    });
     if (isValid) {
-      toast.success(`테스트 완료`);
-      router.push(`/test-result/${test?.testerId}`);
+      toast.success(`축하합니다! ${score}점 입니다!!`);
+      router.push(`/test-result/${test?.testId}`);
     }
+
+   
 
     // try {
     //   const response = await postAPI(`/api/participate/${test?.paramsId}`, {
